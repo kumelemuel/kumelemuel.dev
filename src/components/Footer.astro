@@ -1,0 +1,43 @@
+<footer>
+  <div class="footer-content">
+    <nav>
+      <ul>
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms of Service</a></li>
+        <li><a href="/contact">Contact Us</a></li>
+      </ul>
+    </nav>
+    <div>&copy; 2025 Kumelemuel.dev. All rights reserved.</div>
+  </div>
+</footer>
+<style>
+  .footer-content {
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    bottom: 0;
+    width: calc(100% - 4rem);
+    font-size: .9rem;
+    background-color: var(--color-secondary-background);
+    color: var(--color-text-gray);
+    padding: .7rem 2rem;
+    text-align: center;
+    border-top: 1px solid var(--color-gray-strong);
+  }
+  .footer-content nav ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .footer-content nav ul li {
+    display: inline;
+    margin: 0 2rem 0 0;
+  }
+  .footer-content nav ul li a {
+    color: var(--color-text-gray);
+    text-decoration: none;
+  }
+  .footer-content nav ul li a:hover {
+    color: var(--color-text-accent);
+  }
+</style>

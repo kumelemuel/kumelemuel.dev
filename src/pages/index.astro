@@ -1,11 +1,23 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
 <Layout>
-	<Welcome />
+  <div class="icon-container">
+    <sl-icon class="icon-component" name="star" library="fa"></sl-icon>
+    <sl-icon class="icon-component" name="heart" library="fa"></sl-icon>
+    <sl-icon class="icon-component" name="star" library="fa"></sl-icon>
+  </div>
 </Layout>
+
+<style>
+	.icon-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10rem;
+    font-size: 5rem;
+    color: var(--color-golden);
+    font-weight: 100;
+	}
+</style>

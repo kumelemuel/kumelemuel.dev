@@ -1,0 +1,13 @@
+:root {
+  --color-text-main: #e0e0e0;
+  --color-text-secondary: #dbdbdb;
+  --color-text-accent: #ff9148;
+  --color-text-accent-strong: #c55b04;
+  --color-text-gray: #c7c7c7;
+
+  --color-background: #222222;
+  --color-background-secondary: #272727;
+
+  --color-golden: #ffe395;
+  --color-gray-strong: #555555;
+}

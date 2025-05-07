@@ -1,3 +1,14 @@
+---
+import "../styles/global.css";
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { ClientRouter } from "astro:transitions";
+import { fade } from "astro:transitions";
+
+
+const { title } = Astro.props;
+---
+
 <!doctype html>
 <html lang="en">
 	<head>
@@ -5,18 +16,55 @@
 		<meta name="viewport" content="width=device-width" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css" />
+		<script type="module" src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
+
+		
+
+		<script type="module">
+			import { registerIconLibrary } from 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/utilities/icon-library.js';
+		
+			registerIconLibrary('fa', {
+				resolver: name => {
+					const filename = name.replace(/^fa[rbs]-/, '');
+					let folder = 'regular';
+					if (name.substring(0, 4) === 'fas-') folder = 'solid';
+					if (name.substring(0, 4) === 'fab-') folder = 'brands';
+					return `https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.1/svgs/${folder}/${filename}.svg`;
+				},
+				mutator: svg => svg.setAttribute('fill', 'currentColor')
+			});
+		</script>
+
+		<ClientRouter />
+		<title>Kumelemuel.dev</title>
 	</head>
 	<body>
-		<slot />
+		<Header></Header>
+    <main transition:animate={fade({ duration: "0.7s" })}>
+			<h1>{title}</h1>
+			<slot />
+		</main>
+		<Footer />
 	</body>
 </html>
 
 <style>
-	html,
 	body {
 		margin: 0;
 		width: 100%;
-		height: 100%;
+		height: 100vh;
+	}
+	main {
+		position: absolute;
+		margin: 0 auto;
+		top: 0;
+		font-family: 'Nexa', sans-serif;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		height: 100vh;
+		width: 100%;
 	}
 </style>

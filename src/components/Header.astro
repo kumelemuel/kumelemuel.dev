@@ -1,0 +1,63 @@
+---
+const menu = [
+  { name: 'Home', path: '/' },
+  { name: 'Who am I?', path: '/who-am-i' },
+  { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Contact', path: '/contact' },
+];
+const pathname = new URL(Astro.request.url).pathname;
+
+const isActive = (path: string) => {
+  return pathname === path ? 'active' : '';
+};
+
+---
+
+<header>
+  <span>kumelemuel.dev</span>
+  <nav>
+    {menu.map(menu => (
+      <a href={menu.path} class={isActive(menu.path) ? 'active' : ''}>{menu.name}</a>
+    ))}
+  </nav>
+</header>
+<style>
+  header {
+    font-family: 'AppleGaramond', serif;
+    font-size: 1.2rem;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  }
+  nav {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 3rem;
+  }
+  a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+  a.active {
+    font-weight: bold;
+    color: var(--color-text-accent-strong);
+    text-decoration: none;
+  }
+  a:hover {
+    text-decoration: none;
+    color: var(--color-text-accent);
+  }
+  @media (max-width: 600px) {
+    nav {
+      flex-direction: column;
+    }
+  }
+</style>
