@@ -1,31 +1,37 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/ui';
 
+export async function getStaticPaths() {
+  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const messages = t(lang);
 const articles = await getCollection('articles');
 const getSlugFromId = (id: string) => id.replace(/\.md$/, '');
 ---
 
-<Layout title="Articles">
+<Layout title={messages.pages.articlesTitle} lang={lang}>
   {articles.length > 0 ? (
     <div class="articles-grid">
-      {articles.map(article => (
+      {articles.map((article) => (
         <sl-card class="card-overview">
           <strong>{article.data.title}</strong><br />
           {article.data.description}
 
           <div slot="footer">
-            <sl-button class="article-button" pill href={`/articles/${getSlugFromId(article.id)}/`}>
-              Read article
+            <sl-button class="article-button" pill href={`/${lang}/articles/${getSlugFromId(article.id)}/`}>
+              {messages.pages.articleRead}
             </sl-button>
           </div>
         </sl-card>
       ))}
     </div>
   ) : (
-    <p class="empty-state">
-      No articles found in <code>src/data/articles</code>.
-    </p>
+    <p class="empty-state">{messages.pages.articlesEmpty}</p>
   )}
 </Layout>
 

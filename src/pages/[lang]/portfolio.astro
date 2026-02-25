@@ -1,25 +1,33 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
+import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/ui';
 
-const portfolio = await getCollection('portfolio')
+export async function getStaticPaths() {
+  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const messages = t(lang);
+const portfolio = await getCollection('portfolio');
 ---
 
-<Layout title="Portfolio">
+<Layout title={messages.pages.portfolioTitle} lang={lang}>
   <div class="portfolio-grid">
-    {portfolio.map(portfolio => (
+    {portfolio.map((project) => (
       <sl-card class="card-overview">
         <img
           slot="image"
           src="https://images.unsplash.com/photo-1559209172-0ff8f6d49ff7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
-          alt="A kitten sits patiently between a terracotta pot and decorative grasses."
+          alt="Project visual"
         />
 
-        <strong>{portfolio.data.title}</strong><br />
-        {portfolio.data.description}
+        <strong>{project.data.title}</strong><br />
+        {project.data.description}
 
         <div slot="footer">
-          <sl-button class="portfolio-button" pill>Visit me</sl-button>
+          <sl-button class="portfolio-button" pill href={project.data.url} target="_blank">Visit</sl-button>
         </div>
       </sl-card>
     ))}
@@ -28,13 +36,13 @@ const portfolio = await getCollection('portfolio')
 
 <style>
   .portfolio-grid {
+    width: min(980px, 100%);
     display: grid;
     grid-template-columns: 1fr 1fr;
-    column-gap: 3rem;
-    row-gap: 2rem;
+    column-gap: 1rem;
+    row-gap: 1rem;
   }
   .card-overview {
-    max-width: 350px;
     --border-color: var(--color-secondary-background);
     --border-width: 1px;
     --border-radius: 20px;
@@ -58,5 +66,11 @@ const portfolio = await getCollection('portfolio')
     display: flex;
     justify-content: center;
     align-items: center;
+  }
+
+  @media (max-width: 850px) {
+    .portfolio-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

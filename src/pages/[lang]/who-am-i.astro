@@ -1,38 +1,44 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from '../../layouts/Layout.astro';
+import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const messages = t(lang);
 ---
 
-<Layout title="Who am I?">
+<Layout title={messages.pages.whoTitle} lang={lang}>
   <section class="about">
-    <p class="eyebrow">SOFTWARE ENGINEER</p>
-    <h2>I build digital products that are elegant for users and reliable for teams.</h2>
-    <p class="summary">
-      I focus on turning ideas into production-ready software with clean architecture,
-      thoughtful UX, and maintainable delivery practices.
-    </p>
+    <p class="eyebrow">{messages.pages.who.eyebrow}</p>
+    <h2>{messages.pages.who.title}</h2>
+    <p class="summary">{messages.pages.who.summary}</p>
 
     <div class="pillars">
       <article class="pillar">
         <sl-icon class="pillar-icon" name="layer-group" library="fa"></sl-icon>
-        <h3>Systems Thinking</h3>
-        <p>From frontend to backend, I design solutions that scale with product growth.</p>
+        <h3>{messages.pages.who.pillar1Title}</h3>
+        <p>{messages.pages.who.pillar1Body}</p>
       </article>
       <article class="pillar">
         <sl-icon class="pillar-icon" name="people-carry" library="fa"></sl-icon>
-        <h3>Team Collaboration</h3>
-        <p>I value clear communication, shared standards, and smooth handoffs.</p>
+        <h3>{messages.pages.who.pillar2Title}</h3>
+        <p>{messages.pages.who.pillar2Body}</p>
       </article>
       <article class="pillar">
         <sl-icon class="pillar-icon" name="rocket" library="fa"></sl-icon>
-        <h3>Execution Quality</h3>
-        <p>I care about shipping fast without sacrificing correctness and clarity.</p>
+        <h3>{messages.pages.who.pillar3Title}</h3>
+        <p>{messages.pages.who.pillar3Body}</p>
       </article>
     </div>
 
     <div class="principles">
-      <span>Pragmatic</span>
-      <span>Product-oriented</span>
-      <span>Continuous learner</span>
+      <span>{messages.pages.who.principle1}</span>
+      <span>{messages.pages.who.principle2}</span>
+      <span>{messages.pages.who.principle3}</span>
     </div>
   </section>
 </Layout>

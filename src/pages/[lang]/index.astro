@@ -1,0 +1,129 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const messages = t(lang);
+---
+
+<Layout lang={lang}>
+  <section class="home">
+    <p class="eyebrow">{messages.pages.home.eyebrow}</p>
+    <h2>{messages.pages.home.title}</h2>
+    <p class="intro">{messages.pages.home.intro}</p>
+
+    <div class="focus-grid">
+      <article class="focus-card">
+        <sl-icon class="focus-icon" name="laptop-code" library="fa"></sl-icon>
+        <h3>{messages.pages.home.card1Title}</h3>
+        <p>{messages.pages.home.card1Body}</p>
+      </article>
+      <article class="focus-card">
+        <sl-icon class="focus-icon" name="server" library="fa"></sl-icon>
+        <h3>{messages.pages.home.card2Title}</h3>
+        <p>{messages.pages.home.card2Body}</p>
+      </article>
+      <article class="focus-card">
+        <sl-icon class="focus-icon" name="code-branch" library="fa"></sl-icon>
+        <h3>{messages.pages.home.card3Title}</h3>
+        <p>{messages.pages.home.card3Body}</p>
+      </article>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .home {
+    width: min(1100px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 1rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    font-size: .8rem;
+    letter-spacing: .24em;
+    color: var(--color-text-accent);
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.8rem, 3vw, 3rem);
+    max-width: 16ch;
+    line-height: 1.1;
+    color: var(--color-text-main);
+  }
+
+  .intro {
+    margin: 0;
+    max-width: 62ch;
+    font-size: clamp(.95rem, 1.2vw, 1.08rem);
+    line-height: 1.5;
+    color: var(--color-text-gray);
+  }
+
+  .focus-grid {
+    width: 100%;
+    margin-top: .3rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .8rem;
+  }
+
+  .focus-card {
+    background: linear-gradient(145deg, #303030, #262626);
+    border: 1px solid #3b3b3b;
+    border-radius: 14px;
+    padding: .9rem .8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .45rem;
+  }
+
+  .focus-icon {
+    font-size: 1.6rem;
+    color: var(--color-golden);
+  }
+
+  .focus-card h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: var(--color-text-secondary);
+  }
+
+  .focus-card p {
+    margin: 0;
+    font-size: .9rem;
+    line-height: 1.35;
+    color: var(--color-text-gray);
+  }
+
+  @media (max-width: 900px) {
+    .focus-grid {
+      grid-template-columns: 1fr;
+      gap: .55rem;
+    }
+    h2 {
+      font-size: clamp(1.45rem, 6.2vw, 2rem);
+      max-width: 20ch;
+    }
+    .intro {
+      font-size: .9rem;
+      line-height: 1.35;
+      max-width: 46ch;
+    }
+    .home {
+      gap: .7rem;
+    }
+  }
+</style>

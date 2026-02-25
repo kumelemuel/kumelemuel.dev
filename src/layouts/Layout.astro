@@ -4,13 +4,15 @@ import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 import { ClientRouter } from "astro:transitions";
 import { fade } from "astro:transitions";
+import { DEFAULT_LANG, isLang } from "../i18n/config";
 
 
-const { title } = Astro.props;
+const { title, lang: requestedLang } = Astro.props;
+const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -41,12 +43,12 @@ const { title } = Astro.props;
 	</head>
 	<body>
 		<div class="app-shell">
-			<Header></Header>
+			<Header lang={lang}></Header>
 			<main transition:animate={fade({ duration: "0.7s" })}>
 				{title && <h1 class="page-title">{title}</h1>}
 				<slot />
 			</main>
-			<Footer />
+			<Footer lang={lang} />
 		</div>
 	</body>
 </html>

@@ -1,13 +1,23 @@
+---
+import { DEFAULT_LANG, type Lang, isLang } from "../i18n/config";
+import { t } from "../i18n/ui";
+
+const requestedLang = Astro.props.lang as Lang | undefined;
+const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
+const messages = t(lang);
+const basePath = `/${lang}`;
+---
+
 <footer>
   <div class="footer-content">
     <nav>
       <ul>
-        <li><a href="/privacy">Privacy Policy</a></li>
-        <li><a href="/terms">Terms of Service</a></li>
-        <li><a href="/contact">Contact Us</a></li>
+        <li><a href={`${basePath}/privacy`}>{messages.footer.privacy}</a></li>
+        <li><a href={`${basePath}/terms`}>{messages.footer.terms}</a></li>
+        <li><a href={`${basePath}/contact`}>{messages.footer.contact}</a></li>
       </ul>
     </nav>
-    <div>&copy; 2025 Kumelemuel.dev. All rights reserved.</div>
+    <div>&copy; 2026 Kumelemuel.dev. {messages.footer.rights}</div>
   </div>
 </footer>
 <style>

@@ -1,25 +1,52 @@
 ---
+import { DEFAULT_LANG, SUPPORTED_LANGS, type Lang, isLang } from "../i18n/config";
+import { t } from "../i18n/ui";
+
+const requestedLang = Astro.props.lang as Lang | undefined;
+const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
+const messages = t(lang);
+
+const basePath = `/${lang}`;
 const menu = [
-  { name: 'Home', path: '/' },
-  { name: 'Who am I?', path: '/who-am-i' },
-  { name: 'Portfolio', path: '/portfolio' },
-  { name: 'Articles', path: '/articles' },
-  { name: 'Contact', path: '/contact' },
+  { name: messages.header.home, path: `${basePath}/` },
+  { name: messages.header.who, path: `${basePath}/who-am-i` },
+  { name: messages.header.portfolio, path: `${basePath}/portfolio` },
+  { name: messages.header.articles, path: `${basePath}/articles` },
+  { name: messages.header.contact, path: `${basePath}/contact` },
 ];
+
 const pathname = new URL(Astro.request.url).pathname;
+const cleanPathname = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
 
 const isActive = (path: string) => {
-  return pathname === path ? 'active' : '';
+  const cleanPath = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
+  return cleanPathname === cleanPath || cleanPathname.startsWith(`${cleanPath}/`);
 };
 
+const localizedPath = (targetLang: Lang) => {
+  const segments = pathname.split("/").filter(Boolean);
+  const remainingSegments = isLang(segments[0]) ? segments.slice(1) : segments;
+  return `/${targetLang}/${remainingSegments.join("/")}`.replace(/\/$/, "") + "/";
+};
 ---
 
 <header>
   <span class="brand">kumelemuel.dev</span>
   <nav>
-    {menu.map(menu => (
-      <a href={menu.path} class={isActive(menu.path) ? 'active' : ''}>{menu.name}</a>
+    {menu.map((item) => (
+      <a href={item.path} class={isActive(item.path) ? "active" : ""}>{item.name}</a>
     ))}
+    <div class="lang-switcher">
+      {SUPPORTED_LANGS.map((currentLang) => (
+        <a
+          href={localizedPath(currentLang)}
+          class={currentLang === lang ? "active-lang" : ""}
+          aria-label={`Switch language to ${currentLang.toUpperCase()}`}
+        >
+          {currentLang.toUpperCase()}
+        </a>
+      ))}
+    </div>
   </nav>
 </header>
 <style>
@@ -44,7 +71,7 @@ const isActive = (path: string) => {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 2rem;
+    gap: 1.6rem;
   }
   a {
     color: var(--color-text-secondary);
@@ -59,14 +86,29 @@ const isActive = (path: string) => {
     text-decoration: none;
     color: var(--color-text-accent);
   }
+  .lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    margin-left: .3rem;
+    padding-left: .8rem;
+    border-left: 1px solid var(--color-gray-strong);
+  }
+  .active-lang {
+    color: var(--color-text-accent);
+    font-weight: bold;
+  }
   @media (max-width: 600px) {
     nav {
-      gap: .8rem;
+      gap: .75rem;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
     header {
       padding: .7rem 1rem;
+    }
+    .lang-switcher {
+      padding-left: .5rem;
     }
   }
 </style>

@@ -1,0 +1,41 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/ui';
+
+export async function getStaticPaths() {
+  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+}
+
+const lang = Astro.params.lang as Lang;
+const messages = t(lang);
+---
+<Layout title={messages.pages.contactTitle} lang={lang}>
+  <form action="https://formspree.io/f/xjvjlqzj" method="POST">
+    <sl-input name="name" label={messages.pages.contactName} required></sl-input>
+    <sl-input name="email" label={messages.pages.contactEmail} required></sl-input>
+    <sl-textarea name="message" label={messages.pages.contactMessage} required></sl-textarea>
+    <sl-button type="submit" size="medium" class="contact-button">{messages.pages.contactSend}</sl-button>
+  </form>
+</Layout>
+
+<style>
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    width: min(500px, 100%);
+  }
+
+  .contact-button::part(base) {
+    width: 100%; 
+    margin-bottom: 1rem;
+    background-color: var(--color-text-accent);
+    color: var(--color-text-secondary);
+    border: 0;
+  }
+
+  .contact-button::part(base):hover {
+    background-color: var(--color-text-accent-strong);
+  }
+</style>
