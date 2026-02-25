@@ -1,0 +1,78 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+const getSlugFromId = (id: string) => id.replace(/\.md$/, '');
+---
+
+<Layout title="Articles">
+  {articles.length > 0 ? (
+    <div class="articles-grid">
+      {articles.map(article => (
+        <sl-card class="card-overview">
+          <strong>{article.data.title}</strong><br />
+          {article.data.description}
+
+          <div slot="footer">
+            <sl-button class="article-button" pill href={`/articles/${getSlugFromId(article.id)}/`}>
+              Read article
+            </sl-button>
+          </div>
+        </sl-card>
+      ))}
+    </div>
+  ) : (
+    <p class="empty-state">
+      No articles found in <code>src/data/articles</code>.
+    </p>
+  )}
+</Layout>
+
+<style>
+  .articles-grid {
+    width: min(900px, 100%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1rem;
+    row-gap: 1rem;
+  }
+
+  .card-overview {
+    --border-color: var(--color-background-secondary);
+    --border-width: 1px;
+    --border-radius: 16px;
+  }
+
+  .card-overview::part(base) {
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-secondary);
+  }
+
+  .article-button::part(base) {
+    background-color: var(--color-text-accent);
+    color: var(--color-text-secondary);
+    border: 0;
+  }
+
+  .article-button::part(base):hover {
+    background-color: var(--color-text-accent-strong);
+  }
+
+  .card-overview [slot='footer'] {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+  }
+
+  .empty-state {
+    margin: 0;
+    color: var(--color-text-gray);
+  }
+
+  @media (max-width: 850px) {
+    .articles-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

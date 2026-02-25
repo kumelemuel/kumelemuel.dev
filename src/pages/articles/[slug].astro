@@ -1,0 +1,53 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+
+  return articles.map((article) => ({
+    params: { slug: article.id.replace(/\.md$/, '') },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+---
+
+<Layout title={article.data.title}>
+  <article class="article">
+    <p class="description">{article.data.description}</p>
+    <div class="article-body">
+      <Content />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .article {
+    width: min(800px, 100%);
+    background-color: var(--color-background-secondary);
+    border: 1px solid var(--color-gray-strong);
+    border-radius: 16px;
+    padding: 1.2rem;
+    box-sizing: border-box;
+  }
+
+  .description {
+    margin: 0 0 .9rem;
+    color: var(--color-text-gray);
+    font-size: .95rem;
+    line-height: 1.45;
+  }
+
+  .article-body {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    font-size: 1rem;
+  }
+
+  .article-body :global(p) {
+    margin: 0 0 .8rem;
+  }
+</style>

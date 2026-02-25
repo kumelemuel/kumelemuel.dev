@@ -3,10 +3,141 @@ import Layout from '../layouts/Layout.astro';
 ---
 
 <Layout title="Who am I?">
-	<p>
-		I am a software engineer with a passion for creating innovative solutions to complex problems. I have experience in various programming languages and frameworks, and I enjoy learning new technologies.
-	</p>
-	<p>
-		In my free time, I love to explore the outdoors, read books, and spend time with my family and friends.
-	</p>
+  <section class="about">
+    <p class="eyebrow">SOFTWARE ENGINEER</p>
+    <h2>I build digital products that are elegant for users and reliable for teams.</h2>
+    <p class="summary">
+      I focus on turning ideas into production-ready software with clean architecture,
+      thoughtful UX, and maintainable delivery practices.
+    </p>
+
+    <div class="pillars">
+      <article class="pillar">
+        <sl-icon class="pillar-icon" name="layer-group" library="fa"></sl-icon>
+        <h3>Systems Thinking</h3>
+        <p>From frontend to backend, I design solutions that scale with product growth.</p>
+      </article>
+      <article class="pillar">
+        <sl-icon class="pillar-icon" name="people-carry" library="fa"></sl-icon>
+        <h3>Team Collaboration</h3>
+        <p>I value clear communication, shared standards, and smooth handoffs.</p>
+      </article>
+      <article class="pillar">
+        <sl-icon class="pillar-icon" name="rocket" library="fa"></sl-icon>
+        <h3>Execution Quality</h3>
+        <p>I care about shipping fast without sacrificing correctness and clarity.</p>
+      </article>
+    </div>
+
+    <div class="principles">
+      <span>Pragmatic</span>
+      <span>Product-oriented</span>
+      <span>Continuous learner</span>
+    </div>
+  </section>
 </Layout>
+
+<style>
+  .about {
+    width: min(980px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: .9rem;
+  }
+
+  .eyebrow {
+    margin: 0;
+    color: var(--color-text-accent);
+    font-size: .78rem;
+    letter-spacing: .22em;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(1.7rem, 3vw, 2.6rem);
+    max-width: 24ch;
+    line-height: 1.12;
+    color: var(--color-text-main);
+  }
+
+  .summary {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--color-text-gray);
+    line-height: 1.5;
+    font-size: clamp(.93rem, 1.1vw, 1.02rem);
+  }
+
+  .pillars {
+    margin-top: .35rem;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: .8rem;
+  }
+
+  .pillar {
+    background: linear-gradient(145deg, #303030, #262626);
+    border: 1px solid #3a3a3a;
+    border-radius: 14px;
+    padding: .9rem .8rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .4rem;
+  }
+
+  .pillar-icon {
+    font-size: 1.45rem;
+    color: var(--color-golden);
+  }
+
+  .pillar h3 {
+    margin: 0;
+    font-size: .98rem;
+    color: var(--color-text-secondary);
+  }
+
+  .pillar p {
+    margin: 0;
+    color: var(--color-text-gray);
+    font-size: .89rem;
+    line-height: 1.35;
+  }
+
+  .principles {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .45rem;
+  }
+
+  .principles span {
+    border: 1px solid var(--color-gray-strong);
+    color: var(--color-text-secondary);
+    padding: .28rem .7rem;
+    border-radius: 999px;
+    font-size: .78rem;
+    background-color: var(--color-background-secondary);
+  }
+
+  @media (max-width: 900px) {
+    .pillars {
+      grid-template-columns: 1fr;
+      gap: .55rem;
+    }
+    h2 {
+      font-size: clamp(1.35rem, 5.8vw, 2rem);
+    }
+    .summary {
+      font-size: .9rem;
+      line-height: 1.35;
+    }
+    .about {
+      gap: .7rem;
+    }
+  }
+</style>

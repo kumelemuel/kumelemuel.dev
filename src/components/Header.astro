@@ -3,6 +3,7 @@ const menu = [
   { name: 'Home', path: '/' },
   { name: 'Who am I?', path: '/who-am-i' },
   { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Articles', path: '/articles' },
   { name: 'Contact', path: '/contact' },
 ];
 const pathname = new URL(Astro.request.url).pathname;
@@ -14,7 +15,7 @@ const isActive = (path: string) => {
 ---
 
 <header>
-  <span>kumelemuel.dev</span>
+  <span class="brand">kumelemuel.dev</span>
   <nav>
     {menu.map(menu => (
       <a href={menu.path} class={isActive(menu.path) ? 'active' : ''}>{menu.name}</a>
@@ -22,25 +23,28 @@ const isActive = (path: string) => {
   </nav>
 </header>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
+
   header {
-    font-family: 'AppleGaramond', serif;
-    font-size: 1.2rem;
+    font-family: 'Sawarabi Mincho', serif;
+    font-size: clamp(.95rem, 1.25vw, 1.15rem);
     background-color: var(--color-background-secondary);
     color: var(--color-text-secondary);
-    padding: 1rem 2rem;
+    padding: .9rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: sticky;
-    top: 0;
     z-index: 1000;
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+  }
+  .brand {
+    font-weight: 900;
   }
   nav {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 3rem;
+    gap: 2rem;
   }
   a {
     color: var(--color-text-secondary);
@@ -57,7 +61,12 @@ const isActive = (path: string) => {
   }
   @media (max-width: 600px) {
     nav {
-      flex-direction: column;
+      gap: .8rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    header {
+      padding: .7rem 1rem;
     }
   }
 </style>
