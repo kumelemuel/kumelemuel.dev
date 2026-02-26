@@ -19,17 +19,17 @@ const messages = t(lang);
 
     <div class="focus-grid">
       <article class="focus-card">
-        <sl-icon class="focus-icon" name="laptop-code" library="fa"></sl-icon>
+        <sl-icon class="focus-icon" name="fas-pencil-ruler" library="fa"></sl-icon>
         <h3>{messages.pages.home.card1Title}</h3>
         <p>{messages.pages.home.card1Body}</p>
       </article>
       <article class="focus-card">
-        <sl-icon class="focus-icon" name="server" library="fa"></sl-icon>
+        <sl-icon class="focus-icon" name="fas-globe" library="fa"></sl-icon>
         <h3>{messages.pages.home.card2Title}</h3>
         <p>{messages.pages.home.card2Body}</p>
       </article>
       <article class="focus-card">
-        <sl-icon class="focus-icon" name="code-branch" library="fa"></sl-icon>
+        <sl-icon class="focus-icon" name="fas-users" library="fa"></sl-icon>
         <h3>{messages.pages.home.card3Title}</h3>
         <p>{messages.pages.home.card3Body}</p>
       </article>
@@ -45,20 +45,21 @@ const messages = t(lang);
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 1rem;
+    gap: 2rem;
   }
 
   .eyebrow {
     margin: 0;
-    font-size: .8rem;
+    font-size: 1.2rem;
     letter-spacing: .24em;
+    font-weight: 700;
     color: var(--color-text-accent);
   }
 
   h2 {
     margin: 0;
     font-size: clamp(1.8rem, 3vw, 3rem);
-    max-width: 16ch;
+    max-width: 36ch;
     line-height: 1.1;
     color: var(--color-text-main);
   }
@@ -73,7 +74,7 @@ const messages = t(lang);
 
   .focus-grid {
     width: 100%;
-    margin-top: .3rem;
+    margin-top: 1.3rem;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: .8rem;
@@ -83,16 +84,18 @@ const messages = t(lang);
     background: linear-gradient(145deg, #303030, #262626);
     border: 1px solid #3b3b3b;
     border-radius: 14px;
-    padding: .9rem .8rem;
+    padding: 1.5rem .8rem;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;
     gap: .45rem;
+    text-align: center;
   }
 
   .focus-icon {
     font-size: 1.6rem;
-    color: var(--color-golden);
+    color: var(--color-text-main);
   }
 
   .focus-card h3 {

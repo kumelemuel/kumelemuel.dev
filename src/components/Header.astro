@@ -20,6 +20,9 @@ const cleanPathname = pathname.endsWith("/") && pathname !== "/" ? pathname.slic
 
 const isActive = (path: string) => {
   const cleanPath = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
+  if (cleanPath === `/${lang}`) {
+    return cleanPathname === cleanPath;
+  }
   return cleanPathname === cleanPath || cleanPathname.startsWith(`${cleanPath}/`);
 };
 
@@ -50,14 +53,15 @@ const localizedPath = (targetLang: Lang) => {
   </nav>
 </header>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Sawarabi+Mincho&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Sawarabi+Mincho&display=swap');
 
   header {
-    font-family: 'Sawarabi Mincho', serif;
-    font-size: clamp(.95rem, 1.25vw, 1.15rem);
+    font-family: 'Noto Sans JP', sans-serif;
+    font-size: clamp(.9rem, 1.08vw, 1.02rem);
+    font-weight: 300;
     background-color: var(--color-background-secondary);
     color: var(--color-text-secondary);
-    padding: .9rem 2rem;
+    padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -65,6 +69,8 @@ const localizedPath = (targetLang: Lang) => {
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   }
   .brand {
+    font-family: 'Sawarabi Mincho', serif;
+    font-size: 1.18em;
     font-weight: 900;
   }
   nav {
@@ -74,6 +80,7 @@ const localizedPath = (targetLang: Lang) => {
     gap: 1.6rem;
   }
   a {
+    font-size: .95em;
     color: var(--color-text-secondary);
     text-decoration: none;
   }

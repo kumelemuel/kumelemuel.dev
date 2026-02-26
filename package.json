@@ -9,6 +9,7 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@shoelace-style/shoelace": "^2.20.1",
     "astro": "5.15.9",
     "resend": "^4.5.1"
   }

@@ -12,138 +12,24 @@ const messages = t(lang);
 ---
 
 <Layout title={messages.pages.whoTitle} lang={lang}>
-  <section class="about">
-    <p class="eyebrow">{messages.pages.who.eyebrow}</p>
-    <h2>{messages.pages.who.title}</h2>
-    <p class="summary">{messages.pages.who.summary}</p>
-
-    <div class="pillars">
-      <article class="pillar">
-        <sl-icon class="pillar-icon" name="layer-group" library="fa"></sl-icon>
-        <h3>{messages.pages.who.pillar1Title}</h3>
-        <p>{messages.pages.who.pillar1Body}</p>
-      </article>
-      <article class="pillar">
-        <sl-icon class="pillar-icon" name="people-carry" library="fa"></sl-icon>
-        <h3>{messages.pages.who.pillar2Title}</h3>
-        <p>{messages.pages.who.pillar2Body}</p>
-      </article>
-      <article class="pillar">
-        <sl-icon class="pillar-icon" name="rocket" library="fa"></sl-icon>
-        <h3>{messages.pages.who.pillar3Title}</h3>
-        <p>{messages.pages.who.pillar3Body}</p>
-      </article>
-    </div>
-
-    <div class="principles">
-      <span>{messages.pages.who.principle1}</span>
-      <span>{messages.pages.who.principle2}</span>
-      <span>{messages.pages.who.principle3}</span>
-    </div>
+  <section class="bio-wrapper">
+    <p class="bio-text" set:html={messages.pages.whoBiography} />
   </section>
 </Layout>
 
 <style>
-  .about {
-    width: min(980px, 100%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: .9rem;
-  }
-
-  .eyebrow {
-    margin: 0;
-    color: var(--color-text-accent);
-    font-size: .78rem;
-    letter-spacing: .22em;
-  }
-
-  h2 {
-    margin: 0;
-    font-size: clamp(1.7rem, 3vw, 2.6rem);
-    max-width: 24ch;
-    line-height: 1.12;
-    color: var(--color-text-main);
-  }
-
-  .summary {
-    margin: 0;
-    max-width: 62ch;
-    color: var(--color-text-gray);
-    line-height: 1.5;
-    font-size: clamp(.93rem, 1.1vw, 1.02rem);
-  }
-
-  .pillars {
-    margin-top: .35rem;
-    width: 100%;
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: .8rem;
-  }
-
-  .pillar {
-    background: linear-gradient(145deg, #303030, #262626);
-    border: 1px solid #3a3a3a;
-    border-radius: 14px;
-    padding: .9rem .8rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: .4rem;
-  }
-
-  .pillar-icon {
-    font-size: 1.45rem;
-    color: var(--color-golden);
-  }
-
-  .pillar h3 {
-    margin: 0;
-    font-size: .98rem;
-    color: var(--color-text-secondary);
-  }
-
-  .pillar p {
-    margin: 0;
-    color: var(--color-text-gray);
-    font-size: .89rem;
-    line-height: 1.35;
-  }
-
-  .principles {
-    width: 100%;
+  .bio-wrapper {
+    width: min(990px, 100%);
     display: flex;
     justify-content: center;
-    flex-wrap: wrap;
-    gap: .45rem;
+    align-items: center;
   }
 
-  .principles span {
-    border: 1px solid var(--color-gray-strong);
+  .bio-text {
+    margin: 1rem 0 0;
     color: var(--color-text-secondary);
-    padding: .28rem .7rem;
-    border-radius: 999px;
-    font-size: .78rem;
-    background-color: var(--color-background-secondary);
-  }
-
-  @media (max-width: 900px) {
-    .pillars {
-      grid-template-columns: 1fr;
-      gap: .55rem;
-    }
-    h2 {
-      font-size: clamp(1.35rem, 5.8vw, 2rem);
-    }
-    .summary {
-      font-size: .9rem;
-      line-height: 1.35;
-    }
-    .about {
-      gap: .7rem;
-    }
+    line-height: 1.4;
+    font-size: clamp(.95rem, 1.1vw, 1.05rem);
+    text-align: center;
   }
 </style>
