@@ -22,6 +22,8 @@ type Messages = {
     articlesTitle: string;
     articleRead: string;
     articlesEmpty: string;
+    articlePublished: string;
+    articleTags: string;
     contactName: string;
     contactEmail: string;
     contactMessage: string;
@@ -78,6 +80,8 @@ export const ui: Record<Lang, Messages> = {
       articlesTitle: "Artículos",
       articleRead: "Leer artículo",
       articlesEmpty: "No se encontraron artículos en src/data/articles.",
+      articlePublished: "Publicado",
+      articleTags: "Tags",
       contactName: "Nombre",
       contactEmail: "Correo",
       contactMessage: "Mensaje",
@@ -134,6 +138,8 @@ export const ui: Record<Lang, Messages> = {
       articlesTitle: "Articles",
       articleRead: "Read article",
       articlesEmpty: "No articles found in src/data/articles.",
+      articlePublished: "Published",
+      articleTags: "Tags",
       contactName: "Name",
       contactEmail: "E-mail",
       contactMessage: "Message",

@@ -15,6 +15,8 @@ const articles = defineCollection({
   schema: z.object({
     title: z.string(),
     description: z.string(),
+    publishedAt: z.coerce.date(),
+    tags: z.array(z.string()).min(1),
     url: z.string().optional(),
   }),
 });
