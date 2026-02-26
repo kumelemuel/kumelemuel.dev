@@ -16,6 +16,7 @@ type Messages = {
   };
   pages: {
     whoTitle: string;
+    whoBiography: string;
     portfolioTitle: string;
     contactTitle: string;
     articlesTitle: string;
@@ -70,6 +71,8 @@ export const ui: Record<Lang, Messages> = {
     },
     pages: {
       whoTitle: "Quién soy",
+      whoBiography:
+        "Soy Diego Arenas, ingeniero de software.<br><br>Mi trabajo profesional se desarrolla dentro de organizaciones privadas, donde diseño e implemento soluciones bajo objetivos, restricciones y marcos ya establecidos. Ese ejercicio me ha dado disciplina técnica, criterio arquitectónico y una comprensión práctica de cómo los sistemas evolucionan bajo presión real.<br><br>Kumelemuel nace de una necesidad distinta. No es un alter ego ni una ruptura, sino un espacio de autonomía. Es la dimensión donde puedo explorar el software sin condicionamientos externos, definiendo no solo la implementación, sino también los principios que la sostienen.<br><br>Con el tiempo entendí que el código no es únicamente una herramienta técnica. Es un mecanismo que formaliza reglas, incentivos y dinámicas de interacción. Cada decisión arquitectónica —desde un modelo de dominio hasta una regla de acceso— influye en el comportamiento de las personas que habitan el sistema. La tecnología no es neutral; siempre estructura posibilidades.<br><br>Kumelemuel es el lugar donde asumo esa responsabilidad de forma explícita. Aquí trabajo en proyectos open source, experimento con modelos de gobernanza digital y diseño sistemas que integran lo técnico y lo humano como un todo coherente.<br><br>No busco producir más software.<br>Busco diseñar sistemas que puedan sostenerse, evolucionar y aportar al bien común sin perder claridad ni intención.<br><br>Ese es el punto de encuentro entre el oficio y la conciencia.",
       portfolioTitle: "Portafolio",
       contactTitle: "Contacto",
       articlesTitle: "Artículos",
@@ -80,19 +83,19 @@ export const ui: Record<Lang, Messages> = {
       contactMessage: "Mensaje",
       contactSend: "Enviar",
       home: {
-        eyebrow: "INGENIERO DE SOFTWARE",
-        title: "Construyo experiencias digitales robustas, rápidas y con impacto real.",
+        eyebrow: "ARTESANO DEL SOFTWARE",
+        title: "Construyo software con criterio, estructura y sentido humano.",
         intro:
-          "Transformo ideas de producto en software mantenible con arquitectura clara, frontend cuidado y backend escalable.",
-        card1Title: "Product Engineering",
-        card1Body: "De la idea al release: enfoque en calidad, velocidad y resultados.",
-        card2Title: "Backend y APIs",
-        card2Body: "Servicios sólidos, contratos claros y observabilidad desde el inicio.",
-        card3Title: "Entrega Limpia",
-        card3Body: "Flujos de trabajo limpios, testing útil y despliegue continuo.",
+          "Entiendo el software como oficio y como herramienta cultural. Desarrollo proyectos que buscan aportar al bien común, fortaleciendo lo humano, lo social y las estructuras que sostienen una convivencia más justa.",
+        card1Title: "Oficio",
+        card1Body: "El software como artesanía: disciplina, criterio y mejora continua.",
+        card2Title: "Holistico",
+        card2Body: "Concibo cada solución como un todo, integrando lo técnico y lo humano desde el diseño.",
+        card3Title: "Propósito",
+        card3Body: "Tecnología al servicio de lo humano y lo colectivo.",
       },
       who: {
-        eyebrow: "INGENIERO DE SOFTWARE",
+        eyebrow: "ARTESANO DEL SOFTWARE",
         title: "Construyo productos digitales elegantes para usuarios y confiables para equipos.",
         summary:
           "Me enfoco en convertir ideas en software listo para producción con arquitectura limpia, UX cuidada y prácticas de entrega mantenibles.",
@@ -124,6 +127,8 @@ export const ui: Record<Lang, Messages> = {
     },
     pages: {
       whoTitle: "Who am I?",
+      whoBiography:
+        "I am Diego Arenas, a software engineer.<br><br>My professional work takes place within private organizations, where I design and implement solutions under established goals, constraints, and frameworks. That practice has given me technical discipline, architectural judgment, and a practical understanding of how systems evolve under real pressure.<br><br>Kumelemuel is born from a different need. It is not an alter ego or a rupture, but a space of autonomy. It is the dimension where I can explore software without external conditioning, defining not only the implementation, but also the principles that sustain it.<br><br>Over time, I understood that code is not only a technical tool. It is a mechanism that formalizes rules, incentives, and interaction dynamics. Every architectural decision, from a domain model to an access rule, influences the behavior of the people who inhabit the system. Technology is not neutral; it always structures possibilities.<br><br>Kumelemuel is the place where I assume that responsibility explicitly. Here I work on open source projects, experiment with digital governance models, and design systems that integrate the technical and the human as one coherent whole.<br><br>I am not trying to produce more software.<br>I seek to design systems that can be sustained, evolve, and contribute to the common good without losing clarity or intention.<br><br>That is the meeting point between craft and awareness.",
       portfolioTitle: "Portfolio",
       contactTitle: "Contact",
       articlesTitle: "Articles",
@@ -134,28 +139,28 @@ export const ui: Record<Lang, Messages> = {
       contactMessage: "Message",
       contactSend: "Send",
       home: {
-        eyebrow: "SOFTWARE ENGINEER",
-        title: "I build digital experiences that are robust, fast, and meaningful.",
+        eyebrow: "SOFTWARE CRAFTSMAN",
+        title: "I build software with judgment, structure, and human purpose.",
         intro:
-          "I transform product ideas into maintainable software with clean architecture, polished frontend, and scalable backend.",
-        card1Title: "Product Engineering",
-        card1Body: "From idea to release with quality, speed, and measurable outcomes.",
-        card2Title: "Backend & APIs",
-        card2Body: "Reliable services, clear contracts, and observability by default.",
-        card3Title: "Clean Delivery",
-        card3Body: "Clean workflows, useful testing, and frictionless continuous delivery.",
+          "I understand software as a craft and as a cultural tool. I build projects that seek to contribute to the common good, strengthening the human, the social, and the structures that sustain fairer coexistence.",
+        card1Title: "Craft",
+        card1Body: "Software as craftsmanship: discipline, judgment, and continuous improvement.",
+        card2Title: "Holistic",
+        card2Body: "I conceive each solution as a whole, integrating technical and human concerns from design.",
+        card3Title: "Purpose",
+        card3Body: "Technology in service of people and the collective.",
       },
       who: {
-        eyebrow: "SOFTWARE ENGINEER",
+        eyebrow: "SOFTWARE CRAFTSMAN",
         title: "I build digital products that are elegant for users and reliable for teams.",
         summary:
           "I focus on turning ideas into production-ready software with clean architecture, thoughtful UX, and maintainable delivery practices.",
-        pillar1Title: "Systems Thinking",
-        pillar1Body: "From frontend to backend, I design solutions that scale with product growth.",
-        pillar2Title: "Team Collaboration",
+        pillar1Title: "Systems Vision",
+        pillar1Body: "I design frontend-to-backend solutions that scale with product growth.",
+        pillar2Title: "Collaboration",
         pillar2Body: "I value clear communication, shared standards, and smooth handoffs.",
         pillar3Title: "Execution Quality",
-        pillar3Body: "I ship fast without sacrificing correctness or clarity.",
+        pillar3Body: "I aim to ship fast without sacrificing clarity or technical correctness.",
         principle1: "Pragmatic",
         principle2: "Product-oriented",
         principle3: "Continuous learner",
