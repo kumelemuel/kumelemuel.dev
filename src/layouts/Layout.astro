@@ -75,13 +75,15 @@ const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 	main {
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: safe center;
 		align-items: center;
 		min-height: 0;
 		width: 100%;
-		padding: 1rem 2rem;
+		padding: 1.25rem 2rem;
 		box-sizing: border-box;
-		overflow: hidden;
+		overflow-y: auto;
+		overflow-x: hidden;
+		scrollbar-gutter: stable;
 	}
 	.page-title {
 		margin: 0 0 .8rem;

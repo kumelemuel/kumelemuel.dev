@@ -1,19 +1,36 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { t } from '../../i18n/ui';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
 }
 
 const lang = Astro.params.lang as Lang;
-const title = lang === "es" ? "Términos" : "Terms";
-const body =
-  lang === "es"
-    ? "Esta sección se actualizará próximamente con los términos de servicio."
-    : "This section will be updated soon with the terms of service.";
+const messages = t(lang);
 ---
 
-<Layout title={title} lang={lang}>
-  <p>{body}</p>
+<Layout title={messages.pages.terms.title} lang={lang}>
+  <div class="terms-content" set:html={messages.pages.terms.bodyHtml}></div>
 </Layout>
+
+<style>
+  .terms-content {
+    width: min(900px, 100%);
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+  .terms-content :global(h1) {
+    margin: 0 0 1rem;
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+  }
+  .terms-content :global(h2) {
+    margin: 1.1rem 0 .5rem;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+  }
+  .terms-content :global(p),
+  .terms-content :global(ul) {
+    margin: 0 0 .65rem;
+  }
+</style>

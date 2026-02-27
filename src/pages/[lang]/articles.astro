@@ -21,27 +21,27 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
 });
 ---
 
-<Layout title={messages.pages.articlesTitle} lang={lang}>
+<Layout title={messages.pages.articles.title} lang={lang}>
   {articles.length > 0 ? (
     <div class="articles-grid">
       {articles.map((article) => (
         <sl-card class="card-overview">
           <p class="meta-line">
-            <span>{messages.pages.articlePublished}: {dateFormatter.format(article.data.publishedAt)}</span>
-            <span>{messages.pages.articleTags}: {article.data.tags.join(' · ')}</span>
+            <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>
+            <span>{messages.pages.articles.tags}: {article.data.tags.join(' · ')}</span>
           </p>
           <strong class="article-title">{article.data.title}</strong>
           <div class="article-row">
             <p class="article-description">{article.data.description}</p>
             <sl-button class="article-button" pill href={`/${lang}/articles/${getSlugFromId(article.id)}/`}>
-              {messages.pages.articleRead}
+              {messages.pages.articles.read}
             </sl-button>
           </div>
         </sl-card>
       ))}
     </div>
   ) : (
-    <p class="empty-state">{messages.pages.articlesEmpty}</p>
+    <p class="empty-state">{messages.pages.articles.empty}</p>
   )}
 </Layout>
 

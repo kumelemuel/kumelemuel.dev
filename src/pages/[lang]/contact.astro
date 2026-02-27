@@ -10,9 +10,9 @@ export async function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
-<Layout title={messages.pages.contactTitle} lang={lang}>
+<Layout title={messages.pages.contact.title} lang={lang}>
   <section class="contact-wrapper">
-    <p class="contact-intro">{messages.pages.contactIntro}</p>
+    <p class="contact-intro">{messages.pages.contact.intro}</p>
 
     <form
       class="contact-form"
@@ -21,8 +21,8 @@ const messages = t(lang);
     >
       <sl-input
         name="name"
-        label={messages.pages.contactName}
-        placeholder={messages.pages.contactNamePlaceholder}
+        label={messages.pages.contact.name}
+        placeholder={messages.pages.contact.namePlaceholder}
         autocomplete="name"
         required
       ></sl-input>
@@ -30,8 +30,8 @@ const messages = t(lang);
       <sl-input
         name="email"
         type="email"
-        label={messages.pages.contactEmail}
-        placeholder={messages.pages.contactEmailPlaceholder}
+        label={messages.pages.contact.email}
+        placeholder={messages.pages.contact.emailPlaceholder}
         autocomplete="email"
         required
       ></sl-input>
@@ -39,21 +39,21 @@ const messages = t(lang);
       <sl-input
         name="phone"
         type="tel"
-        label={messages.pages.contactPhone}
-        placeholder={messages.pages.contactPhonePlaceholder}
-        help-text={messages.pages.contactPhoneHelp}
+        label={messages.pages.contact.phone}
+        placeholder={messages.pages.contact.phonePlaceholder}
+        help-text={messages.pages.contact.phoneHelp}
         autocomplete="tel"
       ></sl-input>
 
       <sl-textarea
         name="message"
-        label={messages.pages.contactMessage}
-        placeholder={messages.pages.contactMessagePlaceholder}
+        label={messages.pages.contact.message}
+        placeholder={messages.pages.contact.messagePlaceholder}
         rows="5"
         required
       ></sl-textarea>
 
-      <sl-button type="submit" size="medium" class="contact-button">{messages.pages.contactSend}</sl-button>
+      <sl-button type="submit" size="medium" class="contact-button">{messages.pages.contact.send}</sl-button>
     </form>
   </section>
 </Layout>

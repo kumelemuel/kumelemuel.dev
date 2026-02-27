@@ -34,8 +34,8 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
 <Layout title={article.data.title} lang={lang}>
   <article class="article">
     <p class="meta-line">
-      <span>{messages.pages.articlePublished}: {dateFormatter.format(article.data.publishedAt)}</span>
-      <span>{messages.pages.articleTags}: {article.data.tags.join(' · ')}</span>
+      <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>
+      <span>{messages.pages.articles.tags}: {article.data.tags.join(' · ')}</span>
     </p>
     <p class="description">{article.data.description}</p>
     <div class="article-body">

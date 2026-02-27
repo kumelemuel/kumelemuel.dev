@@ -11,9 +11,9 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.whoTitle} lang={lang}>
+<Layout title={messages.pages.who.title} lang={lang}>
   <section class="bio-wrapper">
-    <p class="bio-text" set:html={messages.pages.whoBiography} />
+    <p class="bio-text" set:html={messages.pages.who.biographyHtml} />
   </section>
 </Layout>
 
