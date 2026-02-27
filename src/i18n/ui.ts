@@ -8,7 +8,7 @@ type Messages = {
     contact: string;
   };
   footer: {
-    termsLink: string;
+    privacyLink: string;
     rights: string;
   };
   pages: {
@@ -53,7 +53,7 @@ type Messages = {
       messagePlaceholder: string;
       send: string;
     };
-    terms: {
+    privacy: {
       title: string;
       bodyHtml: string;
     };
@@ -69,7 +69,7 @@ export const ui: Record<Lang, Messages> = {
       contact: "Contacto",
     },
     footer: {
-      termsLink: "Política de privacidad",
+      privacyLink: "Política de privacidad",
       rights: "Todos los derechos reservados.",
     },
     pages: {
@@ -117,7 +117,7 @@ export const ui: Record<Lang, Messages> = {
         messagePlaceholder: "Comparte contexto, objetivo y tiempos estimados...",
         send: "Enviar mensaje",
       },
-      terms: {
+      privacy: {
         title: "Política de Privacidad",
         bodyHtml:
           `<section>
@@ -205,7 +205,7 @@ export const ui: Record<Lang, Messages> = {
       contact: "Contact",
     },
     footer: {
-      termsLink: "Privacy Policy",
+      privacyLink: "Privacy policy",
       rights: "All rights reserved.",
     },
     pages: {
@@ -253,7 +253,7 @@ export const ui: Record<Lang, Messages> = {
         messagePlaceholder: "Share context, goals, and expected timeline...",
         send: "Send message",
       },
-      terms: {
+      privacy: {
         title: "Privacy Policy",
         bodyHtml:
           `<section>

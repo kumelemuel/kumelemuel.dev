@@ -11,26 +11,26 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.terms.title} lang={lang}>
-  <div class="terms-content" set:html={messages.pages.terms.bodyHtml}></div>
+<Layout title={messages.pages.privacy.title} lang={lang}>
+  <div class="privacy-content" set:html={messages.pages.privacy.bodyHtml}></div>
 </Layout>
 
 <style>
-  .terms-content {
+  .privacy-content {
     width: min(900px, 100%);
     color: var(--color-text-secondary);
     line-height: 1.55;
   }
-  .terms-content :global(h1) {
+  .privacy-content :global(h1) {
     margin: 0 0 1rem;
     font-size: clamp(1.5rem, 2.5vw, 2rem);
   }
-  .terms-content :global(h2) {
+  .privacy-content :global(h2) {
     margin: 1.1rem 0 .5rem;
     font-size: clamp(1.05rem, 1.6vw, 1.3rem);
   }
-  .terms-content :global(p),
-  .terms-content :global(ul) {
+  .privacy-content :global(p),
+  .privacy-content :global(ul) {
     margin: 0 0 .65rem;
   }
 </style>
