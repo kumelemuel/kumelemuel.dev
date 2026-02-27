@@ -17,6 +17,14 @@ const basePath = `/${lang}`;
         <li><a href={`${basePath}/contact`}>{messages.footer.contact}</a></li>
       </ul>
     </nav>
+    <div class="social-links">
+      <a href="https://github.com/kumelemuel" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <sl-icon class="social-link-icon" name="fab-github" library="fa"></sl-icon>
+      </a>
+      <a href="https://www.linkedin.com/in/diego-arenas-75043b151/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <sl-icon class="social-link-icon" name="fab-linkedin" library="fa"></sl-icon>
+      </a>
+    </div>
     <div>&copy; 2026 Kumelemuel.dev. {messages.footer.rights}</div>
   </div>
 </footer>
@@ -37,6 +45,20 @@ const basePath = `/${lang}`;
     padding: .7rem 2rem;
     text-align: center;
     border-top: 1px solid var(--color-gray-strong);
+  }
+  .social-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .9rem;
+  }
+  .social-link-icon {
+    font-size: 1.4rem;
+    color: var(--color-text-gray);
+    transition: color .2s ease;
+  }
+  .social-link-icon:hover {
+    color: var(--color-text-main);
   }
   .footer-content nav ul {
     list-style-type: none;
@@ -59,6 +81,8 @@ const basePath = `/${lang}`;
       font-size: .75rem;
       padding: .5rem 1rem;
       gap: .8rem;
+      flex-wrap: wrap;
+      justify-content: center;
     }
     .footer-content nav ul li {
       margin: 0 .6rem 0 0;

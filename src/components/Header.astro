@@ -34,7 +34,7 @@ const localizedPath = (targetLang: Lang) => {
 ---
 
 <header>
-  <span class="brand">kumelemuel.dev</span>
+  <a href={basePath + '/'} class="brand">Kumelemuel.dev</a>
   <nav>
     {menu.map((item) => (
       <a href={item.path} class={isActive(item.path) ? "active" : ""}>{item.name}</a>
@@ -53,7 +53,7 @@ const localizedPath = (targetLang: Lang) => {
   </nav>
 </header>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;700&family=Sawarabi+Mincho&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
 
   header {
     font-family: 'Noto Sans JP', sans-serif;
@@ -69,9 +69,16 @@ const localizedPath = (targetLang: Lang) => {
     box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
   }
   .brand {
-    font-family: 'Sawarabi Mincho', serif;
-    font-size: 1.18em;
-    font-weight: 900;
+    font-family: "Asimovian", sans-serif;
+    font-size: 1.4em;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color .7s ease, transform .7s ease;
+    transform-origin: left center;
+  }
+  .brand:hover {
+    color: var(--color-text-accent);
+    transform: scale(1.04);
   }
   nav {
     display: flex;

@@ -30,10 +30,9 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
             <span>{messages.pages.articlePublished}: {dateFormatter.format(article.data.publishedAt)}</span>
             <span>{messages.pages.articleTags}: {article.data.tags.join(' · ')}</span>
           </p>
-          <strong>{article.data.title}</strong><br />
-          {article.data.description}
-
-          <div slot="footer">
+          <strong class="article-title">{article.data.title}</strong>
+          <div class="article-row">
+            <p class="article-description">{article.data.description}</p>
             <sl-button class="article-button" pill href={`/${lang}/articles/${getSlugFromId(article.id)}/`}>
               {messages.pages.articleRead}
             </sl-button>
@@ -73,6 +72,21 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
     color: var(--color-text-gray);
     font-size: .8rem;
   }
+  .article-title {
+    display: block;
+    margin: 0 0 .25rem;
+  }
+  .article-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .article-description {
+    margin: 0;
+    color: var(--color-text-secondary);
+    flex: 1;
+  }
 
   .article-button::part(base) {
     background-color: var(--color-text-accent);
@@ -84,10 +98,8 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
     background-color: var(--color-text-accent-strong);
   }
 
-  .card-overview [slot='footer'] {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  .article-button {
+    flex-shrink: 0;
   }
 
   .empty-state {

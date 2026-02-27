@@ -24,10 +24,22 @@ type Messages = {
     articlesEmpty: string;
     articlePublished: string;
     articleTags: string;
+    contactIntro: string;
     contactName: string;
+    contactNamePlaceholder: string;
     contactEmail: string;
+    contactEmailPlaceholder: string;
+    contactPhone: string;
+    contactPhonePlaceholder: string;
+    contactPhoneHelp: string;
     contactMessage: string;
+    contactMessagePlaceholder: string;
     contactSend: string;
+    validationRequired: string;
+    validationName: string;
+    validationEmail: string;
+    validationPhone: string;
+    validationMessage: string;
     home: {
       eyebrow: string;
       title: string;
@@ -82,10 +94,23 @@ export const ui: Record<Lang, Messages> = {
       articlesEmpty: "No se encontraron artículos en src/data/articles.",
       articlePublished: "Publicado",
       articleTags: "Tags",
-      contactName: "Nombre",
-      contactEmail: "Correo",
-      contactMessage: "Mensaje",
-      contactSend: "Enviar",
+      contactIntro:
+        "Estoy abierto a colaborar en proyectos que valoren el criterio, la claridad y el impacto humano del software. Si crees que podemos construir algo con sentido, conversemos.",
+      contactName: "Tu nombre",
+      contactNamePlaceholder: "Ej. Roberto Nesta",
+      contactEmail: "Correo electrónico",
+      contactEmailPlaceholder: "tu-correo@dominio.com",
+      contactPhone: "WhatsApp (opcional)",
+      contactPhonePlaceholder: "+52 55 1234 5678",
+      contactPhoneHelp: "Incluye lada o código de país para contactarte fácilmente.",
+      contactMessage: "Cuéntame sobre tu proyecto",
+      contactMessagePlaceholder: "Comparte contexto, objetivo y tiempos estimados...",
+      contactSend: "Enviar mensaje",
+      validationRequired: "Este campo es obligatorio.",
+      validationName: "Ingresa tu nombre completo (mínimo 3 caracteres).",
+      validationEmail: "Ingresa un correo válido.",
+      validationPhone: "Ingresa un teléfono válido o déjalo en blanco.",
+      validationMessage: "Tu mensaje debe tener al menos 25 caracteres.",
       home: {
         eyebrow: "ARTESANO DEL SOFTWARE",
         title: "Construyo software con criterio, estructura y sentido humano.",
@@ -96,7 +121,7 @@ export const ui: Record<Lang, Messages> = {
         card2Title: "Holistico",
         card2Body: "Concibo cada solución como un todo, integrando lo técnico y lo humano desde el diseño.",
         card3Title: "Propósito",
-        card3Body: "Tecnología al servicio de lo humano y lo colectivo.",
+        card3Body: "Tecnología al servicio del bien común y lo colectivo.",
       },
       who: {
         eyebrow: "ARTESANO DEL SOFTWARE",
@@ -140,10 +165,23 @@ export const ui: Record<Lang, Messages> = {
       articlesEmpty: "No articles found in src/data/articles.",
       articlePublished: "Published",
       articleTags: "Tags",
-      contactName: "Name",
-      contactEmail: "E-mail",
-      contactMessage: "Message",
-      contactSend: "Send",
+      contactIntro:
+        "Have an idea, collaboration, or project in mind? Reach out and I will get back to you as soon as possible.",
+      contactName: "Your name",
+      contactNamePlaceholder: "e.g. Robert Nesta",
+      contactEmail: "Email address",
+      contactEmailPlaceholder: "your-email@domain.com",
+      contactPhone: "WhatsApp (optional)",
+      contactPhonePlaceholder: "+1 555 123 4567",
+      contactPhoneHelp: "Include country/area code so I can contact you easily.",
+      contactMessage: "Tell me about your project",
+      contactMessagePlaceholder: "Share context, goals, and expected timeline...",
+      contactSend: "Send message",
+      validationRequired: "This field is required.",
+      validationName: "Please enter your full name (at least 3 characters).",
+      validationEmail: "Please enter a valid email address.",
+      validationPhone: "Please enter a valid phone number or leave it empty.",
+      validationMessage: "Your message must be at least 25 characters long.",
       home: {
         eyebrow: "SOFTWARE CRAFTSMAN",
         title: "I build software with judgment, structure, and human purpose.",
