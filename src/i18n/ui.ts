@@ -52,6 +52,7 @@ type Messages = {
       message: string;
       messagePlaceholder: string;
       send: string;
+      submitUnexpectedError: string;
     };
     privacy: {
       title: string;
@@ -116,6 +117,7 @@ export const ui: Record<Lang, Messages> = {
         message: "Cuéntame sobre tu proyecto",
         messagePlaceholder: "Comparte contexto, objetivo y tiempos estimados...",
         send: "Enviar mensaje",
+        submitUnexpectedError: "Ocurrió un error inesperado. Inténtalo de nuevo.",
       },
       privacy: {
         title: "Política de Privacidad",
@@ -252,6 +254,7 @@ export const ui: Record<Lang, Messages> = {
         message: "Tell me about your project",
         messagePlaceholder: "Share context, goals, and expected timeline...",
         send: "Send message",
+        submitUnexpectedError: "An unexpected error occurred. Please try again.",
       },
       privacy: {
         title: "Privacy Policy",

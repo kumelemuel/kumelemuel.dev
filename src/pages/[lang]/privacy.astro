@@ -17,20 +17,39 @@ const messages = t(lang);
 
 <style>
   .privacy-content {
-    width: min(900px, 100%);
+    width: min(800px, 100%);
     color: var(--color-text-secondary);
-    line-height: 1.55;
+    line-height: var(--line-height-relaxed);
+    font-size: var(--text-size-base);
   }
+
   .privacy-content :global(h1) {
-    margin: 0 0 1rem;
-    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    margin: 0 0 var(--margin-block);
+    font-family: var(--font-secondary);
+    font-size: var(--text-size-4xl);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-main);
   }
+
   .privacy-content :global(h2) {
-    margin: 1.1rem 0 .5rem;
-    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    margin: var(--margin-block) 0 var(--margin-element);
+    font-family: var(--font-secondary);
+    font-size: var(--text-size-2xl);
+    font-weight: var(--font-weight-light);
+    color: var(--color-text-main);
   }
+
   .privacy-content :global(p),
   .privacy-content :global(ul) {
-    margin: 0 0 .65rem;
+    margin: 0 0 var(--margin-element);
+  }
+
+  .privacy-content :global(a) {
+    color: var(--color-brand);
+    transition: color 0.2s ease;
+  }
+
+  .privacy-content :global(a:hover) {
+    color: var(--color-brand-hover);
   }
 </style>

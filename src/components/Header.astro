@@ -33,7 +33,9 @@ const localizedPath = (targetLang: Lang) => {
 ---
 
 <header>
-  <a href={basePath + '/'} class="brand">Kumelemuel.dev</a>
+  <a href={basePath + '/'} class="brand">
+    <span class="brand-text">Kumelemuel.dev</span>
+  </a>
   <nav>
     {menu.map((item) => (
       <a href={item.path} class={isActive(item.path) ? "active" : ""}>{item.name}</a>
@@ -51,77 +53,103 @@ const localizedPath = (targetLang: Lang) => {
     </div>
   </nav>
 </header>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Asimovian&display=swap');
 
+<style>
   header {
-    font-family: 'Noto Sans JP', sans-serif;
-    font-size: clamp(.9rem, 1.08vw, 1.02rem);
-    font-weight: 300;
-    background-color: var(--color-background-secondary);
+    font-family: var(--font-primary);
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-weight-regular);
+    background-color: var(--color-background);
     color: var(--color-text-secondary);
-    padding: 1.5rem 2rem;
+    padding: 1rem var(--margin-page);
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
-    box-shadow: 0 3px 7px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--color-border);
   }
+
   .brand {
-    font-family: "Asimovian", sans-serif;
-    font-size: 1.4em;
-    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     text-decoration: none;
-    transition: color .7s ease, transform .7s ease;
-    transform-origin: left center;
   }
-  .brand:hover {
-    color: var(--color-text-accent);
-    transform: scale(1.04);
+
+  .brand-text {
+    font-family: var(--font-secondary);
+    font-size: var(--text-size-xl);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: -0.02em;
+    color: var(--color-text-main);
+    transition: all 0.3s ease;
   }
+
+  .brand:hover .brand-text {
+    color: var(--color-brand);
+    scale: 1.07;
+  }
+
   nav {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    gap: 1.6rem;
+    gap: 2rem;
   }
-  a {
-    font-size: .95em;
-    color: var(--color-text-secondary);
+
+  nav a {
+    font-size: 0.95em;
+    color: var(--color-text-main);
     text-decoration: none;
+    transition: color 0.2s ease;
+    letter-spacing: 0.02em;
   }
-  a.active {
-    font-weight: bold;
-    color: var(--color-text-accent-strong);
-    text-decoration: none;
+
+  nav a.active {
+    color: var(--color-brand);
+    font-weight: var(--font-weight-bold);
   }
-  a:hover {
-    text-decoration: none;
-    color: var(--color-text-accent);
+
+  nav a:hover {
+    color: var(--color-brand);
   }
+
   .lang-switcher {
     display: flex;
     align-items: center;
-    gap: .45rem;
-    margin-left: .3rem;
-    padding-left: .8rem;
-    border-left: 1px solid var(--color-gray-strong);
+    gap: 0.5rem;
+    margin-left: 0.5rem;
+    padding-left: 1.5rem;
+    border-left: 1px solid var(--color-border);
   }
+
+  .lang-switcher a {
+    font-size: 0.85em;
+    letter-spacing: 0.05em;
+  }
+
   .active-lang {
-    color: var(--color-text-accent);
-    font-weight: bold;
+    color: var(--color-brand) !important;
+    font-weight: var(--font-weight-bold);
   }
-  @media (max-width: 600px) {
+
+  @media (max-width: 700px) {
     nav {
-      gap: .75rem;
+      gap: 1rem;
       flex-wrap: wrap;
       justify-content: flex-end;
     }
+    
     header {
-      padding: .7rem 1rem;
+      padding: 1rem 1.25rem;
     }
+
     .lang-switcher {
-      padding-left: .5rem;
+      padding-left: 1rem;
+    }
+
+    .brand-text {
+      font-size: 1.1rem;
     }
   }
 </style>

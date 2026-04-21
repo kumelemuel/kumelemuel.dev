@@ -23,67 +23,76 @@ const basePath = `/${lang}`;
         <sl-icon class="social-link-icon" name="fab-linkedin" library="fa"></sl-icon>
       </a>
     </div>
-    <div>&copy; 2026 Kumelemuel.dev. {messages.footer.rights}</div>
+    <div class="copyright">&copy; 2026 Kumelemuel.dev. {messages.footer.rights}</div>
   </div>
 </footer>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&display=swap');
 
+<style>
   .footer-content {
-    font-family: 'Noto Sans JP', sans-serif;
-    font-weight: 300;
+    font-family: var(--font-primary);
+    font-weight: var(--font-weight-regular);
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     box-sizing: border-box;
-    font-size: .9rem;
-    background-color: var(--color-background-secondary);
-    color: var(--color-text-gray);
-    padding: .7rem 2rem;
+    font-size: var(--text-size-sm);
+    background-color: var(--color-background);
+    color: var(--color-text-muted);
+    padding: 1rem var(--margin-page);
     text-align: center;
-    border-top: 1px solid var(--color-gray-strong);
+    border-top: 1px solid var(--color-border);
   }
+
   .social-links {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: .9rem;
+    gap: 1rem;
   }
+
   .social-link-icon {
-    font-size: 1.4rem;
-    color: var(--color-text-gray);
-    transition: color .2s ease;
+    font-size: 1.3rem;
+    color: var(--color-text-muted);
+    transition: color 0.2s ease;
   }
+
   .social-link-icon:hover {
-    color: var(--color-text-main);
+    color: var(--color-brand);
   }
+
   .footer-content nav ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
+
   .footer-content nav ul li {
     display: inline;
-    margin: 0 2rem 0 0;
+    margin: 0 1.5rem 0 0;
   }
+
   .footer-content nav ul li a {
-    color: var(--color-text-gray);
+    color: var(--color-text-muted);
     text-decoration: none;
+    transition: color 0.2s ease;
   }
+
   .footer-content nav ul li a:hover {
-    color: var(--color-text-accent);
+    color: var(--color-brand);
   }
+
   @media (max-width: 700px) {
     .footer-content {
-      font-size: .75rem;
-      padding: .5rem 1rem;
-      gap: .8rem;
+      font-size: var(--text-size-xs);
+      padding: 0.75rem 1.25rem;
+      gap: 1rem;
       flex-wrap: wrap;
       justify-content: center;
     }
+
     .footer-content nav ul li {
-      margin: 0 .6rem 0 0;
+      margin: 0 0.75rem 0 0;
     }
   }
 </style>
