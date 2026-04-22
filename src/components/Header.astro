@@ -36,23 +36,61 @@ const localizedPath = (targetLang: Lang) => {
   <a href={basePath + '/'} class="brand">
     <span class="brand-text">Kumelemuel.dev</span>
   </a>
-  <nav>
-    {menu.map((item) => (
-      <a href={item.path} class={isActive(item.path) ? "active" : ""}>{item.name}</a>
-    ))}
-    <div class="lang-switcher">
-      {SUPPORTED_LANGS.map((currentLang) => (
-        <a
-          href={localizedPath(currentLang)}
-          class={currentLang === lang ? "active-lang" : ""}
-          aria-label={`Switch language to ${currentLang.toUpperCase()}`}
-        >
-          {currentLang.toUpperCase()}
-        </a>
+  <button class="menu-toggle" aria-label="Menu" id="menu-toggle">
+    <sl-icon id="menu-icon" name="fas-bars" library="fa" style="pointer-events: none;"></sl-icon>
+  </button>
+  <nav class="nav-menu" id="nav-menu">
+    <div class="nav-content">
+      {menu.map((item) => (
+        <a href={item.path} class={isActive(item.path) ? "active" : ""}>{item.name}</a>
       ))}
+      <div class="lang-switcher">
+        {SUPPORTED_LANGS.map((currentLang) => (
+          <a
+            href={localizedPath(currentLang)}
+            class={currentLang === lang ? "active-lang" : ""}
+            aria-label={`Switch language to ${currentLang.toUpperCase()}`}
+          >
+            {currentLang.toUpperCase()}
+          </a>
+        ))}
+      </div>
     </div>
   </nav>
+  <div class="menu-overlay" id="menu-overlay"></div>
 </header>
+
+<script>
+  function setupMenu() {
+    const menuToggle = document.getElementById('menu-toggle');
+    const navMenu = document.getElementById('nav-menu');
+    const menuOverlay = document.getElementById('menu-overlay');
+    const menuIcon = document.getElementById('menu-icon');
+
+    function toggleMenu() {
+      navMenu?.classList.toggle('menu-open');
+      menuOverlay?.classList.toggle('menu-open');
+      document.body.classList.toggle('menu-locked');
+      if (menuIcon?.getAttribute('name') === 'fas-bars') {
+        menuIcon.setAttribute('name', 'fas-times');
+      } else {
+        menuIcon?.setAttribute('name', 'fas-bars');
+      }
+    }
+
+    menuToggle?.addEventListener('click', toggleMenu);
+    menuOverlay?.addEventListener('click', toggleMenu);
+
+    navMenu?.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).tagName === 'A') {
+        toggleMenu();
+      }
+    });
+  }
+
+  setupMenu();
+  document.addEventListener('astro:after-swap', setupMenu);
+</script>
 
 <style>
   header {
@@ -90,27 +128,44 @@ const localizedPath = (targetLang: Lang) => {
     scale: 1.07;
   }
 
-  nav {
+  .menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: var(--color-text-main);
+    font-size: var(--text-size-xl);
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 1001;
+  }
+
+  .nav-menu {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 2rem;
   }
 
-  nav a {
+  .nav-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .nav-menu a {
     font-size: 0.95em;
     color: var(--color-text-main);
     text-decoration: none;
-    transition: color 0.2s ease;
+    transition: color 0.5s ease;
     letter-spacing: 0.02em;
   }
 
-  nav a.active {
+  .nav-menu a.active {
     color: var(--color-brand);
     font-weight: var(--font-weight-bold);
   }
 
-  nav a:hover {
+  .nav-menu a:hover {
     color: var(--color-brand);
   }
 
@@ -133,19 +188,91 @@ const localizedPath = (targetLang: Lang) => {
     font-weight: var(--font-weight-bold);
   }
 
-  @media (max-width: 700px) {
-    nav {
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: flex-end;
+  .menu-overlay {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    .menu-toggle {
+      display: block;
+      color: var(--color-text-main);
     }
-    
-    header {
-      padding: 1rem 1.25rem;
+
+    .nav-menu {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      height: 100dvh;
+      background-color: var(--color-brand-dark);
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+      transition: right 0.3s ease;
+      z-index: 1000;
+    }
+
+    .nav-menu.menu-open {
+      right: 0;
+    }
+
+    .menu-overlay {
+      display: block;
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+    }
+
+    .menu-overlay.menu-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .nav-content {
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .nav-menu a {
+      font-size: var(--text-size-2xl);
+      color: var(--color-background);
+    }
+
+    .nav-menu a.active {
+      color: var(--color-brand);
+    }
+
+    .nav-menu a:hover {
+      color: var(--color-brand);
     }
 
     .lang-switcher {
-      padding-left: 1rem;
+      padding-left: 0;
+      padding-top: 1.5rem;
+      border-left: none;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .lang-switcher a {
+      color: var(--color-background);
+    }
+
+    .active-lang {
+      color: var(--color-brand) !important;
+    }
+
+    body.menu-locked {
+      overflow: hidden;
+    }
+  }
+
+  @media (max-width: 700px) {
+    header {
+      padding: 1rem 1.25rem;
     }
 
     .brand-text {
