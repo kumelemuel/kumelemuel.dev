@@ -21,7 +21,7 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
 });
 ---
 
-<Layout title={messages.pages.articles.title} lang={lang}>
+<Layout title={messages.pages.articles.title} lang={lang} description={lang === 'es' ? 'Artículos sobre ingeniería de software, arquitectura, y modelos de gobernanza digital.' : 'Articles on software engineering, architecture, and digital governance models.'}>
   {articles.length > 0 ? (
     <div class="articles-grid">
       {articles.map((article) => (

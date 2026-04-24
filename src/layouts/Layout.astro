@@ -2,13 +2,15 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
+import SeoMeta from "../components/SeoMeta.astro";
 import { ClientRouter } from "astro:transitions";
 import { fade } from "astro:transitions";
 import { DEFAULT_LANG, isLang } from "../i18n/config";
 
 
-const { title, lang: requestedLang } = Astro.props;
+const { title, description, lang: requestedLang, noindex } = Astro.props;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
+const canonicalURL = Astro.url.href;
 ---
 
 <!doctype html>
@@ -21,7 +23,21 @@ const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/themes/light.css" />
 		<script type="module" is:inline src="https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/shoelace-autoloader.js"></script>
 
-		
+		<SeoMeta title={title} description={description} {canonicalURL} {lang} {noindex} />
+		<script type="application/ld+json" set:html={JSON.stringify({
+			"@context": "https://schema.org",
+			"@type": "Person",
+			"name": "Diego Arenas",
+			"url": Astro.site?.href,
+			"jobTitle": "Software Engineer",
+			"sameAs": [
+				"https://github.com/kumelemuel"
+			],
+			"worksFor": {
+				"@type": "Organization",
+				"name": "Kumelemuel"
+			}
+		})} />
 
 		<script type="module" is:inline>
 			import { registerIconLibrary } from 'https://cdn.jsdelivr.net/npm/@shoelace-style/shoelace@2.20.1/cdn/utilities/icon-library.js';
@@ -39,7 +55,6 @@ const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 		</script>
 
 		<ClientRouter />
-		<title>Kumelemuel.dev</title>
 	</head>
 	<body>
 		<div class="app-shell">

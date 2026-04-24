@@ -13,7 +13,7 @@ const messages = t(lang);
 const portfolio = await getCollection('portfolio');
 ---
 
-<Layout title={messages.pages.portfolio.title} lang={lang}>
+<Layout title={messages.pages.portfolio.title} lang={lang} description={lang === 'es' ? 'Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.' : 'Projects and applications developed, showcasing work in technology in service of the common good.'}>
   <div class="portfolio-grid">
     {portfolio.map((project) => (
       <sl-card class="card-overview">

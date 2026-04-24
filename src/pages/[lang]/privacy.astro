@@ -11,7 +11,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.privacy.title} lang={lang}>
+<Layout title={messages.pages.privacy.title} lang={lang} description={lang === 'es' ? 'Política de privacidad del sitio kumelemuel.dev. Información sobre el tratamiento de datos personales conforme a la LFPDPPP.' : 'Privacy policy for kumelemuel.dev. Information on personal data processing according to the LFPDPPP.'} noindex>
   <div class="privacy-content" set:html={messages.pages.privacy.bodyHtml}></div>
 </Layout>
 

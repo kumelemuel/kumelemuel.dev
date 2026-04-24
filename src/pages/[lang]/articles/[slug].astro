@@ -31,7 +31,7 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
 });
 ---
 
-<Layout title={article.data.title} lang={lang}>
+<Layout title={article.data.title} lang={lang} description={article.data.description}>
   <article class="article">
     <p class="meta-line">
       <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>

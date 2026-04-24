@@ -11,7 +11,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.who.title} lang={lang}>
+<Layout title={messages.pages.who.title} lang={lang} description={lang === 'es' ? 'Ingeniero de software. Mi trabajo profesional se desarrolla dentro de organizaciones privadas, donde diseño e implemento soluciones bajo objetivos, restricciones y marcos ya establecidos.' : 'Software engineer. My professional work takes place within private organizations, where I design and implement solutions under established goals, constraints, and frameworks.'}>
   <section class="bio-wrapper">
     <p class="bio-text" set:html={messages.pages.who.biographyHtml} />
   </section>

@@ -12,7 +12,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.contact.title} lang={lang}>
+<Layout title={messages.pages.contact.title} lang={lang} description={lang === 'es' ? 'Estoy abierto a colaborar en proyectos que valoren el criterio, la claridad y el impacto humano del software. Si crees que podemos construir algo con sentido, conversemos.' : 'I am open to collaborating on projects that value judgment, clarity, and the human impact of software. If you think we can build something meaningful, let\'s talk.'}>
   <section class="contact-wrapper">
     <p class="contact-intro">{messages.pages.contact.intro}</p>
 

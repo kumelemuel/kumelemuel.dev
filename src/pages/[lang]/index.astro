@@ -11,7 +11,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout lang={lang}>
+<Layout lang={lang} description={messages.pages.home.intro}>
   <section class="home">
     <div class="hero">
       <p class="eyebrow">{messages.pages.home.eyebrow}</p>
