@@ -129,12 +129,12 @@ blockquote {
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 9px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: var(--color-brand-darker);
 }
 
 ::-webkit-scrollbar-thumb {

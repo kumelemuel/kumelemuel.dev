@@ -43,6 +43,71 @@ const messages = t(lang);
       </article>
     </div>
   </section>
+
+  <section class="craft-split">
+    <div class="split-left">
+      <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
+      <img
+          src="/assets/craftmanship.webp"
+          alt="Craftsmanship illustration"
+          loading="lazy"
+          decoding="async"
+          width="800"
+          height="600"
+      />
+    </div>
+    <div class="split-right">
+      <p class="craft-text">{messages.pages.home.craftSectionText}</p>
+    </div>
+  </section>
+
+  <section class="explore-split">
+    <div class="split-left">
+      <p class="explore-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+    <div class="split-right">
+      <h2 class="explore-title">Exploration</h2>
+      <img
+          src="/assets/exploring.webp"
+          alt="Exploration illustration"
+          loading="lazy"
+          decoding="async"
+          width="800"
+          height="600"
+      />
+    </div>
+  </section>
+
+  <section class="craft-split">
+    <div class="split-left">
+      <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
+      <img
+          src="/assets/craftmanship.webp"
+          alt="Craftsmanship illustration"
+          loading="lazy"
+          decoding="async"
+          width="800"
+          height="600"
+      />
+    </div>
+    <div class="split-right">
+      <p class="craft-text">{messages.pages.home.craftSectionText}</p>
+    </div>
+  </section>
+
+  <section class="bloom-section">
+    <div class="bloom-content">
+      <h2 class="bloom-title">Bloom</h2>
+      <p class="bloom-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+    <img
+      src="/assets/bloom.webp"
+      alt="Bloom illustration"
+      loading="lazy"
+      decoding="async"
+      class="bloom-image"
+    />
+  </section>
 </Layout>
 
 <style>
@@ -150,5 +215,166 @@ const messages = t(lang);
     .home {
       gap: var(--margin-block);
     }
+  }
+
+  .craft-split {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--margin-block);
+    min-height: 60vh;
+  }
+
+  .split-left,
+  .split-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--margin-block);
+  }
+
+  .craft-title {
+    margin: 0 0 var(--margin-element);
+    font-family: var(--font-secondary), serif;
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: var(--font-weight-light);
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-brand);
+    text-transform: lowercase;
+  }
+
+  .split-left img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+  }
+
+  .craft-text {
+    margin: 0;
+    font-size: var(--text-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  @media (max-width: 768px) {
+    .craft-split {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      gap: var(--margin-element);
+    }
+
+    .split-left {
+      order: 2;
+    }
+
+    .split-right {
+      order: 1;
+    }
+  }
+
+  .explore-split {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--margin-block);
+    min-height: 60vh;
+  }
+
+  .explore-title {
+    margin: 0 0 var(--margin-element);
+    font-family: var(--font-secondary), serif;
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: var(--font-weight-light);
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-brand);
+    text-transform: lowercase;
+  }
+
+  .explore-split .split-left,
+  .explore-split .split-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--margin-block);
+  }
+
+  .explore-text {
+    margin: 0;
+    font-size: var(--text-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+    text-align: center;
+  }
+
+  .explore-split img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .explore-split {
+      grid-template-columns: 1fr;
+      min-height: auto;
+      gap: var(--margin-element);
+    }
+
+    .explore-split .split-left {
+      order: 2;
+    }
+
+    .explore-split .split-right {
+      order: 1;
+    }
+  }
+
+  .bloom-section {
+    width: 100dvw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--margin-element);
+    padding: var(--margin-block) 0 0 0;
+    text-align: center;
+  }
+
+  .bloom-content {
+    width: min(1200px, 100%);
+    padding: 0 var(--margin-page);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .bloom-title {
+    margin: 0;
+    font-family: var(--font-secondary), serif;
+    font-size: clamp(3rem, 8vw, 8rem);
+    font-weight: var(--font-weight-light);
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-tight);
+    color: var(--color-brand);
+    text-transform: lowercase;
+  }
+
+  .bloom-description {
+    margin: 0;
+    max-width: 800px;
+    font-size: var(--text-size-lg);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-secondary);
+  }
+
+  .bloom-image {
+    width: 100dvw;
+    height: auto;
+    display: block;
+    margin: 0 0 calc(-1 * var(--margin-page)) 0;
   }
 </style>

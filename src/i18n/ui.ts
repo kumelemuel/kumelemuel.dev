@@ -22,6 +22,8 @@ type Messages = {
       card2Body: string;
       card3Title: string;
       card3Body: string;
+      craftSectionTitle: string;
+      craftSectionText: string;
     };
     who: {
       title: string;
@@ -85,6 +87,8 @@ export const ui: Record<Lang, Messages> = {
         card2Body: "Concibo cada solución como un todo, integrando lo técnico y lo humano desde el diseño.",
         card3Title: "Propósito",
         card3Body: "Tecnología al servicio del bien común y lo colectivo.",
+        craftSectionTitle: "artesanía",
+        craftSectionText: "La artesanía del software va más allá de escribir código que funcione. Implica comprender el contexto, anticipar consecuencias y diseñar soluciones que perduren. Cada decisión arquitectónica, cada nombre de variable, cada patrón elegido refleja una cosmovisión sobre cómo deberían interactuar las personas y los sistemas. El código no es neutral: siempre estructura posibilidades. Mi trabajo busca que esas posibilidades sean las correctas.",
       },
       who: {
         title: "Quién soy",
@@ -222,6 +226,8 @@ export const ui: Record<Lang, Messages> = {
         card2Body: "I conceive each solution as a whole, integrating technical and human concerns from the design stage.",
         card3Title: "Purpose",
         card3Body: "Technology in service of the common good and the collective.",
+        craftSectionTitle: "craftsmanship",
+        craftSectionText: "Software craftsmanship goes beyond writing code that works. It involves understanding context, anticipating consequences, and designing solutions that endure. Every architectural decision, every variable name, every pattern chosen reflects a worldview on how people and systems should interact. Code is not neutral: it always structures possibilities. My work seeks to make those possibilities the right ones.",
       },
       who: {
         title: "Who am I?",

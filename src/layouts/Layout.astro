@@ -57,14 +57,12 @@ const canonicalURL = Astro.url.href;
 		<ClientRouter />
 	</head>
 	<body>
-		<div class="app-shell">
-			<Header lang={lang}></Header>
-			<main transition:animate={fade({ duration: "0.7s" })}>
-				{title && <h1 class="page-title">{title}</h1>}
-				<slot />
-			</main>
-			<Footer lang={lang} />
-		</div>
+		<Header lang={lang}></Header>
+		<main transition:animate={fade({ duration: "0.7s" })}>
+			{title && <h1 class="page-title">{title}</h1>}
+			<slot />
+		</main>
+		<Footer lang={lang} />
 	</body>
 </html>
 
@@ -72,34 +70,60 @@ const canonicalURL = Astro.url.href;
 	:global(html, body) {
 		margin: 0;
 		width: 100%;
-		height: 100%;
-		overflow: hidden;
 	}
 	body {
 		margin: 0;
 		width: 100%;
-		height: 100dvh;
-	}
-	.app-shell {
-		height: 100dvh;
-		display: grid;
-		grid-template-rows: auto 1fr auto;
-		overflow: hidden;
-	}
-	main {
+		min-height: 100dvh;
 		display: flex;
 		flex-direction: column;
-		justify-content: safe center;
+	}
+	Header {
+		flex-shrink: 0;
+	}
+	main {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
 		align-items: center;
-		min-height: 0;
 		width: 100%;
 		padding: var(--margin-page);
 		box-sizing: border-box;
 		overflow-y: auto;
 		overflow-x: hidden;
-		scrollbar-gutter: stable;
 	}
 	.page-title {
 		margin: 0 0 var(--margin-element);
 	}
+
+	footer {
+		transform: translateY(100%);
+		transition: transform 0.3s ease;
+	}
+
+	footer.visible {
+		transform: translateY(0);
+	}
 </style>
+
+<script>
+	const main = document.querySelector('main');
+	const footer = document.querySelector('footer');
+
+	if (main && footer) {
+		const checkScroll = () => {
+			const scrollTop = main.scrollTop;
+			const scrollHeight = main.scrollHeight - main.clientHeight;
+			
+			if (scrollHeight <= 0) {
+				footer.classList.add('visible');
+			} else {
+				const isAtBottom = scrollTop >= scrollHeight - 10;
+				footer.classList.toggle('visible', isAtBottom);
+			}
+		};
+
+		main.addEventListener('scroll', checkScroll);
+		checkScroll();
+	}
+</script>
