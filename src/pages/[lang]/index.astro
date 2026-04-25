@@ -44,36 +44,38 @@ const messages = t(lang);
     </div>
   </section>
 
-  <section class="craft-split">
-    <div class="split-left">
-      <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
-      <img
-          src="/assets/craftmanship.webp"
-          alt="Craftsmanship illustration"
-          loading="lazy"
-          decoding="async"
-          width="800"
-          height="600"
-      />
-    </div>
-    <div class="split-right">
-      <p class="craft-text">{messages.pages.home.craftSectionText}</p>
-    </div>
-  </section>
-
   <section class="explore-split">
     <div class="split-left">
-      <p class="explore-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-    </div>
-    <div class="split-right">
       <h2 class="explore-title">Exploration</h2>
       <img
           src="/assets/exploring.webp"
           alt="Exploration illustration"
           loading="lazy"
           decoding="async"
-          width="800"
-          height="600"
+          width="500"
+          height="263"
+          class="fade-in"
+      />
+    </div>
+    <div class="split-right">
+      <p class="explore-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+    </div>
+  </section>
+
+  <section class="craft-split">
+    <div class="split-left">
+      <p class="craft-text">{messages.pages.home.craftSectionText}</p>
+    </div>
+    <div class="split-right">
+      <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
+      <img
+          src="/assets/designing.webp"
+          alt="Craftsmanship illustration"
+          loading="lazy"
+          decoding="async"
+          width="500"
+          height="286"
+          class="fade-in"
       />
     </div>
   </section>
@@ -86,8 +88,9 @@ const messages = t(lang);
           alt="Craftsmanship illustration"
           loading="lazy"
           decoding="async"
-          width="800"
-          height="600"
+          width="500"
+          height="291"
+          class="fade-in"
       />
     </div>
     <div class="split-right">
@@ -105,7 +108,7 @@ const messages = t(lang);
       alt="Bloom illustration"
       loading="lazy"
       decoding="async"
-      class="bloom-image"
+      class="bloom-image fade-in"
     />
   </section>
 </Layout>
@@ -130,7 +133,7 @@ const messages = t(lang);
 
   .eyebrow {
     margin: 0;
-    font-family: var(--font-primary);
+    font-family: var(--font-primary),serif;
     font-size: var(--text-size-sm);
     font-weight: var(--font-weight-bold);
     letter-spacing: var(--letter-spacing-widest);
@@ -192,7 +195,7 @@ const messages = t(lang);
 
   .focus-card h3 {
     margin: 0;
-    font-family: var(--font-primary);
+    font-family: var(--font-primary),sans-serif;
     font-size: var(--text-size-lg);
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-normal);
@@ -377,4 +380,30 @@ const messages = t(lang);
     display: block;
     margin: 0 0 calc(-1 * var(--margin-page)) 0;
   }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(70px);
+    transition: opacity 1.2s ease, transform 1.2s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
 </style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+  });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>

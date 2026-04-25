@@ -17,7 +17,7 @@ body {
   margin: 0;
   background-color: var(--color-background);
   color: var(--color-text-main);
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), serif;
   font-size: var(--text-size-base);
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-regular);
@@ -28,7 +28,7 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   margin: 0;
-  font-family: var(--font-secondary);
+  font-family: var(--font-secondary), serif;
   font-weight: var(--font-weight-light);
   line-height: var(--line-height-tight);
   letter-spacing: var(--letter-spacing-tight);
@@ -50,14 +50,14 @@ h3 {
 
 h4 {
   font-size: var(--text-size-xl);
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), serif;
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-normal);
 }
 
 h5 {
   font-size: var(--text-size-base);
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), sans-serif;
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
@@ -65,7 +65,7 @@ h5 {
 
 h6 {
   font-size: var(--text-size-sm);
-  font-family: var(--font-primary);
+  font-family: var(--font-primary), serif;
   font-weight: var(--font-weight-medium);
   letter-spacing: var(--letter-spacing-wider);
   text-transform: uppercase;
@@ -117,7 +117,7 @@ blockquote {
   margin: 1em 0;
   padding-left: 1.5em;
   border-left: 3px solid var(--color-brand);
-  font-family: var(--font-secondary);
+  font-family: var(--font-secondary), sans-serif;
   font-size: var(--text-size-lg);
   font-style: italic;
   color: var(--color-text-secondary);

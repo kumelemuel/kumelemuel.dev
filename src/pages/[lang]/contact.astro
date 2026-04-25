@@ -303,7 +303,7 @@ const messages = t(lang);
             if (!hasFieldErrors && Array.isArray(error.issues)) {
               for (const issue of error.issues) {
                 const path = Array.isArray(issue.path) ? issue.path[0] : undefined;
-                const msg = typeof issue.message === 'string' ? issue.message : '';
+                const msg = issue.message;
                 if (typeof path === 'string' && msg) {
                   hasFieldErrors = true;
                   setFieldError(path, msg);
@@ -313,7 +313,7 @@ const messages = t(lang);
 
             if (!hasFieldErrors) {
               setFormError(
-                typeof error.message === 'string' && error.message.length > 0
+                error.message.length > 0
                   ? error.message
                   : genericError,
               );

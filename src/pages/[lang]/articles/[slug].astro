@@ -19,7 +19,7 @@ export async function getStaticPaths() {
 }
 
 const { article, lang } = Astro.props as {
-  article: Awaited<ReturnType<typeof getCollection>>[number];
+  article: Awaited<ReturnType<typeof getCollection<'articles'>>>[number];
   lang: Lang;
 };
 const { Content } = await render(article);
@@ -83,7 +83,7 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
 
   .article-body :global(h2),
   .article-body :global(h3) {
-    font-family: var(--font-secondary);
+    font-family: var(--font-secondary),sans-serif;
     font-weight: var(--font-weight-light);
     color: var(--color-text-main);
     margin: var(--margin-block) 0 var(--margin-element);
