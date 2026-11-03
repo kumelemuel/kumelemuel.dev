@@ -1,0 +1,26 @@
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      # One PR for all minor/patch bumps; majors (e.g. Astro 8) come separately.
+      minor-and-patch:
+        update-types: [minor, patch]
+    # Security fixes are opened immediately regardless of this schedule.
+    # Note: package.json "overrides" (path-to-regexp, glob) are not managed by
+    # Dependabot; drop them once @astrojs/vercel ships patched versions.
+
+  - package-ecosystem: github-actions
+    directory: /
+    target-branch: dev
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]
