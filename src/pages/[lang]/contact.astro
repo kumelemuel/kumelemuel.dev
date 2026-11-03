@@ -12,7 +12,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.contact.title} lang={lang} description={lang === 'es' ? 'Estoy abierto a colaborar en proyectos que valoren el criterio, la claridad y el impacto humano del software. Si crees que podemos construir algo con sentido, conversemos.' : 'I am open to collaborating on projects that value judgment, clarity, and the human impact of software. If you think we can build something meaningful, let\'s talk.'}>
+<Layout title={messages.pages.contact.title} lang={lang} description={messages.pages.contact.intro}>
   <section class="contact-wrapper">
     <p class="contact-intro">{messages.pages.contact.intro}</p>
 
@@ -27,332 +27,510 @@ const messages = t(lang);
       data-success-title={lang === 'es' ? 'Mensaje enviado correctamente.' : 'Message sent successfully.'}
       novalidate
     >
-      <p class="form-error" data-form-error aria-live="polite"></p>
-      <p class="form-success" data-form-success aria-live="polite"></p>
+      <p class="notice notice--error" data-form-error role="alert" aria-live="polite"></p>
+      <p class="notice notice--success" data-form-success role="status" aria-live="polite"></p>
+
       <input type="hidden" name="lang" value={lang} />
-      <sl-input
-        name="name"
-        label={messages.pages.contact.name}
-        placeholder={messages.pages.contact.namePlaceholder}
-        autocomplete="name"
-      ></sl-input>
-      <p class="field-error" data-error-for="name" aria-live="polite"></p>
+      <input type="hidden" name="startedAt" value="" data-started-at />
+      <div class="hp-field" aria-hidden="true">
+        <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+      </div>
 
-      <sl-input
-        name="email"
-        type="text"
-        label={messages.pages.contact.email}
-        placeholder={messages.pages.contact.emailPlaceholder}
-        autocomplete="email"
-      ></sl-input>
-      <p class="field-error" data-error-for="email" aria-live="polite"></p>
+      <div class="field">
+        <sl-input
+          name="name"
+          label={messages.pages.contact.name}
+          placeholder={messages.pages.contact.namePlaceholder}
+          autocomplete="name"
+        ></sl-input>
+        <p class="field-error" data-error-for="name" aria-live="polite"></p>
+      </div>
 
-      <sl-input
-        name="phone"
-        type="tel"
-        label={messages.pages.contact.phone}
-        placeholder={messages.pages.contact.phonePlaceholder}
-        help-text={messages.pages.contact.phoneHelp}
-        autocomplete="tel"
-      ></sl-input>
-      <p class="field-error" data-error-for="phone" aria-live="polite"></p>
+      <div class="field">
+        <sl-input
+          name="email"
+          type="text"
+          inputmode="email"
+          label={messages.pages.contact.email}
+          placeholder={messages.pages.contact.emailPlaceholder}
+          autocomplete="email"
+        ></sl-input>
+        <p class="field-error" data-error-for="email" aria-live="polite"></p>
+      </div>
 
-      <sl-textarea
-        name="message"
-        label={messages.pages.contact.message}
-        placeholder={messages.pages.contact.messagePlaceholder}
-        rows="5"
-      ></sl-textarea>
-      <p class="field-error" data-error-for="message" aria-live="polite"></p>
+      <div class="field field--full">
+        <sl-textarea
+          name="message"
+          label={messages.pages.contact.message}
+          placeholder={messages.pages.contact.messagePlaceholder}
+          rows="6"
+          resize="vertical"
+        ></sl-textarea>
+        <p class="field-error" data-error-for="message" aria-live="polite"></p>
+      </div>
 
-      <sl-button type="submit" size="medium" class="contact-button">{messages.pages.contact.send}</sl-button>
+      <div class="form-actions field--full">
+        <p class="form-note">
+          {messages.pages.contact.privacyNote}{' '}
+          <a href={`/${lang}/privacy/`}>{messages.footer.privacyLink}</a>
+        </p>
+        <sl-button type="submit" size="large" pill class="contact-button">
+          <span data-button-label>{messages.pages.contact.send}</span>
+          <sl-icon slot="suffix" library="fa" name="fas-long-arrow-alt-right" aria-hidden="true"></sl-icon>
+        </sl-button>
+      </div>
     </form>
   </section>
 </Layout>
 
 <style>
   .contact-wrapper {
-    width: min(760px, 100%);
+    width: min(720px, 100%);
     display: flex;
     flex-direction: column;
     gap: var(--margin-block);
   }
 
   .contact-intro {
-    margin: 0;
+    margin: 0 auto;
+    max-width: 60ch;
     color: var(--color-text-muted);
     text-align: center;
     line-height: var(--line-height-relaxed);
     font-size: var(--text-size-base);
   }
 
+  /* Card */
   .contact-form {
+    /* Shoelace design tokens, scoped to this form */
+    --sl-input-height-medium: 3rem;
+    --sl-input-font-size-medium: 1rem;
+    --sl-input-spacing-medium: 1rem;
+    --sl-input-border-radius-medium: 0.75rem;
+    --sl-input-border-width: 1px;
+    --sl-input-color: var(--color-text-main);
+    --sl-input-placeholder-color: #8b9479;
+    --sl-input-background-color: #fffdf8;
+    --sl-input-background-color-hover: #fffdf8;
+    --sl-input-background-color-focus: #ffffff;
+    --sl-input-border-color: var(--color-border-strong);
+    --sl-input-border-color-hover: rgba(52, 65, 40, 0.4);
+    --sl-input-border-color-focus: var(--color-brand-text);
+    --sl-input-focus-ring-color: rgba(88, 109, 63, 0.18);
+    --sl-focus-ring-width: 4px;
+    --sl-input-label-color: var(--color-text-secondary);
+    --sl-input-label-font-size-medium: var(--text-size-sm);
+    --sl-input-required-content-color: var(--color-error);
+
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background-color: var(--color-background-card);
+    border: 1px solid var(--color-border);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 1px 2px rgba(52, 65, 40, 0.04),
+      0 18px 40px -24px rgba(52, 65, 40, 0.25);
+    text-align: left;
+  }
+
+  .field {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
-    width: min(620px, 100%);
-    margin: 0 auto;
+    gap: 0.4rem;
+    min-width: 0;
   }
 
-  .contact-button::part(base) {
-    width: 100%;
-    background-color: var(--color-brand);
-    color: var(--color-text-main);
-    border: 0;
+  .field--full,
+  .notice {
+    grid-column: 1 / -1;
+  }
+
+  sl-input::part(form-control-label),
+  sl-textarea::part(form-control-label) {
+    margin-bottom: 0.45rem;
     font-weight: var(--font-weight-medium);
+    letter-spacing: 0.01em;
   }
 
-  .contact-button::part(base):hover {
-    background-color: var(--color-brand-hover);
+  sl-input::part(base),
+  sl-textarea::part(base) {
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  sl-textarea::part(textarea) {
+    line-height: var(--line-height-relaxed);
+    padding-block: 0.75rem;
+  }
+
+  /* Invalid state (set by the form script) */
+  sl-input.is-invalid,
+  sl-textarea.is-invalid {
+    --sl-input-border-color: var(--color-error);
+    --sl-input-border-color-hover: var(--color-error);
+    --sl-input-border-color-focus: var(--color-error);
+    --sl-input-focus-ring-color: rgba(182, 59, 59, 0.15);
   }
 
   .field-error {
     margin: 0;
     font-size: var(--text-size-xs);
     color: var(--color-error);
-    min-height: 0;
     line-height: 1.4;
   }
 
-  .form-error {
-    margin: 0 0 0.5rem;
+  .field-error:empty {
+    display: none;
+  }
+
+  /* Form-level notices */
+  .notice {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid;
     font-size: var(--text-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  .notice:empty {
+    display: none;
+  }
+
+  .notice--error {
     color: var(--color-error);
-    font-weight: var(--font-weight-medium);
-    text-align: left;
-    min-height: 0;
-    line-height: 1.4;
+    background-color: rgba(182, 59, 59, 0.06);
+    border-color: rgba(182, 59, 59, 0.25);
   }
 
-  .form-success {
-    margin: 0 0 0.5rem;
-    font-size: var(--text-size-sm);
+  .notice--success {
     color: var(--color-success);
-    font-weight: var(--font-weight-medium);
-    text-align: left;
-    min-height: 0;
-    line-height: 1.4;
+    background-color: rgba(61, 113, 61, 0.07);
+    border-color: rgba(61, 113, 61, 0.25);
   }
 
-  sl-input.is-invalid::part(base),
-  sl-textarea.is-invalid::part(base) {
-    border-color: var(--color-error);
-    box-shadow: 0 0 0 1px var(--color-error) inset;
+  /* Footer of the card: privacy note + submit */
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .form-note {
+    margin: 0;
+    font-size: var(--text-size-xs);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .form-note a {
+    color: var(--color-brand-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .form-note a:hover {
+    color: var(--color-brand-hover);
+  }
+
+  .contact-button {
+    flex-shrink: 0;
+  }
+
+  .contact-button::part(base) {
+    padding-inline: 0.75rem;
+    background-color: var(--color-brand-dark);
+    border: 0;
+    color: var(--color-background);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.02em;
+    transition:
+      background-color 0.2s ease,
+      transform 0.2s ease;
+  }
+
+  .contact-button::part(base):hover {
+    background-color: var(--color-brand-text);
+    color: var(--color-background);
+  }
+
+  .contact-button::part(base):active {
+    transform: translateY(1px);
+  }
+
+  .contact-button::part(suffix) {
+    transition: transform 0.2s ease;
+  }
+
+  .contact-button:hover::part(suffix) {
+    transform: translateX(3px);
   }
 
   .contact-form.is-submitting {
     opacity: 0.88;
+  }
+
+  .hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .contact-form {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      text-align: center;
+    }
+
+    .contact-button::part(base) {
+      width: 100%;
+    }
   }
 </style>
 
 <script>
   import { actions, isInputError } from 'astro:actions';
 
-  const form = document.querySelector('.contact-form');
+  function initContactForm() {
+    const form = document.querySelector('.contact-form');
 
-  if (form instanceof HTMLFormElement) {
-    const submitButton = form.querySelector('sl-button[type="submit"]');
-    const defaultButtonText = submitButton ? submitButton.textContent || '' : '';
+    if (form instanceof HTMLFormElement && !form.dataset.initialized) {
+      form.dataset.initialized = 'true';
 
-    const isEs = form.querySelector('input[name="lang"]')?.getAttribute('value') === 'es';
-    const genericError = form.dataset.unexpectedError || 'Unexpected error';
-    const genericNetworkError = form.dataset.networkError || genericError;
-    const genericTimeoutError = form.dataset.timeoutError || genericError;
+      const stampStartedAt = () => {
+        const startedAtInput = form.querySelector('[data-started-at]');
+        if (startedAtInput instanceof HTMLInputElement) {
+          startedAtInput.value = String(Date.now());
+        }
+      };
+      stampStartedAt();
 
-    const setSubmitting = (submitting: boolean) => {
-      form.classList.toggle('is-submitting', submitting);
-      if (submitButton) {
-        (submitButton as HTMLButtonElement).disabled = submitting;
-        (submitButton as any).loading = submitting;
-        submitButton.textContent = submitting
-          ? form.dataset.sendingLabel || (isEs ? 'Enviando...' : 'Sending...')
-          : defaultButtonText;
-      }
-    };
+      const submitButton = form.querySelector('sl-button[type="submit"]');
+      // Only the label text changes while sending; the suffix icon stays.
+      const buttonLabel = submitButton?.querySelector('[data-button-label]');
+      const defaultButtonText = buttonLabel?.textContent || '';
 
-    const clearNotices = () => {
-      const formErrorEl = form.querySelector('[data-form-error]');
-      if (formErrorEl instanceof HTMLElement) {
-        formErrorEl.textContent = '';
-      }
-      const formSuccessEl = form.querySelector('[data-form-success]');
-      if (formSuccessEl instanceof HTMLElement) {
-        formSuccessEl.textContent = '';
-      }
-    };
+      const isEs = form.querySelector('input[name="lang"]')?.getAttribute('value') === 'es';
+      const genericError = form.dataset.unexpectedError || 'Unexpected error';
+      const genericNetworkError = form.dataset.networkError || genericError;
+      const genericTimeoutError = form.dataset.timeoutError || genericError;
 
-    const clearErrors = () => {
-      clearNotices();
+      const setSubmitting = (submitting: boolean) => {
+        form.classList.toggle('is-submitting', submitting);
+        if (submitButton) {
+          (submitButton as HTMLButtonElement).disabled = submitting;
+          (submitButton as any).loading = submitting;
+          if (buttonLabel) {
+            buttonLabel.textContent = submitting
+              ? form.dataset.sendingLabel || (isEs ? 'Enviando...' : 'Sending...')
+              : defaultButtonText;
+          }
+        }
+      };
 
-      const errorEls = form.querySelectorAll('[data-error-for]');
-      for (const errorEl of errorEls) {
+      const clearNotices = () => {
+        const formErrorEl = form.querySelector('[data-form-error]');
+        if (formErrorEl instanceof HTMLElement) {
+          formErrorEl.textContent = '';
+        }
+        const formSuccessEl = form.querySelector('[data-form-success]');
+        if (formSuccessEl instanceof HTMLElement) {
+          formSuccessEl.textContent = '';
+        }
+      };
+
+      const clearErrors = () => {
+        clearNotices();
+
+        const errorEls = form.querySelectorAll('[data-error-for]');
+        for (const errorEl of errorEls) {
+          if (errorEl instanceof HTMLElement) {
+            errorEl.textContent = '';
+          }
+        }
+
+        const fields = form.querySelectorAll('sl-input, sl-textarea');
+        for (const field of fields) {
+          field.classList.remove('is-invalid');
+          field.removeAttribute('aria-invalid');
+          if (typeof (field as any).setCustomValidity === 'function') {
+            (field as any).setCustomValidity('');
+          }
+        }
+      };
+
+      const setFieldError = (name: string, message: string) => {
+        const errorEl = form.querySelector(`[data-error-for="${name}"]`);
+        if (errorEl instanceof HTMLElement) {
+          errorEl.textContent = message;
+        }
+
+        const field = form.querySelector(`[name="${name}"]`);
+        if (field && typeof (field as any).setCustomValidity === 'function') {
+          (field as any).setCustomValidity(message);
+        }
+        if (field instanceof HTMLElement) {
+          field.classList.add('is-invalid');
+          field.setAttribute('aria-invalid', 'true');
+        }
+      };
+
+      const setFormError = (message: string) => {
+        clearNotices();
+        const formErrorEl = form.querySelector('[data-form-error]');
+        if (formErrorEl instanceof HTMLElement) {
+          formErrorEl.textContent = message;
+        }
+      };
+
+      const setFormSuccess = (message: string) => {
+        clearNotices();
+        const formSuccessEl = form.querySelector('[data-form-success]');
+        if (formSuccessEl instanceof HTMLElement) {
+          formSuccessEl.textContent = message;
+        }
+      };
+
+      const focusFirstInvalidField = () => {
+        const firstInvalid = form.querySelector('sl-input.is-invalid, sl-textarea.is-invalid');
+        if (firstInvalid instanceof HTMLElement) {
+          if (typeof firstInvalid.focus === 'function') {
+            firstInvalid.focus();
+          }
+          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      };
+
+      const normalizeMessages = (value: unknown) => {
+        if (Array.isArray(value)) {
+          return value.filter((msg) => typeof msg === 'string' && msg.length > 0);
+        }
+        if (typeof value === 'string' && value.length > 0) {
+          return [value];
+        }
+        return [];
+      };
+
+      const withTimeout = (promise: Promise<unknown>, ms: number) =>
+        Promise.race([
+          promise,
+          new Promise((_, reject) => {
+            window.setTimeout(() => reject(new Error('ACTION_TIMEOUT')), ms);
+          }),
+        ]);
+
+      form.addEventListener('input', (event) => {
+        const target = event.target;
+        if (!(target instanceof HTMLElement)) return;
+        const name = target.getAttribute('name');
+        if (!name) return;
+
+        const errorEl = form.querySelector(`[data-error-for="${name}"]`);
         if (errorEl instanceof HTMLElement) {
           errorEl.textContent = '';
         }
-      }
 
-      const fields = form.querySelectorAll('sl-input, sl-textarea');
-      for (const field of fields) {
-        field.classList.remove('is-invalid');
-        field.removeAttribute('aria-invalid');
-        if (typeof (field as any).setCustomValidity === 'function') {
-          (field as any).setCustomValidity('');
+        target.classList.remove('is-invalid');
+        target.removeAttribute('aria-invalid');
+
+        if (typeof (target as any).setCustomValidity === 'function') {
+          (target as any).setCustomValidity('');
         }
-      }
-    };
+      });
 
-    const setFieldError = (name: string, message: string) => {
-      const errorEl = form.querySelector(`[data-error-for="${name}"]`);
-      if (errorEl instanceof HTMLElement) {
-        errorEl.textContent = message;
-      }
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearErrors();
+        setSubmitting(true);
 
-      const field = form.querySelector(`[name="${name}"]`);
-      if (field && typeof (field as any).setCustomValidity === 'function') {
-        (field as any).setCustomValidity(message);
-      }
-      if (field instanceof HTMLElement) {
-        field.classList.add('is-invalid');
-        field.setAttribute('aria-invalid', 'true');
-      }
-    };
+        try {
+          const formData = new FormData(form);
+          const { data, error } = await withTimeout(actions.contact(formData), 12000) as any;
 
-    const setFormError = (message: string) => {
-      clearNotices();
-      const formErrorEl = form.querySelector('[data-form-error]');
-      if (formErrorEl instanceof HTMLElement) {
-        formErrorEl.textContent = message;
-      }
-    };
+          if (error) {
+            if (isInputError(error)) {
+              let hasFieldErrors = false;
 
-    const setFormSuccess = (message: string) => {
-      clearNotices();
-      const formSuccessEl = form.querySelector('[data-form-success]');
-      if (formSuccessEl instanceof HTMLElement) {
-        formSuccessEl.textContent = message;
-      }
-    };
+              for (const [fieldName, rawMessages] of Object.entries(error.fields ?? {})) {
+                const msgs = normalizeMessages(rawMessages);
+                if (msgs.length === 0) continue;
+                hasFieldErrors = true;
+                setFieldError(fieldName, msgs[0]);
+              }
 
-    const focusFirstInvalidField = () => {
-      const firstInvalid = form.querySelector('sl-input.is-invalid, sl-textarea.is-invalid');
-      if (firstInvalid instanceof HTMLElement) {
-        if (typeof firstInvalid.focus === 'function') {
-          firstInvalid.focus();
-        }
-        firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    };
-
-    const normalizeMessages = (value: unknown) => {
-      if (Array.isArray(value)) {
-        return value.filter((msg) => typeof msg === 'string' && msg.length > 0);
-      }
-      if (typeof value === 'string' && value.length > 0) {
-        return [value];
-      }
-      return [];
-    };
-
-    const withTimeout = (promise: Promise<unknown>, ms: number) =>
-      Promise.race([
-        promise,
-        new Promise((_, reject) => {
-          window.setTimeout(() => reject(new Error('ACTION_TIMEOUT')), ms);
-        }),
-      ]);
-
-    form.addEventListener('input', (event) => {
-      const target = event.target;
-      if (!(target instanceof HTMLElement)) return;
-      const name = target.getAttribute('name');
-      if (!name) return;
-
-      const errorEl = form.querySelector(`[data-error-for="${name}"]`);
-      if (errorEl instanceof HTMLElement) {
-        errorEl.textContent = '';
-      }
-
-      target.classList.remove('is-invalid');
-      target.removeAttribute('aria-invalid');
-
-      if (typeof (target as any).setCustomValidity === 'function') {
-        (target as any).setCustomValidity('');
-      }
-    });
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearErrors();
-      setSubmitting(true);
-
-      try {
-        const formData = new FormData(form);
-        const { data, error } = await withTimeout(actions.contact(formData), 12000) as any;
-
-        if (error) {
-          if (isInputError(error)) {
-            let hasFieldErrors = false;
-
-            for (const [fieldName, rawMessages] of Object.entries(error.fields ?? {})) {
-              const msgs = normalizeMessages(rawMessages);
-              if (msgs.length === 0) continue;
-              hasFieldErrors = true;
-              setFieldError(fieldName, msgs[0]);
-            }
-
-            if (!hasFieldErrors && Array.isArray(error.issues)) {
-              for (const issue of error.issues) {
-                const path = Array.isArray(issue.path) ? issue.path[0] : undefined;
-                const msg = issue.message;
-                if (typeof path === 'string' && msg) {
-                  hasFieldErrors = true;
-                  setFieldError(path, msg);
+              if (!hasFieldErrors && Array.isArray(error.issues)) {
+                for (const issue of error.issues) {
+                  const path = Array.isArray(issue.path) ? issue.path[0] : undefined;
+                  const msg = issue.message;
+                  if (typeof path === 'string' && msg) {
+                    hasFieldErrors = true;
+                    setFieldError(path, msg);
+                  }
                 }
               }
-            }
 
-            if (!hasFieldErrors) {
-              setFormError(
-                error.message.length > 0
-                  ? error.message
-                  : genericError,
-              );
-            } else {
-              focusFirstInvalidField();
+              if (!hasFieldErrors) {
+                setFormError(
+                  error.message.length > 0
+                    ? error.message
+                    : genericError,
+                );
+              } else {
+                focusFirstInvalidField();
+              }
+              return;
             }
+            setFormError(
+              typeof error.message === 'string' && error.message.length > 0
+                ? error.message
+                : genericError,
+            );
             return;
           }
-          setFormError(
-            typeof error.message === 'string' && error.message.length > 0
-              ? error.message
-              : genericError,
-          );
-          return;
-        }
 
-        if (data?.ok) {
-          const successMessage =
-            typeof data.message === 'string' && data.message.length > 0
-              ? `${form.dataset.successTitle || ''} ${data.message}`.trim()
-              : form.dataset.successTitle || '';
-          setFormSuccess(successMessage);
-          form.reset();
-          return;
+          if (data?.ok) {
+            const successMessage =
+              typeof data.message === 'string' && data.message.length > 0
+                ? `${form.dataset.successTitle || ''} ${data.message}`.trim()
+                : form.dataset.successTitle || '';
+            setFormSuccess(successMessage);
+            form.reset();
+            stampStartedAt();
+            return;
+          }
+          setFormError(genericError);
+        } catch (caughtError) {
+          if (caughtError instanceof Error && caughtError.message === 'ACTION_TIMEOUT') {
+            setFormError(genericTimeoutError);
+            return;
+          }
+          if (!navigator.onLine) {
+            setFormError(genericNetworkError);
+            return;
+          }
+          setFormError(genericError);
+        } finally {
+          setSubmitting(false);
         }
-        setFormError(genericError);
-      } catch (caughtError) {
-        if (caughtError instanceof Error && caughtError.message === 'ACTION_TIMEOUT') {
-          setFormError(genericTimeoutError);
-          return;
-        }
-        if (!navigator.onLine) {
-          setFormError(genericNetworkError);
-          return;
-        }
-        setFormError(genericError);
-      } finally {
-        setSubmitting(false);
-      }
-    });
+      });
+    }
   }
+
+  document.addEventListener('astro:page-load', initContactForm);
 </script>
