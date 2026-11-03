@@ -1,4 +1,7 @@
 ---
+// DISABLED: the leading "_" keeps this page out of the build until the portfolio is ready.
+// Before enabling (rename to portfolio.astro): replace the Unsplash placeholder image with local
+// images (the CSP only allows images from this domain) and add the link back to the header menu.
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
@@ -13,7 +16,7 @@ const messages = t(lang);
 const portfolio = await getCollection('portfolio');
 ---
 
-<Layout title={messages.pages.portfolio.title} lang={lang} description={lang === 'es' ? 'Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.' : 'Projects and applications developed, showcasing work in technology in service of the common good.'}>
+<Layout title={messages.pages.portfolio.title} lang={lang} noindex description={lang === 'es' ? 'Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.' : 'Projects and applications developed, showcasing work in technology in service of the common good.'}>
   <div class="portfolio-grid">
     {portfolio.map((project) => (
       <sl-card class="card-overview">
@@ -75,13 +78,14 @@ const portfolio = await getCollection('portfolio');
 
   .portfolio-button::part(base) {
     background-color: var(--color-brand);
-    color: var(--color-text-main);
+    color: var(--color-brand-darker);
     border: 0;
     font-weight: var(--font-weight-medium);
   }
 
   .portfolio-button::part(base):hover {
     background-color: var(--color-brand-hover);
+    color: var(--color-background);
   }
 
   .card-overview [slot='footer'] {

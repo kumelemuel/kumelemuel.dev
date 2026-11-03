@@ -6,6 +6,10 @@ type Messages = {
     who: string;
     articles: string;
     contact: string;
+    openMenu: string;
+    closeMenu: string;
+    mainNav: string;
+    switchLanguage: Record<Lang, string>;
   };
   footer: {
     privacyLink: string;
@@ -22,8 +26,18 @@ type Messages = {
       card2Body: string;
       card3Title: string;
       card3Body: string;
+      exploreSectionTitle: string;
+      exploreSectionText: string;
+      exploreImageAlt: string;
+      designSectionTitle: string;
+      designSectionText: string;
+      designImageAlt: string;
       craftSectionTitle: string;
       craftSectionText: string;
+      craftImageAlt: string;
+      bloomSectionTitle: string;
+      bloomSectionText: string;
+      bloomImageAlt: string;
     };
     who: {
       title: string;
@@ -48,13 +62,11 @@ type Messages = {
       namePlaceholder: string;
       email: string;
       emailPlaceholder: string;
-      phone: string;
-      phonePlaceholder: string;
-      phoneHelp: string;
       message: string;
       messagePlaceholder: string;
       send: string;
       submitUnexpectedError: string;
+      privacyNote: string;
     };
     privacy: {
       title: string;
@@ -70,6 +82,10 @@ export const ui: Record<Lang, Messages> = {
       who: "Quién soy",
       articles: "Artículos",
       contact: "Contacto",
+      openMenu: "Abrir menú",
+      closeMenu: "Cerrar menú",
+      mainNav: "Navegación principal",
+      switchLanguage: { es: "Ver en español", en: "Ver en inglés" },
     },
     footer: {
       privacyLink: "Política de privacidad",
@@ -87,8 +103,18 @@ export const ui: Record<Lang, Messages> = {
         card2Body: "Concibo cada solución como un todo, integrando lo técnico y lo humano desde el diseño.",
         card3Title: "Propósito",
         card3Body: "Tecnología al servicio del bien común y lo colectivo.",
+        exploreSectionTitle: "exploración",
+        exploreSectionText: "Todo proyecto comienza con preguntas, no con respuestas. Antes de escribir una línea de código me detengo a entender el problema, a las personas que lo viven y el contexto que lo sostiene. Explorar es investigar, prototipar y equivocarse a tiempo, para que las decisiones importantes se tomen con información y no por inercia.",
+        exploreImageAlt: "Ilustración de exploración",
+        designSectionTitle: "diseño",
+        designSectionText: "Diseñar es decidir qué forma tendrá un sistema y, con ello, qué permite y qué restringe. Modelo dominios, defino límites y elijo patrones pensando en quienes lo usarán y en quienes lo mantendrán mañana. Un buen diseño no se nota: hace que lo correcto sea lo más fácil de hacer.",
+        designImageAlt: "Ilustración de diseño de software",
         craftSectionTitle: "artesanía",
         craftSectionText: "La artesanía del software va más allá de escribir código que funcione. Implica comprender el contexto, anticipar consecuencias y diseñar soluciones que perduren. Cada decisión arquitectónica, cada nombre de variable, cada patrón elegido refleja una cosmovisión sobre cómo deberían interactuar las personas y los sistemas. El código no es neutral: siempre estructura posibilidades. Mi trabajo busca que esas posibilidades sean las correctas.",
+        craftImageAlt: "Ilustración de artesanía del software",
+        bloomSectionTitle: "florecer",
+        bloomSectionText: "El software bien cuidado no termina con su lanzamiento: florece. Crece junto a las comunidades que lo habitan, se adapta sin perder su esencia y deja espacio para que otros construyan sobre él. Ese es el horizonte de Kumelemuel: sistemas abiertos, sostenibles y con sentido, que sigan aportando mucho después de haber sido escritos.",
+        bloomImageAlt: "Ilustración de un jardín de flores silvestres",
       },
       who: {
         title: "Quién soy",
@@ -98,7 +124,7 @@ export const ui: Record<Lang, Messages> = {
       articles: {
         title: "Artículos",
         read: "Leer artículo",
-        empty: "No se encontraron artículos en src/data/articles.",
+        empty: "Pronto publicaré los primeros artículos. Vuelve en unos días.",
         published: "Publicado",
         tags: "Tags",
       },
@@ -110,94 +136,82 @@ export const ui: Record<Lang, Messages> = {
       contact: {
         title: "Contacto",
         intro:
-          "Estoy abierto a colaborar en proyectos que valoren el criterio, la claridad y el impacto humano del software. Si crees que podemos construir algo con sentido, conversemos.",
+          "Este es un espacio personal. Si algo de lo que escribo te hizo pensar, tienes una pregunta o simplemente quieres conversar sobre software, open source o gobernanza digital, escríbeme. Leo y respondo cada mensaje personalmente.",
         name: "Tu nombre",
         namePlaceholder: "Ej. Roberto Nesta",
         email: "Correo electrónico",
         emailPlaceholder: "tu-correo@dominio.com",
-        phone: "WhatsApp (opcional)",
-        phonePlaceholder: "+52 55 1234 5678",
-        phoneHelp: "Incluye lada o código de país para contactarte fácilmente.",
-        message: "Cuéntame sobre tu proyecto",
-        messagePlaceholder: "Comparte contexto, objetivo y tiempos estimados...",
+        message: "Tu mensaje",
+        messagePlaceholder: "¿Sobre qué te gustaría conversar?",
         send: "Enviar mensaje",
         submitUnexpectedError: "Ocurrió un error inesperado. Inténtalo de nuevo.",
+        privacyNote: "Tus datos solo se usan para responderte.",
       },
       privacy: {
         title: "Política de Privacidad",
         bodyHtml:
           `<section>
-  <h2>1. Identidad del responsable</h2>
+  <p><em>Última actualización: 3 de noviembre de 2026.</em></p>
+
+  <h2>1. Un sitio personal</h2>
   <p>
-    En cumplimiento con la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP),
-    se informa que el responsable del tratamiento de los datos personales recabados a través de este sitio web es <strong>kumelemuel</strong>.
+    kumelemuel.dev es el sitio personal de <strong>Diego Arenas</strong> (Kumelemuel). No es un negocio:
+    no ofrece servicios, no vende productos y no tiene fines comerciales.
   </p>
   <p>
-    Para cualquier asunto relacionado con privacidad y protección de datos personales, puedes contactar mediante los medios publicados en este sitio.
+    Si tienes cualquier duda sobre tu información, puedes escribir a través del
+    <a href="/es/contact/">formulario de contacto</a>.
   </p>
 
-  <h2>2. Datos personales recabados</h2>
+  <h2>2. Qué datos recibo</h2>
+  <p>Solo los que tú decides enviar en el formulario de contacto:</p>
+  <ul>
+    <li>Tu nombre</li>
+    <li>Tu correo electrónico</li>
+    <li>El contenido de tu mensaje</li>
+  </ul>
+  <p>Te pido no incluir datos sensibles en tu mensaje.</p>
+
+  <h2>3. Para qué los uso</h2>
   <p>
-    A través del formulario de contacto se podrán solicitar los siguientes datos personales:
+    Únicamente para leer tu mensaje y responderte de forma personal. Tus datos no se usan con fines comerciales
+    ni publicitarios, no se venden, no se comparten con terceros y no se publican.
+  </p>
+
+  <h2>4. Cuánto tiempo se conservan</h2>
+  <p>
+    El sitio no tiene una base de datos. Tu mensaje llega a mi correo personal y se conserva ahí
+    mientras dure la conversación. El servicio de envío de correo puede guardar temporalmente
+    un registro técnico del envío, conforme a sus propias políticas.
+  </p>
+
+  <h2>5. Servicios que intervienen</h2>
+  <p>
+    Para que el sitio funcione se usan los siguientes servicios, que pueden procesar datos en servidores
+    ubicados fuera de México (principalmente en Estados Unidos):
   </p>
   <ul>
-    <li>Nombre</li>
-    <li>Correo electrónico</li>
-    <li>Número de WhatsApp (opcional)</li>
+    <li><strong>Vercel</strong>: alojamiento del sitio y ejecución del formulario de contacto.</li>
+    <li><strong>Resend</strong>: envío del correo con tu mensaje.</li>
+    <li><strong>Google (Gmail)</strong>: recepción del correo.</li>
+    <li><strong>Vercel Web Analytics</strong>: estadísticas agregadas y anónimas de visitas (páginas vistas, país, tipo de dispositivo), sin cookies ni identificadores persistentes.</li>
   </ul>
-  <p>No se recaban datos personales sensibles.</p>
 
-  <h2>3. Finalidad del tratamiento</h2>
+  <h2>6. Tus datos, tu decisión</h2>
   <p>
-    Los datos personales proporcionados serán utilizados exclusivamente para atender y responder
-    mensajes o solicitudes enviadas voluntariamente por el usuario.
-  </p>
-  <p>
-    La información enviada a través del formulario es transmitida por correo electrónico al responsable
-    del sitio con el único propósito de dar respuesta a la comunicación recibida.
-  </p>
-  <p>
-    No se elaboran perfiles, no se utilizan los datos para fines publicitarios masivos
-    y no se realizan tratamientos automatizados.
+    Puedes pedirme en cualquier momento que te diga qué datos tuyos tengo, que los corrija o que borre
+    tus mensajes. Escríbeme por el <a href="/es/contact/">formulario de contacto</a> indicando el correo
+    con el que me escribiste; te responderé en un plazo máximo de 20 días hábiles.
   </p>
 
-  <h2>4. Almacenamiento de la información</h2>
+  <h2>7. Cookies</h2>
   <p>
-    Este sitio no cuenta con base de datos ni almacena la información enviada a través del formulario.
-    Los datos son recibidos únicamente vía correo electrónico para efectos de respuesta directa.
+    Este sitio no utiliza cookies. La analítica de visitas funciona sin cookies y no permite identificarte.
   </p>
 
-  <h2>5. Transferencias de datos</h2>
+  <h2>8. Cambios</h2>
   <p>
-    Los datos personales no serán vendidos, cedidos ni transferidos a terceros, salvo obligación legal
-    o requerimiento de autoridad competente.
-  </p>
-  <p>
-    El servicio de correo electrónico utilizado para recibir los mensajes puede implicar
-    tratamiento técnico por parte del proveedor correspondiente, conforme a sus propias políticas de privacidad.
-  </p>
-
-  <h2>6. Derechos ARCO</h2>
-  <p>
-    De conformidad con la LFPDPPP, el titular puede solicitar información sobre el tratamiento de sus datos
-    mediante los medios de contacto publicados en este sitio.
-  </p>
-  <p>
-    Dado que el sitio no mantiene una base de datos estructurada ni almacenamiento sistemático
-    de información personal, los derechos de rectificación, cancelación u oposición
-    aplicarán en la medida en que resulte materialmente posible respecto del tratamiento realizado.
-  </p>
-
-  <h2>7. Uso de cookies</h2>
-  <p>
-    Este sitio puede utilizar cookies técnicas necesarias para su correcto funcionamiento.
-    No se utilizan mecanismos de rastreo invasivo ni publicidad comportamental.
-  </p>
-
-  <h2>8. Modificaciones</h2>
-  <p>
-    La presente Política de Privacidad puede actualizarse para reflejar cambios normativos o técnicos.
-    La versión vigente será siempre la publicada en este sitio.
+    Si este aviso cambia, la versión vigente será siempre la publicada aquí, con su fecha de última actualización.
   </p>
 </section>`,
       },
@@ -209,6 +223,10 @@ export const ui: Record<Lang, Messages> = {
       who: "Who am I?",
       articles: "Articles",
       contact: "Contact",
+      openMenu: "Open menu",
+      closeMenu: "Close menu",
+      mainNav: "Main navigation",
+      switchLanguage: { es: "View in Spanish", en: "View in English" },
     },
     footer: {
       privacyLink: "Privacy policy",
@@ -226,8 +244,18 @@ export const ui: Record<Lang, Messages> = {
         card2Body: "I conceive each solution as a whole, integrating technical and human concerns from the design stage.",
         card3Title: "Purpose",
         card3Body: "Technology in service of the common good and the collective.",
+        exploreSectionTitle: "exploration",
+        exploreSectionText: "Every project begins with questions, not answers. Before writing a single line of code, I take time to understand the problem, the people who live it, and the context that sustains it. Exploring means researching, prototyping, and failing early, so that important decisions are made with information rather than by inertia.",
+        exploreImageAlt: "Exploration illustration",
+        designSectionTitle: "design",
+        designSectionText: "Designing is deciding what shape a system will take and, with it, what it enables and what it restricts. I model domains, define boundaries, and choose patterns with both the people who will use it and those who will maintain it tomorrow in mind. Good design goes unnoticed: it makes the right thing the easiest thing to do.",
+        designImageAlt: "Software design illustration",
         craftSectionTitle: "craftsmanship",
         craftSectionText: "Software craftsmanship goes beyond writing code that works. It involves understanding context, anticipating consequences, and designing solutions that endure. Every architectural decision, every variable name, every pattern chosen reflects a worldview on how people and systems should interact. Code is not neutral: it always structures possibilities. My work seeks to make those possibilities the right ones.",
+        craftImageAlt: "Software craftsmanship illustration",
+        bloomSectionTitle: "bloom",
+        bloomSectionText: "Well-tended software does not end at launch: it blooms. It grows alongside the communities that inhabit it, adapts without losing its essence, and leaves room for others to build upon it. That is the horizon of Kumelemuel: open, sustainable, and meaningful systems that keep contributing long after they were written.",
+        bloomImageAlt: "Illustration of a wildflower garden",
       },
       who: {
         title: "Who am I?",
@@ -237,7 +265,7 @@ export const ui: Record<Lang, Messages> = {
       articles: {
         title: "Articles",
         read: "Read article",
-        empty: "No articles found in src/data/articles.",
+        empty: "The first articles are coming soon. Check back in a few days.",
         published: "Published",
         tags: "Tags",
       },
@@ -249,94 +277,82 @@ export const ui: Record<Lang, Messages> = {
       contact: {
         title: "Contact",
         intro:
-          "I am open to collaborating on projects that value judgment, clarity, and the human impact of software. If you think we can build something meaningful, let's talk.",
+          "This is a personal space. If something I wrote made you think, you have a question, or you simply want to talk about software, open source, or digital governance, write to me. I read and reply to every message personally.",
         name: "Your name",
         namePlaceholder: "e.g. Robert Nesta",
         email: "Email address",
         emailPlaceholder: "your-email@domain.com",
-        phone: "WhatsApp (optional)",
-        phonePlaceholder: "+1 555 123 4567",
-        phoneHelp: "Include country/area code so I can contact you easily.",
-        message: "Tell me about your project",
-        messagePlaceholder: "Share context, goals, and expected timeline...",
+        message: "Your message",
+        messagePlaceholder: "What would you like to talk about?",
         send: "Send message",
         submitUnexpectedError: "An unexpected error occurred. Please try again.",
+        privacyNote: "Your data is only used to reply to you.",
       },
       privacy: {
         title: "Privacy Policy",
         bodyHtml:
           `<section>
-  <h2>1. Data controller identity</h2>
+  <p><em>Last updated: November 3, 2026.</em></p>
+
+  <h2>1. A personal site</h2>
   <p>
-    In compliance with Mexico's Federal Law on Protection of Personal Data Held by Private Parties (LFPDPPP),
-    the data controller responsible for processing personal data collected through this website is <strong>kumelemuel</strong>.
+    kumelemuel.dev is the personal website of <strong>Diego Arenas</strong> (Kumelemuel). It is not a business:
+    it does not offer services, does not sell products, and has no commercial purpose.
   </p>
   <p>
-    For any matter related to privacy and personal data protection, you can contact us through the channels published on this site.
+    If you have any question about your information, you can write through the
+    <a href="/en/contact/">contact form</a>.
   </p>
 
-  <h2>2. Personal data collected</h2>
+  <h2>2. What data I receive</h2>
+  <p>Only what you choose to send through the contact form:</p>
+  <ul>
+    <li>Your name</li>
+    <li>Your email address</li>
+    <li>The content of your message</li>
+  </ul>
+  <p>Please do not include sensitive data in your message.</p>
+
+  <h2>3. What I use it for</h2>
   <p>
-    Through the contact form, the following personal data may be requested:
+    Only to read your message and reply to you personally. Your data is not used for commercial or advertising
+    purposes, is not sold, is not shared with third parties, and is not published.
+  </p>
+
+  <h2>4. How long it is kept</h2>
+  <p>
+    The site has no database. Your message arrives in my personal inbox and is kept there
+    for as long as the conversation lasts. The email delivery service may temporarily keep
+    a technical log of the delivery, according to its own policies.
+  </p>
+
+  <h2>5. Services involved</h2>
+  <p>
+    The following services are used to run the site and may process data on servers
+    located outside Mexico (mainly in the United States):
   </p>
   <ul>
-    <li>Name</li>
-    <li>Email address</li>
-    <li>WhatsApp number (optional)</li>
+    <li><strong>Vercel</strong>: website hosting and execution of the contact form.</li>
+    <li><strong>Resend</strong>: delivery of the email containing your message.</li>
+    <li><strong>Google (Gmail)</strong>: receipt of the email.</li>
+    <li><strong>Vercel Web Analytics</strong>: aggregated, anonymous visit statistics (page views, country, device type), without cookies or persistent identifiers.</li>
   </ul>
-  <p>No sensitive personal data is collected.</p>
 
-  <h2>3. Purpose of processing</h2>
+  <h2>6. Your data, your choice</h2>
   <p>
-    The personal data provided will be used exclusively to address and respond
-    to messages or requests voluntarily submitted by the user.
-  </p>
-  <p>
-    Information sent through the form is transmitted by email to the site owner
-    for the sole purpose of responding to the communication received.
-  </p>
-  <p>
-    No profiling is carried out, data is not used for mass advertising purposes,
-    and no automated decision-making is performed.
+    You can ask me at any time to tell you what data of yours I have, to correct it, or to delete
+    your messages. Write through the <a href="/en/contact/">contact form</a> including the email address
+    you wrote from; I will reply within a maximum of 20 business days.
   </p>
 
-  <h2>4. Information storage</h2>
+  <h2>7. Cookies</h2>
   <p>
-    This site does not have a database and does not store information sent through the form.
-    Data is received only by email for direct response purposes.
-  </p>
-
-  <h2>5. Data transfers</h2>
-  <p>
-    Personal data will not be sold, assigned, or transferred to third parties, except where legally required
-    or requested by a competent authority.
-  </p>
-  <p>
-    The email service used to receive messages may involve technical processing
-    by the corresponding provider, according to its own privacy policies.
-  </p>
-
-  <h2>6. ARCO rights</h2>
-  <p>
-    In accordance with the LFPDPPP, data subjects may request information about the processing of their data
-    through the contact channels published on this site.
-  </p>
-  <p>
-    Since the site does not maintain a structured database or systematic storage
-    of personal information, rights of rectification, cancellation, or objection
-    will apply to the extent materially possible for the processing carried out.
-  </p>
-
-  <h2>7. Use of cookies</h2>
-  <p>
-    This site may use technical cookies necessary for proper operation.
-    No invasive tracking mechanisms or behavioral advertising are used.
+    This site does not use cookies. Visit analytics works without cookies and cannot identify you.
   </p>
 
   <h2>8. Changes</h2>
   <p>
-    This Privacy Policy may be updated to reflect legal or technical changes.
-    The current version will always be the one published on this site.
+    If this notice changes, the current version will always be the one published here, along with its last updated date.
   </p>
 </section>`,
       },

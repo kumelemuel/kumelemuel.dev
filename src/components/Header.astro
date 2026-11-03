@@ -2,16 +2,23 @@
 import { DEFAULT_LANG, SUPPORTED_LANGS, type Lang, isLang } from "../i18n/config";
 import { t } from "../i18n/ui";
 
-const requestedLang = Astro.props.lang as Lang | undefined;
+interface Props {
+  lang?: string;
+  /** Languages in which the current page exists; others link to that language's home. */
+  alternateLangs?: readonly Lang[];
+}
+
+const requestedLang = Astro.props.lang;
+const alternateLangs = Astro.props.alternateLangs ?? SUPPORTED_LANGS;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 const messages = t(lang);
 
 const basePath = `/${lang}`;
 const menu = [
   { name: messages.header.home, path: `${basePath}/` },
-  { name: messages.header.who, path: `${basePath}/who-am-i` },
-  { name: messages.header.articles, path: `${basePath}/articles` },
-  { name: messages.header.contact, path: `${basePath}/contact` },
+  { name: messages.header.who, path: `${basePath}/who-am-i/` },
+  { name: messages.header.articles, path: `${basePath}/articles/` },
+  { name: messages.header.contact, path: `${basePath}/contact/` },
 ];
 
 const pathname = new URL(Astro.request.url).pathname;
@@ -26,6 +33,9 @@ const isActive = (path: string) => {
 };
 
 const localizedPath = (targetLang: Lang) => {
+  if (!alternateLangs.includes(targetLang)) {
+    return `/${targetLang}/`;
+  }
   const segments = pathname.split("/").filter(Boolean);
   const remainingSegments = isLang(segments[0]) ? segments.slice(1) : segments;
   return `/${targetLang}/${remainingSegments.join("/")}`.replace(/\/$/, "") + "/";
@@ -36,20 +46,36 @@ const localizedPath = (targetLang: Lang) => {
   <a href={basePath + '/'} class="brand">
     <span class="brand-text">Kumelemuel.dev</span>
   </a>
-  <button class="menu-toggle" aria-label="Menu" id="menu-toggle">
-    <sl-icon id="menu-icon" name="fas-bars" library="fa" style="pointer-events: none;"></sl-icon>
+  <button
+    class="menu-toggle"
+    id="menu-toggle"
+    type="button"
+    aria-controls="nav-menu"
+    aria-expanded="false"
+    aria-label={messages.header.openMenu}
+    data-label-open={messages.header.openMenu}
+    data-label-close={messages.header.closeMenu}
+  >
+    <sl-icon id="menu-icon" name="fas-bars" library="fa" aria-hidden="true"></sl-icon>
   </button>
-  <nav class="nav-menu" id="nav-menu">
+  <nav class="nav-menu" id="nav-menu" aria-label={messages.header.mainNav}>
     <div class="nav-content">
       {menu.map((item) => (
-        <a href={item.path} class={isActive(item.path) ? "active" : ""}>{item.name}</a>
+        <a
+          href={item.path}
+          class={isActive(item.path) ? "active" : ""}
+          aria-current={isActive(item.path) ? "page" : undefined}
+        >{item.name}</a>
       ))}
       <div class="lang-switcher">
         {SUPPORTED_LANGS.map((currentLang) => (
           <a
             href={localizedPath(currentLang)}
             class={currentLang === lang ? "active-lang" : ""}
-            aria-label={`Switch language to ${currentLang.toUpperCase()}`}
+            hreflang={currentLang}
+            lang={currentLang}
+            aria-label={messages.header.switchLanguage[currentLang]}
+            aria-current={currentLang === lang ? "true" : undefined}
           >
             {currentLang.toUpperCase()}
           </a>
@@ -61,35 +87,55 @@ const localizedPath = (targetLang: Lang) => {
 </header>
 
 <script>
+  // Module-level controller so listeners from the previous page are removed on each navigation.
+  let controller: AbortController | undefined;
+
   function setupMenu() {
+    controller?.abort();
+    controller = new AbortController();
+    const { signal } = controller;
+
     const menuToggle = document.getElementById('menu-toggle');
     const navMenu = document.getElementById('nav-menu');
     const menuOverlay = document.getElementById('menu-overlay');
     const menuIcon = document.getElementById('menu-icon');
+    if (!menuToggle || !navMenu) return;
 
-    function toggleMenu() {
-      navMenu?.classList.toggle('menu-open');
-      menuOverlay?.classList.toggle('menu-open');
-      document.body.classList.toggle('menu-locked');
-      if (menuIcon?.getAttribute('name') === 'fas-bars') {
-        menuIcon.setAttribute('name', 'fas-times');
-      } else {
-        menuIcon?.setAttribute('name', 'fas-bars');
+    const mobileQuery = window.matchMedia('(max-width: 900px)');
+
+    const setOpen = (open: boolean) => {
+      navMenu.classList.toggle('menu-open', open);
+      menuOverlay?.classList.toggle('menu-open', open);
+      document.body.classList.toggle('menu-locked', open);
+      menuToggle.setAttribute('aria-expanded', String(open));
+      menuToggle.setAttribute(
+        'aria-label',
+        (open ? menuToggle.dataset.labelClose : menuToggle.dataset.labelOpen) ?? 'Menu',
+      );
+      menuIcon?.setAttribute('name', open ? 'fas-times' : 'fas-bars');
+      // Off-screen menu must not be reachable by keyboard or screen readers.
+      navMenu.inert = mobileQuery.matches && !open;
+    };
+
+    const isOpen = () => navMenu.classList.contains('menu-open');
+
+    menuToggle.addEventListener('click', () => setOpen(!isOpen()), { signal });
+    menuOverlay?.addEventListener('click', () => setOpen(false), { signal });
+    navMenu.addEventListener('click', (event) => {
+      if ((event.target as HTMLElement).closest('a')) setOpen(false);
+    }, { signal });
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        menuToggle.focus();
       }
-    }
+    }, { signal });
+    mobileQuery.addEventListener('change', () => setOpen(false), { signal });
 
-    menuToggle?.addEventListener('click', toggleMenu);
-    menuOverlay?.addEventListener('click', toggleMenu);
-
-    navMenu?.addEventListener('click', (e) => {
-      if ((e.target as HTMLElement).tagName === 'A') {
-        toggleMenu();
-      }
-    });
+    setOpen(false);
   }
 
-  setupMenu();
-  document.addEventListener('astro:after-swap', setupMenu);
+  document.addEventListener('astro:page-load', setupMenu);
 </script>
 
 <style>
@@ -124,7 +170,7 @@ const localizedPath = (targetLang: Lang) => {
   }
 
   .brand:hover .brand-text {
-    color: var(--color-brand);
+    color: var(--color-brand-text);
     scale: 1.07;
   }
 
@@ -161,12 +207,12 @@ const localizedPath = (targetLang: Lang) => {
   }
 
   .nav-menu a.active {
-    color: var(--color-brand);
+    color: var(--color-brand-text);
     font-weight: var(--font-weight-bold);
   }
 
   .nav-menu a:hover {
-    color: var(--color-brand);
+    color: var(--color-brand-text);
   }
 
   .lang-switcher {
@@ -184,7 +230,7 @@ const localizedPath = (targetLang: Lang) => {
   }
 
   .active-lang {
-    color: var(--color-brand) !important;
+    color: var(--color-brand-text) !important;
     font-weight: var(--font-weight-bold);
   }
 
@@ -196,6 +242,11 @@ const localizedPath = (targetLang: Lang) => {
     .menu-toggle {
       display: block;
       color: var(--color-text-main);
+    }
+
+    /* The open menu has a dark background: keep the close icon visible. */
+    .menu-toggle[aria-expanded="true"] {
+      color: var(--color-background);
     }
 
     .nav-menu {
@@ -265,7 +316,7 @@ const localizedPath = (targetLang: Lang) => {
       color: var(--color-brand) !important;
     }
 
-    body.menu-locked {
+    :global(body.menu-locked) {
       overflow: hidden;
     }
   }

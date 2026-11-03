@@ -1,8 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
 import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
 import { t } from '../../i18n/ui';
+import { getArticleSlug, getArticlesByLang } from '../../utils/articles';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
@@ -10,11 +10,8 @@ export async function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const messages = t(lang);
-const articles = (await getCollection('articles')).sort(
-  (a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime(),
-);
-const getSlugFromId = (id: string) => id.replace(/\.md$/, '');
-const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US', {
+const articles = await getArticlesByLang(lang);
+const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
@@ -33,7 +30,7 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
           <strong class="article-title">{article.data.title}</strong>
           <div class="article-row">
             <p class="article-description">{article.data.description}</p>
-            <sl-button class="article-button" pill href={`/${lang}/articles/${getSlugFromId(article.id)}/`}>
+            <sl-button class="article-button" pill href={`/${lang}/articles/${getArticleSlug(article)}/`}>
               {messages.pages.articles.read}
             </sl-button>
           </div>
@@ -101,13 +98,14 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
 
   .article-button::part(base) {
     background-color: var(--color-brand);
-    color: var(--color-text-main);
+    color: var(--color-brand-darker);
     border: 0;
     font-weight: var(--font-weight-medium);
   }
 
   .article-button::part(base):hover {
     background-color: var(--color-brand-hover);
+    color: var(--color-background);
   }
 
   .article-button {

@@ -1,37 +1,39 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
-import { getCollection, render } from 'astro:content';
-import { SUPPORTED_LANGS, type Lang } from '../../../i18n/config';
+import { render } from 'astro:content';
+import type { Lang } from '../../../i18n/config';
 import { t } from '../../../i18n/ui';
+import { getLocalizedArticles, type Article } from '../../../utils/articles';
 
 export async function getStaticPaths() {
-  const articles = await getCollection('articles');
+  const entries = await getLocalizedArticles();
 
-  return SUPPORTED_LANGS.flatMap((lang) =>
-    articles.map((article) => ({
-      params: {
-        lang,
-        slug: article.id.replace(/\.md$/, ''),
-      },
-      props: { article, lang },
-    })),
-  );
+  return entries.map(({ article, lang, slug }) => ({
+    params: { lang, slug },
+    props: {
+      article,
+      lang,
+      // Languages that have a translation of this same article.
+      alternateLangs: entries.filter((entry) => entry.slug === slug).map((entry) => entry.lang),
+    },
+  }));
 }
 
-const { article, lang } = Astro.props as {
-  article: Awaited<ReturnType<typeof getCollection<'articles'>>>[number];
+const { article, lang, alternateLangs } = Astro.props as {
+  article: Article;
   lang: Lang;
+  alternateLangs: Lang[];
 };
 const { Content } = await render(article);
 const messages = t(lang);
-const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US', {
+const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 ---
 
-<Layout title={article.data.title} lang={lang} description={article.data.description}>
+<Layout title={article.data.title} lang={lang} description={article.data.description} type="article" {alternateLangs}>
   <article class="article">
     <p class="meta-line">
       <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>
@@ -98,7 +100,7 @@ const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-ES' : 'en-US',
   }
 
   .article-body :global(a) {
-    color: var(--color-brand);
+    color: var(--color-brand-text);
     transition: color 0.2s ease;
   }
 

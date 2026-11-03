@@ -1,0 +1,77 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Static 404: the requested language is unknown at build time, so the page is bilingual.
+---
+
+<Layout
+  title="Página no encontrada · Page not found"
+  description="La página que buscas no existe. The page you are looking for does not exist."
+  lang="es"
+  alternateLangs={[]}
+  noindex
+>
+  <section class="not-found">
+    <p class="code">404</p>
+
+    <div class="message" lang="es">
+      <p>Este sendero no lleva a ninguna parte. Puede que la página se haya movido o que nunca haya existido.</p>
+      <sl-button class="home-button" pill href="/es/">Volver al inicio</sl-button>
+    </div>
+
+    <div class="message" lang="en">
+      <p>This path leads nowhere. The page may have moved, or it never existed.</p>
+      <sl-button class="home-button" pill href="/en/">Back to home</sl-button>
+    </div>
+  </section>
+</Layout>
+
+<style>
+  .not-found {
+    width: min(640px, 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--margin-block);
+    text-align: center;
+  }
+
+  .code {
+    margin: 0;
+    font-family: var(--font-secondary), serif;
+    font-size: var(--text-size-hero);
+    font-weight: var(--font-weight-light);
+    line-height: var(--line-height-tight);
+    color: var(--color-brand-display);
+  }
+
+  .message {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--margin-element);
+  }
+
+  .message p {
+    margin: 0;
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+    font-size: var(--text-size-base);
+  }
+
+  .message[lang='en'] p {
+    color: var(--color-text-muted);
+  }
+
+  .home-button::part(base) {
+    background-color: var(--color-brand);
+    color: var(--color-brand-darker);
+    border: 0;
+    font-weight: var(--font-weight-medium);
+  }
+
+  .home-button::part(base):hover {
+    background-color: var(--color-brand-hover);
+    color: var(--color-background);
+  }
+</style>
