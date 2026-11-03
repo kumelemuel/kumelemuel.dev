@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500&family=DM+Sans:wght@400;500;700&display=swap');
-
 :root {
-  --font-primary: 'DM Sans', system-ui, sans-serif;
-  --font-secondary: 'Cormorant', 'Times New Roman', serif;
+  /* --font-dm-sans and --font-cormorant are defined by Astro's Fonts API (astro.config.mjs). */
+  --font-primary: var(--font-dm-sans);
+  --font-secondary: var(--font-cormorant);
 
   --text-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
   --text-size-sm: clamp(0.8125rem, 0.75rem + 0.3vw, 0.938rem);

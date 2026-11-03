@@ -87,7 +87,7 @@ a {
 }
 
 a:hover {
-  color: var(--color-brand);
+  color: var(--color-brand-text);
 }
 
 strong, b {
@@ -147,6 +147,51 @@ blockquote {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-brand);
+  outline: 2px solid var(--color-brand-text);
   outline-offset: 2px;
+}
+
+/* Page transitions (ClientRouter). Defined here instead of transition:animate so the CSP
+   doesn't need to allow Astro's inline <style>. The header keeps its own group so it stays still. */
+header {
+  view-transition-name: site-header;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.7s;
+}
+
+/* Reserve the final size of Shoelace components before their JS upgrades them
+   (measured from the rendered components) to avoid layout shift (CLS). */
+sl-input:not(:defined) {
+  display: block;
+  min-height: 4.85rem;
+}
+
+sl-textarea:not(:defined) {
+  display: block;
+  min-height: 13rem;
+}
+
+sl-button:not(:defined) {
+  display: inline-block;
+  min-height: 2.5rem;
+  visibility: hidden;
+}
+
+sl-button[size="large"]:not(:defined) {
+  min-height: 3.125rem;
+}
+
+sl-icon:not(:defined) {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+}
+
+/* Shoelace components use the site fonts (higher specificity than the theme's :root). */
+html:root {
+  --sl-font-sans: var(--font-primary);
+  --sl-font-serif: var(--font-secondary);
 }

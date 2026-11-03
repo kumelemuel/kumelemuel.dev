@@ -2,6 +2,11 @@
 import Layout from '../../layouts/Layout.astro';
 import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
 import { t } from '../../i18n/ui';
+import { Image } from 'astro:assets';
+import exploringImage from '../../assets/home/exploring.webp';
+import designingImage from '../../assets/home/designing.webp';
+import craftsmanshipImage from '../../assets/home/craftmanship.webp';
+import bloomImage from '../../assets/home/bloom.webp';
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
@@ -46,36 +51,32 @@ const messages = t(lang);
 
   <section class="explore-split">
     <div class="split-left">
-      <h2 class="explore-title">Exploration</h2>
-      <img
-          src="/assets/exploring.webp"
-          alt="Exploration illustration"
-          loading="lazy"
-          decoding="async"
-          width="500"
-          height="263"
-          class="fade-in"
+      <h2 class="explore-title">{messages.pages.home.exploreSectionTitle}</h2>
+      <Image
+        src={exploringImage}
+        alt={messages.pages.home.exploreImageAlt}
+        loading="lazy"
+        decoding="async"
+        class="fade-in"
       />
     </div>
     <div class="split-right">
-      <p class="explore-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      <p class="explore-text">{messages.pages.home.exploreSectionText}</p>
     </div>
   </section>
 
   <section class="craft-split">
     <div class="split-left">
-      <p class="craft-text">{messages.pages.home.craftSectionText}</p>
+      <p class="craft-text">{messages.pages.home.designSectionText}</p>
     </div>
     <div class="split-right">
-      <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
-      <img
-          src="/assets/designing.webp"
-          alt="Craftsmanship illustration"
-          loading="lazy"
-          decoding="async"
-          width="500"
-          height="286"
-          class="fade-in"
+      <h2 class="craft-title">{messages.pages.home.designSectionTitle}</h2>
+      <Image
+        src={designingImage}
+        alt={messages.pages.home.designImageAlt}
+        loading="lazy"
+        decoding="async"
+        class="fade-in"
       />
     </div>
   </section>
@@ -83,14 +84,12 @@ const messages = t(lang);
   <section class="craft-split">
     <div class="split-left">
       <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
-      <img
-          src="/assets/craftmanship.webp"
-          alt="Craftsmanship illustration"
-          loading="lazy"
-          decoding="async"
-          width="500"
-          height="291"
-          class="fade-in"
+      <Image
+        src={craftsmanshipImage}
+        alt={messages.pages.home.craftImageAlt}
+        loading="lazy"
+        decoding="async"
+        class="fade-in"
       />
     </div>
     <div class="split-right">
@@ -100,14 +99,16 @@ const messages = t(lang);
 
   <section class="bloom-section">
     <div class="bloom-content">
-      <h2 class="bloom-title">Bloom</h2>
-      <p class="bloom-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+      <h2 class="bloom-title">{messages.pages.home.bloomSectionTitle}</h2>
+      <p class="bloom-description">{messages.pages.home.bloomSectionText}</p>
     </div>
-    <img
-      src="/assets/bloom.webp"
-      alt="Bloom illustration"
+    <Image
+      src={bloomImage}
+      alt={messages.pages.home.bloomImageAlt}
       loading="lazy"
       decoding="async"
+      widths={[640, 1000]}
+      sizes="100vw"
       class="bloom-image fade-in"
     />
   </section>
@@ -138,7 +139,7 @@ const messages = t(lang);
     font-weight: var(--font-weight-bold);
     letter-spacing: var(--letter-spacing-widest);
     text-transform: uppercase;
-    color: var(--color-brand);
+    color: var(--color-brand-text);
   }
 
   .hero-title {
@@ -189,7 +190,7 @@ const messages = t(lang);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-brand);
+    color: var(--color-brand-display);
     font-size: 2.5rem;
   }
 
@@ -244,11 +245,12 @@ const messages = t(lang);
     font-weight: var(--font-weight-light);
     line-height: 1;
     letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-brand);
+    color: var(--color-brand-display);
     text-transform: lowercase;
   }
 
-  .split-left img {
+  .split-left img,
+  .split-right img {
     max-width: 100%;
     height: auto;
     border-radius: 1rem;
@@ -293,7 +295,7 @@ const messages = t(lang);
     font-weight: var(--font-weight-light);
     line-height: 1;
     letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-brand);
+    color: var(--color-brand-display);
     text-transform: lowercase;
   }
 
@@ -362,7 +364,7 @@ const messages = t(lang);
     font-weight: var(--font-weight-light);
     line-height: 1;
     letter-spacing: var(--letter-spacing-tight);
-    color: var(--color-brand);
+    color: var(--color-brand-display);
     text-transform: lowercase;
   }
 
@@ -394,16 +396,22 @@ const messages = t(lang);
 </style>
 
 <script>
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-      }
+  // Re-run on every navigation: with ClientRouter, page scripts only execute once.
+  function setupFadeIn() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.1,
+      rootMargin: '0px 0px -50px 0px'
     });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
-  });
 
-  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+    document.querySelectorAll('.fade-in:not(.visible)').forEach((el) => observer.observe(el));
+  }
+
+  document.addEventListener('astro:page-load', setupFadeIn);
 </script>

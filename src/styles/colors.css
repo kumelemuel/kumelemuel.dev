@@ -1,7 +1,7 @@
 :root {
   --color-text-main: #344128;
   --color-text-secondary: #4a5a3a;
-  --color-text-muted: #6b7a56;
+  --color-text-muted: #5e6b4b;
   --color-text-accent: #8ba868;
   --color-text-accent-strong: #7a9a58;
 
@@ -15,9 +15,15 @@
   --color-brand-dark: #344128;
   --color-brand-darker: #27311e;
 
+  /* Accessible variants of the brand green (WCAG AA on the cream backgrounds):
+     -text: small text and links (≥ 4.5:1) · -display: large titles and icons (≥ 3:1).
+     Plain --color-brand stays for backgrounds and for text on dark surfaces. */
+  --color-brand-text: #586d3f;
+  --color-brand-display: #708b50;
+
   --color-border: rgba(52, 65, 40, 0.12);
   --color-border-strong: rgba(52, 65, 40, 0.25);
 
-  --color-error: #c54d4d;
-  --color-success: #4a8a4a;
+  --color-error: #b63b3b;
+  --color-success: #3d713d;
 }
