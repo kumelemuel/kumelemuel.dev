@@ -25,3 +25,8 @@ pnpm-debug.log*
 
 # vercel build output
 .vercel/
+
+# test output
+test-results/
+playwright-report/
+.lighthouseci/
