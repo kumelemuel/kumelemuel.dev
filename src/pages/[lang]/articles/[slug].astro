@@ -1,7 +1,7 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import { render } from 'astro:content';
-import type { Lang } from '../../../i18n/config';
+import { INTL_LOCALES, type Lang } from '../../../i18n/config';
 import { t } from '../../../i18n/ui';
 import { getLocalizedArticles, type Article } from '../../../utils/articles';
 
@@ -26,7 +26,7 @@ const { article, lang, alternateLangs } = Astro.props as {
 };
 const { Content } = await render(article);
 const messages = t(lang);
-const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', {
+const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
   year: 'numeric',
   month: 'long',
   day: 'numeric',

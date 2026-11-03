@@ -41,10 +41,12 @@ type Messages = {
     };
     who: {
       title: string;
+      description: string;
       biographyHtml: string;
     };
     articles: {
       title: string;
+      description: string;
       read: string;
       empty: string;
       published: string;
@@ -52,6 +54,7 @@ type Messages = {
     };
     portfolio: {
       title: string;
+      description: string;
       visit: string;
       imageAlt: string;
     };
@@ -66,10 +69,15 @@ type Messages = {
       messagePlaceholder: string;
       send: string;
       submitUnexpectedError: string;
+      networkError: string;
+      timeoutError: string;
+      sending: string;
+      successTitle: string;
       privacyNote: string;
     };
     privacy: {
       title: string;
+      description: string;
       bodyHtml: string;
     };
   };
@@ -118,11 +126,14 @@ export const ui: Record<Lang, Messages> = {
       },
       who: {
         title: "Quién soy",
+        description:
+          "Ingeniero de software. Mi trabajo profesional se desarrolla dentro de organizaciones privadas, donde diseño e implemento soluciones bajo objetivos, restricciones y marcos ya establecidos.",
         biographyHtml:
-          "Soy Diego Arenas, ingeniero de software.<br><br>Mi trabajo profesional se desarrolla dentro de organizaciones privadas, donde diseño e implemento soluciones bajo objetivos, restricciones y marcos ya establecidos. Ese ejercicio me ha dado disciplina técnica, criterio arquitectónico y una comprensión práctica de cómo los sistemas evolucionan bajo presión real.<br><br>Kumelemuel nace de una necesidad distinta. No es un alter ego ni una ruptura, sino un espacio de autonomía. Es la dimensión donde puedo explorar el software sin condicionamientos externos, definiendo no solo la implementación, sino también los principios que la sostienen.<br><br>Con el tiempo entendí que el código no es únicamente una herramienta técnica. Es un mecanismo que formaliza reglas, incentivos y dinámicas de interacción. Cada decisión arquitectónica, desde un modelo de dominio hasta una regla de acceso, influye en el comportamiento de las personas que habitan el sistema. La tecnología no es neutral; siempre estructura posibilidades.<br><br>Kumelemuel es el lugar donde asumo esa responsabilidad de forma explícita. Aquí trabajo en proyectos open source, experimento con modelos de gobernanza digital y diseño sistemas que integran lo técnico y lo humano como un todo coherente.<br><br>No busco producir más software.<br>Busco diseñar sistemas que puedan sostenerse, evolucionar y aportar al bien común sin perder claridad ni intención.<br><br>Ese es el punto de encuentro entre el oficio y la conciencia.",
+          "<p>Soy Diego Arenas, ingeniero de software.</p><p>Mi trabajo profesional se desarrolla dentro de organizaciones privadas, donde diseño e implemento soluciones bajo objetivos, restricciones y marcos ya establecidos. Ese ejercicio me ha dado disciplina técnica, criterio arquitectónico y una comprensión práctica de cómo los sistemas evolucionan bajo presión real.</p><p>Kumelemuel nace de una necesidad distinta. No es un alter ego ni una ruptura, sino un espacio de autonomía. Es la dimensión donde puedo explorar el software sin condicionamientos externos, definiendo no solo la implementación, sino también los principios que la sostienen.</p><p>Con el tiempo entendí que el código no es únicamente una herramienta técnica. Es un mecanismo que formaliza reglas, incentivos y dinámicas de interacción. Cada decisión arquitectónica, desde un modelo de dominio hasta una regla de acceso, influye en el comportamiento de las personas que habitan el sistema. La tecnología no es neutral; siempre estructura posibilidades.</p><p>Kumelemuel es el lugar donde asumo esa responsabilidad de forma explícita. Aquí trabajo en proyectos open source, experimento con modelos de gobernanza digital y diseño sistemas que integran lo técnico y lo humano como un todo coherente.</p><p>No busco producir más software.<br>Busco diseñar sistemas que puedan sostenerse, evolucionar y aportar al bien común sin perder claridad ni intención.</p><p>Ese es el punto de encuentro entre el oficio y la conciencia.</p>",
       },
       articles: {
         title: "Artículos",
+        description: "Artículos sobre ingeniería de software, arquitectura, y modelos de gobernanza digital.",
         read: "Leer artículo",
         empty: "Pronto publicaré los primeros artículos. Vuelve en unos días.",
         published: "Publicado",
@@ -130,6 +141,7 @@ export const ui: Record<Lang, Messages> = {
       },
       portfolio: {
         title: "Portafolio",
+        description: "Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.",
         visit: "Visitar",
         imageAlt: "Vista previa del proyecto",
       },
@@ -145,10 +157,15 @@ export const ui: Record<Lang, Messages> = {
         messagePlaceholder: "¿Sobre qué te gustaría conversar?",
         send: "Enviar mensaje",
         submitUnexpectedError: "Ocurrió un error inesperado. Inténtalo de nuevo.",
+        networkError: "No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.",
+        timeoutError: "La solicitud tardó demasiado. Inténtalo nuevamente.",
+        sending: "Enviando...",
+        successTitle: "Mensaje enviado correctamente.",
         privacyNote: "Tus datos solo se usan para responderte.",
       },
       privacy: {
         title: "Política de Privacidad",
+        description: "Cómo se tratan los datos que envías a través del formulario de contacto de este sitio personal.",
         bodyHtml:
           `<section>
   <p><em>Última actualización: 3 de noviembre de 2026.</em></p>
@@ -259,11 +276,14 @@ export const ui: Record<Lang, Messages> = {
       },
       who: {
         title: "Who am I?",
+        description:
+          "Software engineer. My professional work takes place within private organizations, where I design and implement solutions under established goals, constraints, and frameworks.",
         biographyHtml:
-          "I am Diego Arenas, a software engineer.<br><br>My professional work takes place within private organizations, where I design and implement solutions under established goals, constraints, and frameworks. That practice has given me technical discipline, architectural judgment, and a practical understanding of how systems evolve under real pressure.<br><br>Kumelemuel was born from a different need. It is not an alter ego or a rupture, but a space of autonomy. It is the dimension where I can explore software without external conditioning, defining not only implementation details but also the principles that sustain them.<br><br>Over time, I understood that code is not only a technical tool. It is a mechanism that formalizes rules, incentives, and interaction dynamics. Every architectural decision, from a domain model to an access rule, influences the behavior of the people who inhabit the system. Technology is not neutral; it always structures possibilities.<br><br>Kumelemuel is the place where I take that responsibility explicitly. Here I work on open source projects, experiment with digital governance models, and design systems that integrate the technical and the human as one coherent whole.<br><br>I am not trying to produce more software.<br>I seek to design systems that can be sustained, evolve, and contribute to the common good without losing clarity or intention.<br><br>That is the meeting point between craft and awareness.",
+          "<p>I am Diego Arenas, a software engineer.</p><p>My professional work takes place within private organizations, where I design and implement solutions under established goals, constraints, and frameworks. That practice has given me technical discipline, architectural judgment, and a practical understanding of how systems evolve under real pressure.</p><p>Kumelemuel was born from a different need. It is not an alter ego or a rupture, but a space of autonomy. It is the dimension where I can explore software without external conditioning, defining not only implementation details but also the principles that sustain them.</p><p>Over time, I understood that code is not only a technical tool. It is a mechanism that formalizes rules, incentives, and interaction dynamics. Every architectural decision, from a domain model to an access rule, influences the behavior of the people who inhabit the system. Technology is not neutral; it always structures possibilities.</p><p>Kumelemuel is the place where I take that responsibility explicitly. Here I work on open source projects, experiment with digital governance models, and design systems that integrate the technical and the human as one coherent whole.</p><p>I am not trying to produce more software.<br>I seek to design systems that can be sustained, evolve, and contribute to the common good without losing clarity or intention.</p><p>That is the meeting point between craft and awareness.</p>",
       },
       articles: {
         title: "Articles",
+        description: "Articles on software engineering, architecture, and digital governance models.",
         read: "Read article",
         empty: "The first articles are coming soon. Check back in a few days.",
         published: "Published",
@@ -271,6 +291,7 @@ export const ui: Record<Lang, Messages> = {
       },
       portfolio: {
         title: "Portfolio",
+        description: "Projects and applications developed, showcasing work in technology in service of the common good.",
         visit: "Visit",
         imageAlt: "Project preview image",
       },
@@ -286,10 +307,15 @@ export const ui: Record<Lang, Messages> = {
         messagePlaceholder: "What would you like to talk about?",
         send: "Send message",
         submitUnexpectedError: "An unexpected error occurred. Please try again.",
+        networkError: "Could not connect to the server. Check your connection and try again.",
+        timeoutError: "The request took too long. Please try again.",
+        sending: "Sending...",
+        successTitle: "Message sent successfully.",
         privacyNote: "Your data is only used to reply to you.",
       },
       privacy: {
         title: "Privacy Policy",
+        description: "How the data you send through the contact form of this personal site is handled.",
         bodyHtml:
           `<section>
   <p><em>Last updated: November 3, 2026.</em></p>

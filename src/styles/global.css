@@ -162,6 +162,25 @@ header {
   animation-duration: 0.7s;
 }
 
+/* Respect the OS "reduce motion" setting: no page-transition animation, no hover lifts,
+   no smooth scrolling. Colors still change, just instantly. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 /* Reserve the final size of Shoelace components before their JS upgrades them
    (measured from the rendered components) to avoid layout shift (CLS). */
 sl-input:not(:defined) {

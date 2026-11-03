@@ -21,10 +21,10 @@ const messages = t(lang);
       action={actions.contact}
       method="POST"
       data-unexpected-error={messages.pages.contact.submitUnexpectedError}
-      data-network-error={lang === 'es' ? 'No pudimos conectar con el servidor. Revisa tu conexión e inténtalo de nuevo.' : 'Could not connect to the server. Check your connection and try again.'}
-      data-timeout-error={lang === 'es' ? 'La solicitud tardó demasiado. Inténtalo nuevamente.' : 'The request took too long. Please try again.'}
-      data-sending-label={lang === 'es' ? 'Enviando...' : 'Sending...'}
-      data-success-title={lang === 'es' ? 'Mensaje enviado correctamente.' : 'Message sent successfully.'}
+      data-network-error={messages.pages.contact.networkError}
+      data-timeout-error={messages.pages.contact.timeoutError}
+      data-sending-label={messages.pages.contact.sending}
+      data-success-title={messages.pages.contact.successTitle}
       novalidate
     >
       <p class="notice notice--error" data-form-error role="alert" aria-live="polite"></p>
@@ -109,10 +109,10 @@ const messages = t(lang);
     --sl-input-border-radius-medium: 0.75rem;
     --sl-input-border-width: 1px;
     --sl-input-color: var(--color-text-main);
-    --sl-input-placeholder-color: #8b9479;
-    --sl-input-background-color: #fffdf8;
-    --sl-input-background-color-hover: #fffdf8;
-    --sl-input-background-color-focus: #ffffff;
+    --sl-input-placeholder-color: var(--color-input-placeholder);
+    --sl-input-background-color: var(--color-input-background);
+    --sl-input-background-color-hover: var(--color-input-background);
+    --sl-input-background-color-focus: var(--color-input-background-focus);
     --sl-input-border-color: var(--color-border-strong);
     --sl-input-border-color-hover: rgba(52, 65, 40, 0.4);
     --sl-input-border-color-focus: var(--color-brand-text);
@@ -326,7 +326,6 @@ const messages = t(lang);
       const buttonLabel = submitButton?.querySelector('[data-button-label]');
       const defaultButtonText = buttonLabel?.textContent || '';
 
-      const isEs = form.querySelector('input[name="lang"]')?.getAttribute('value') === 'es';
       const genericError = form.dataset.unexpectedError || 'Unexpected error';
       const genericNetworkError = form.dataset.networkError || genericError;
       const genericTimeoutError = form.dataset.timeoutError || genericError;
@@ -338,7 +337,7 @@ const messages = t(lang);
           (submitButton as any).loading = submitting;
           if (buttonLabel) {
             buttonLabel.textContent = submitting
-              ? form.dataset.sendingLabel || (isEs ? 'Enviando...' : 'Sending...')
+              ? form.dataset.sendingLabel || defaultButtonText
               : defaultButtonText;
           }
         }
@@ -413,7 +412,8 @@ const messages = t(lang);
           if (typeof firstInvalid.focus === 'function') {
             firstInvalid.focus();
           }
-          firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          firstInvalid.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
         }
       };
 

@@ -11,7 +11,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout title={messages.pages.privacy.title} lang={lang} description={lang === 'es' ? 'Cómo se tratan los datos que envías a través del formulario de contacto de este sitio personal.' : 'How the data you send through the contact form of this personal site is handled.'} noindex>
+<Layout title={messages.pages.privacy.title} lang={lang} description={messages.pages.privacy.description} noindex>
   <div class="privacy-content" set:html={messages.pages.privacy.bodyHtml}></div>
 </Layout>
 

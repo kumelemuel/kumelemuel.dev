@@ -24,6 +24,17 @@
   --color-border: rgba(52, 65, 40, 0.12);
   --color-border-strong: rgba(52, 65, 40, 0.25);
 
+  /* Form fields. Placeholder 4.7:1 on the field background (was 3.1:1). */
+  --color-input-background: #fffdf8;
+  --color-input-background-focus: #ffffff;
+  --color-input-placeholder: #6b7658;
+
+  /* Footer (dark surface). Links 8.4:1, hover 9.5:1 on the background. */
+  --color-footer-background: #2d1b12;
+  --color-footer-text: #e8e0d5;
+  --color-footer-link: #c4b8a8;
+  --color-footer-link-hover: #a8d08d;
+
   --color-error: #b63b3b;
   --color-success: #3d713d;
 }

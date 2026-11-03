@@ -20,7 +20,7 @@ const messages = t(lang);
   <section class="home">
     <div class="hero">
       <p class="eyebrow">{messages.pages.home.eyebrow}</p>
-      <h2 class="hero-title">{messages.pages.home.title}</h2>
+      <h1 class="hero-title">{messages.pages.home.title}</h1>
       <p class="intro">{messages.pages.home.intro}</p>
     </div>
 
@@ -383,15 +383,19 @@ const messages = t(lang);
     margin: 0 0 calc(-1 * var(--margin-page)) 0;
   }
 
-  .fade-in {
-    opacity: 0;
-    transform: translateY(70px);
-    transition: opacity 1.2s ease, transform 1.2s ease;
-  }
+  /* Images start hidden only when JS can reveal them and the user accepts motion;
+     otherwise they are simply visible (no JS, script failure, prefers-reduced-motion). */
+  @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
+    .fade-in {
+      opacity: 0;
+      transform: translateY(70px);
+      transition: opacity 1.2s ease, transform 1.2s ease;
+    }
 
-  .fade-in.visible {
-    opacity: 1;
-    transform: translateY(0);
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 </style>
 

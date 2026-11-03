@@ -29,7 +29,7 @@ const basePath = `/${lang}`;
 
 <style>
   footer {
-    background-color: #2E1B14;
+    background-color: var(--color-footer-background);
   }
 
   .footer-content {
@@ -41,8 +41,8 @@ const basePath = `/${lang}`;
     width: 100%;
     box-sizing: border-box;
     font-size: var(--text-size-sm);
-    background-color: #2D1B12;
-    color: #E8E0D5;
+    background-color: var(--color-footer-background);
+    color: var(--color-footer-text);
     padding: 1rem var(--margin-page);
     text-align: center;
   }
@@ -56,12 +56,12 @@ const basePath = `/${lang}`;
 
   .social-link-icon {
     font-size: 1.3rem;
-    color: #C4B8A8;
+    color: var(--color-footer-link);
     transition: color 0.2s ease;
   }
 
   .social-link-icon:hover {
-    color: #A8D08D;
+    color: var(--color-footer-link-hover);
   }
 
   .footer-content nav ul {
@@ -76,13 +76,13 @@ const basePath = `/${lang}`;
   }
 
   .footer-content nav ul li a {
-    color: #C4B8A8;
+    color: var(--color-footer-link);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
   .footer-content nav ul li a:hover {
-    color: #A8D08D;
+    color: var(--color-footer-link-hover);
   }
 
   @media (max-width: 700px) {

@@ -1,6 +1,6 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
+import { INTL_LOCALES, SUPPORTED_LANGS, type Lang } from '../../i18n/config';
 import { t } from '../../i18n/ui';
 import { getArticleSlug, getArticlesByLang } from '../../utils/articles';
 
@@ -11,14 +11,14 @@ export async function getStaticPaths() {
 const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 const articles = await getArticlesByLang(lang);
-const dateFormatter = new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', {
+const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
   year: 'numeric',
   month: 'long',
   day: 'numeric',
 });
 ---
 
-<Layout title={messages.pages.articles.title} lang={lang} description={lang === 'es' ? 'Artículos sobre ingeniería de software, arquitectura, y modelos de gobernanza digital.' : 'Articles on software engineering, architecture, and digital governance models.'}>
+<Layout title={messages.pages.articles.title} lang={lang} description={messages.pages.articles.description}>
   {articles.length > 0 ? (
     <div class="articles-grid">
       {articles.map((article) => (
