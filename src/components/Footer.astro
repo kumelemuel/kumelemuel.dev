@@ -2,6 +2,7 @@
 import { DEFAULT_LANG, type Lang, isLang } from "../i18n/config";
 import { t } from "../i18n/ui";
 import { SITE } from "../site";
+import Icon from "./Icon.astro";
 
 const requestedLang = Astro.props.lang as Lang | undefined;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
@@ -18,10 +19,10 @@ const basePath = `/${lang}`;
     </nav>
     <div class="social-links">
       <a href={SITE.social.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-        <sl-icon class="social-link-icon" name="fab-github" library="fa"></sl-icon>
+        <Icon name="github" class="social-link-icon" />
       </a>
       <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <sl-icon class="social-link-icon" name="fab-linkedin" library="fa"></sl-icon>
+        <Icon name="linkedin" class="social-link-icon" />
       </a>
     </div>
     <div class="copyright">&copy; {new Date().getFullYear()} Kumelemuel.dev. {messages.footer.rights}</div>
@@ -55,13 +56,13 @@ const basePath = `/${lang}`;
     gap: 1rem;
   }
 
-  .social-link-icon {
+  .social-links :global(.social-link-icon) {
     font-size: 1.3rem;
     color: var(--color-footer-link);
     transition: color 0.2s ease;
   }
 
-  .social-link-icon:hover {
+  .social-links a:hover :global(.social-link-icon) {
     color: var(--color-footer-link-hover);
   }
 

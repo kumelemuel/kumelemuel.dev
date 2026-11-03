@@ -1,0 +1,92 @@
+---
+// On-demand page: receives the contact form when it is submitted without JavaScript
+// (with JS the form talks to the action directly and never navigates here).
+export const prerender = false;
+
+import { actions, isInputError } from 'astro:actions';
+import Layout from '../../../layouts/Layout.astro';
+import ContactSection from '../../../components/ContactSection.astro';
+import ContactForm, { type ContactField } from '../../../components/ContactForm.astro';
+import { isLang } from '../../../i18n/config';
+import { t } from '../../../i18n/ui';
+
+const { lang } = Astro.params;
+if (!isLang(lang)) {
+  // Can't rewrite to the prerendered 404 from an on-demand page; nobody links here anyway.
+  return new Response('Not found', { status: 404 });
+}
+
+const result = Astro.getActionResult(actions.contact);
+// Direct visits (GET, nothing submitted) go back to the form.
+if (!result) {
+  return Astro.redirect(`/${lang}/contact/`, 303);
+}
+
+const messages = t(lang);
+const contact = messages.pages.contact;
+
+let success = '';
+let formError = '';
+const errors: Partial<Record<ContactField, string>> = {};
+const values: Partial<Record<ContactField, string>> = {};
+
+if (result.error) {
+  if (isInputError(result.error)) {
+    for (const issue of result.error.issues) {
+      const field = issue.path[0];
+      if ((field === 'name' || field === 'email' || field === 'message') && !errors[field]) {
+        errors[field] = issue.message;
+      }
+    }
+  }
+  if (Object.keys(errors).length === 0) {
+    formError = result.error.message || contact.submitUnexpectedError;
+  }
+  // Keep what the person typed (Astro leaves the request body readable after the action).
+  try {
+    const form = await Astro.request.formData();
+    for (const field of ['name', 'email', 'message'] as const) {
+      const value = form.get(field);
+      if (typeof value === 'string') values[field] = value;
+    }
+  } catch {
+    // Body unavailable: the form is rendered empty, errors are still shown.
+  }
+} else {
+  success = `${contact.successTitle} ${result.data.message}`.trim();
+}
+---
+
+<Layout title={contact.title} lang={lang} description={contact.intro} noindex>
+  <ContactSection intro={contact.intro}>
+    {success ? (
+      <div class="sent">
+        <p class="sent-message" role="status">{success}</p>
+        <a class="button" href={`/${lang}/`}>{messages.header.home}</a>
+      </div>
+    ) : (
+      <ContactForm lang={lang} values={values} errors={errors} formError={formError} startedAt={Date.now()} />
+    )}
+  </ContactSection>
+</Layout>
+
+<style>
+  .sent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--margin-element);
+    text-align: center;
+  }
+
+  .sent-message {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border: 1px solid rgba(61, 113, 61, 0.25);
+    border-radius: 0.75rem;
+    background-color: rgba(61, 113, 61, 0.07);
+    color: var(--color-success);
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-weight-medium);
+  }
+</style>

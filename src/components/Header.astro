@@ -1,6 +1,7 @@
 ---
 import { DEFAULT_LANG, SUPPORTED_LANGS, type Lang, isLang } from "../i18n/config";
 import { t } from "../i18n/ui";
+import Icon from "./Icon.astro";
 
 interface Props {
   lang?: string;
@@ -56,7 +57,8 @@ const localizedPath = (targetLang: Lang) => {
     data-label-open={messages.header.openMenu}
     data-label-close={messages.header.closeMenu}
   >
-    <sl-icon id="menu-icon" name="fas-bars" library="fa" aria-hidden="true"></sl-icon>
+    <Icon name="bars" class="menu-icon-open" />
+    <Icon name="times" class="menu-icon-close" />
   </button>
   <nav class="nav-menu" id="nav-menu" aria-label={messages.header.mainNav}>
     <div class="nav-content">
@@ -98,7 +100,6 @@ const localizedPath = (targetLang: Lang) => {
     const menuToggle = document.getElementById('menu-toggle');
     const navMenu = document.getElementById('nav-menu');
     const menuOverlay = document.getElementById('menu-overlay');
-    const menuIcon = document.getElementById('menu-icon');
     if (!menuToggle || !navMenu) return;
 
     const mobileQuery = window.matchMedia('(max-width: 900px)');
@@ -112,7 +113,6 @@ const localizedPath = (targetLang: Lang) => {
         'aria-label',
         (open ? menuToggle.dataset.labelClose : menuToggle.dataset.labelOpen) ?? 'Menu',
       );
-      menuIcon?.setAttribute('name', open ? 'fas-times' : 'fas-bars');
       // Off-screen menu must not be reachable by keyboard or screen readers.
       navMenu.inert = mobileQuery.matches && !open;
     };
@@ -183,6 +183,16 @@ const localizedPath = (targetLang: Lang) => {
     cursor: pointer;
     padding: 0.5rem;
     z-index: 1001;
+  }
+
+  /* Both icons are rendered; aria-expanded picks the visible one (no JS swap). */
+  .menu-toggle :global(.menu-icon-close),
+  .menu-toggle[aria-expanded="true"] :global(.menu-icon-open) {
+    display: none;
+  }
+
+  .menu-toggle[aria-expanded="true"] :global(.menu-icon-close) {
+    display: inline-block;
   }
 
   .nav-menu {

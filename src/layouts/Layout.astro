@@ -40,10 +40,6 @@ const canonicalURL = Astro.url.href;
 
 		<SeoMeta title={title} description={description} {canonicalURL} {lang} {noindex} {alternateLangs} {type} {article} />
 		<link rel="alternate" type="application/rss+xml" title={t(lang).rss.title} href={`/${lang}/rss.xml`} />
-		<script>
-			import "../scripts/shoelace";
-		</script>
-
 		<ClientRouter />
 	</head>
 	<body>

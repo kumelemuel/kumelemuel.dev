@@ -3,6 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
 import { t } from '../../i18n/ui';
 import { Picture } from 'astro:assets';
+import Icon from '../../components/Icon.astro';
 import exploringImage from '../../assets/home/exploring.webp';
 import designingImage from '../../assets/home/designing.webp';
 import craftsmanshipImage from '../../assets/home/craftmanship.webp';
@@ -27,21 +28,21 @@ const messages = t(lang);
     <div class="focus-grid">
       <article class="focus-card">
         <div class="card-icon">
-          <sl-icon name="fas-pencil-ruler" library="fa"></sl-icon>
+          <Icon name="pencil-ruler" />
         </div>
         <h3>{messages.pages.home.card1Title}</h3>
         <p>{messages.pages.home.card1Body}</p>
       </article>
       <article class="focus-card">
         <div class="card-icon">
-          <sl-icon name="fas-globe" library="fa"></sl-icon>
+          <Icon name="globe" />
         </div>
         <h3>{messages.pages.home.card2Title}</h3>
         <p>{messages.pages.home.card2Body}</p>
       </article>
       <article class="focus-card">
         <div class="card-icon">
-          <sl-icon name="fas-users" library="fa"></sl-icon>
+          <Icon name="users" />
         </div>
         <h3>{messages.pages.home.card3Title}</h3>
         <p>{messages.pages.home.card3Body}</p>

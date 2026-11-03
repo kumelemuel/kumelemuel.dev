@@ -19,22 +19,24 @@ const portfolio = await getCollection('portfolio');
 <Layout title={messages.pages.portfolio.title} lang={lang} noindex description={messages.pages.portfolio.description}>
   <div class="portfolio-grid">
     {portfolio.map((project) => (
-      <sl-card class="card-overview">
+      <article class="card-overview">
         <img
-          slot="image"
+          class="project-image"
           src="https://images.unsplash.com/photo-1559209172-0ff8f6d49ff7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=80"
           alt={messages.pages.portfolio.imageAlt}
         />
 
-        <strong class="project-title">{project.data.title}</strong>
-        <p class="project-description">{project.data.description}</p>
-
-        <div slot="footer">
-          <sl-button class="portfolio-button" pill href={project.data.url} target="_blank">
-            {messages.pages.portfolio.visit}
-          </sl-button>
+        <div class="project-body">
+          <strong class="project-title">{project.data.title}</strong>
+          <p class="project-description">{project.data.description}</p>
         </div>
-      </sl-card>
+
+        <div class="project-footer">
+          <a class="button" href={project.data.url} target="_blank" rel="noopener noreferrer">
+            {messages.pages.portfolio.visit}
+          </a>
+        </div>
+      </article>
     ))}
   </div>
 </Layout>
@@ -49,15 +51,22 @@ const portfolio = await getCollection('portfolio');
   }
 
   .card-overview {
-    --border-color: var(--color-border);
-    --border-width: 1px;
-    --border-radius: 1rem;
-  }
-
-  .card-overview::part(base) {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
     background-color: var(--color-background-card);
     color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: 0 1px 2px rgba(52, 65, 40, 0.06);
+  }
+
+  .project-image {
+    width: 100%;
+  }
+
+  .project-body {
+    padding: 1.25rem;
   }
 
   .project-title {
@@ -76,19 +85,10 @@ const portfolio = await getCollection('portfolio');
     line-height: var(--line-height-relaxed);
   }
 
-  .portfolio-button::part(base) {
-    background-color: var(--color-brand);
-    color: var(--color-brand-darker);
-    border: 0;
-    font-weight: var(--font-weight-medium);
-  }
 
-  .portfolio-button::part(base):hover {
-    background-color: var(--color-brand-hover);
-    color: var(--color-background);
-  }
-
-  .card-overview [slot='footer'] {
+  .project-footer {
+    padding: 1.25rem;
+    border-top: 1px solid var(--color-border);
     display: flex;
     justify-content: center;
     align-items: center;

@@ -83,11 +83,16 @@ export const server = {
   contact: defineAction({
     accept: "form",
     input: contactInput,
-    handler: async ({ lang, name, email, message, website, startedAt }) => {
+    handler: async ({ lang, name, email, message, website, startedAt }, context) => {
       const isEs = lang === "es";
 
       // Bots: pretend success so they don't retry, but send nothing.
-      const tooFast = !startedAt || Date.now() - startedAt < MIN_FILL_TIME_MS;
+      // - honeypot: humans never fill the hidden "website" field.
+      // - fill time: the page script stamps startedAt. JS calls (/_actions/...) must carry it;
+      //   plain HTML form posts (no JS) can't, so for those only the honeypot applies.
+      const isRpcCall = context.url.pathname.startsWith("/_actions/");
+      const missingStamp = !startedAt;
+      const tooFast = missingStamp ? isRpcCall : Date.now() - startedAt < MIN_FILL_TIME_MS;
       if (website.length > 0 || tooFast) {
         return { ok: true, message: successMessage(lang) };
       }

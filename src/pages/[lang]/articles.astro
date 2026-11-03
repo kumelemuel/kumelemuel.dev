@@ -22,7 +22,7 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
   {articles.length > 0 ? (
     <div class="articles-grid">
       {articles.map((article) => (
-        <sl-card class="card-overview">
+        <article class="card-overview">
           <p class="meta-line">
             <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>
             <span>{messages.pages.articles.tags}: {article.data.tags.join(' · ')}</span>
@@ -30,11 +30,11 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
           <strong class="article-title">{article.data.title}</strong>
           <div class="article-row">
             <p class="article-description">{article.data.description}</p>
-            <sl-button class="article-button" pill href={`/${lang}/articles/${getArticleSlug(article)}/`}>
+            <a class="button article-button" href={`/${lang}/articles/${getArticleSlug(article)}/`}>
               {messages.pages.articles.read}
-            </sl-button>
+            </a>
           </div>
-        </sl-card>
+        </article>
       ))}
     </div>
   ) : (
@@ -50,16 +50,14 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
     row-gap: 1rem;
   }
 
+  /* Same box as the former sl-card: 1.25rem padding, 0.75rem radius, hairline shadow. */
   .card-overview {
-    --border-color: var(--color-border);
-    --border-width: 1px;
-    --border-radius: 0.75rem;
-  }
-
-  .card-overview::part(base) {
+    padding: 1.25rem;
     background-color: var(--color-background-card);
     color: var(--color-text-secondary);
     border: 1px solid var(--color-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 2px rgba(52, 65, 40, 0.06);
   }
 
   .meta-line {
@@ -96,17 +94,6 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
     line-height: var(--line-height-relaxed);
   }
 
-  .article-button::part(base) {
-    background-color: var(--color-brand);
-    color: var(--color-brand-darker);
-    border: 0;
-    font-weight: var(--font-weight-medium);
-  }
-
-  .article-button::part(base):hover {
-    background-color: var(--color-brand-hover);
-    color: var(--color-background);
-  }
 
   .article-button {
     flex-shrink: 0;

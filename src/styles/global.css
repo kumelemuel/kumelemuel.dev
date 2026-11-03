@@ -214,36 +214,58 @@ header {
   }
 }
 
-/* Reserve the final size of Shoelace components before their JS upgrades them
-   (measured from the rendered components) to avoid layout shift (CLS). */
-sl-input:not(:defined) {
-  display: block;
-  min-height: 4.85rem;
-}
-
-sl-textarea:not(:defined) {
-  display: block;
-  min-height: 13rem;
-}
-
-sl-button:not(:defined) {
+/* Inline SVG icons (src/components/Icon.astro): sized by font-size, colored by color. */
+.icon {
   display: inline-block;
-  min-height: 2.5rem;
-  visibility: hidden;
-}
-
-sl-button[size="large"]:not(:defined) {
-  min-height: 3.125rem;
-}
-
-sl-icon:not(:defined) {
-  display: inline-block;
+  flex-shrink: 0;
   width: 1em;
   height: 1em;
 }
 
-/* Shoelace components use the site fonts (higher specificity than the theme's :root). */
-html:root {
-  --sl-font-sans: var(--font-primary);
-  --sl-font-serif: var(--font-secondary);
+/* Buttons and button-styled links. Metrics match the former Shoelace pill buttons
+   (medium: 2.5rem tall, 0.875rem text; large: 3.125rem tall, 1rem text). */
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 999px;
+  background-color: var(--color-brand);
+  color: var(--color-brand-darker);
+  font-family: var(--font-primary), sans-serif;
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: var(--color-brand-hover);
+  color: var(--color-background);
+}
+
+.button:active {
+  transform: translateY(1px);
+}
+
+.button--large {
+  min-height: 3.125rem;
+  padding: 0 2rem;
+  font-size: 1rem;
+}
+
+.button:disabled,
+.button[aria-disabled="true"] {
+  cursor: wait;
+  opacity: 0.7;
 }

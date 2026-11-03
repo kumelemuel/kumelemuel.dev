@@ -1,0 +1,447 @@
+---
+/**
+ * Contact form with progressive enhancement:
+ * - With JS: the submit is intercepted and sent to the action via fetch (no page reload).
+ * - Without JS: a normal POST to /<lang>/contact/sent/ (on-demand page), which runs the
+ *   action and renders this same component again with the errors or the success message.
+ */
+import { actions } from "astro:actions";
+import type { Lang } from "../i18n/config";
+import { t } from "../i18n/ui";
+import Icon from "./Icon.astro";
+
+export type ContactField = "name" | "email" | "message";
+
+interface Props {
+  lang: Lang;
+  values?: Partial<Record<ContactField, string>>;
+  errors?: Partial<Record<ContactField, string>>;
+  formError?: string;
+  success?: string;
+  /** Render timestamp for the anti-bot minimum fill time (re-stamped by the script when JS runs). */
+  startedAt?: number;
+}
+
+const { lang, values = {}, errors = {}, formError = "", success = "", startedAt } = Astro.props;
+const messages = t(lang);
+const contact = messages.pages.contact;
+const action = `/${lang}/contact/sent/${actions.contact}`;
+
+const fields = [
+  { name: "name", label: contact.name, placeholder: contact.namePlaceholder, autocomplete: "name" },
+  { name: "email", label: contact.email, placeholder: contact.emailPlaceholder, autocomplete: "email", inputmode: "email" },
+] as const;
+---
+
+<form
+  class="contact-form"
+  action={action}
+  method="POST"
+  data-unexpected-error={contact.submitUnexpectedError}
+  data-network-error={contact.networkError}
+  data-timeout-error={contact.timeoutError}
+  data-sending-label={contact.sending}
+  data-success-title={contact.successTitle}
+  novalidate
+>
+  <p class="notice notice--error" data-form-error role="alert">{formError}</p>
+  <p class="notice notice--success" data-form-success role="status">{success}</p>
+
+  <input type="hidden" name="lang" value={lang} />
+  <input type="hidden" name="startedAt" value={startedAt ? String(startedAt) : ""} data-started-at />
+  <div class="hp-field" aria-hidden="true">
+    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+  </div>
+
+  {fields.map((field) => (
+    <div class="field">
+      <label class="field-label" for={`contact-${field.name}`}>{field.label}</label>
+      <input
+        id={`contact-${field.name}`}
+        class="field-input"
+        type="text"
+        name={field.name}
+        placeholder={field.placeholder}
+        autocomplete={field.autocomplete}
+        inputmode={"inputmode" in field ? field.inputmode : undefined}
+        value={values[field.name] ?? ""}
+        aria-invalid={errors[field.name] ? "true" : undefined}
+        aria-describedby={`contact-${field.name}-error`}
+      />
+      <p class="field-error" id={`contact-${field.name}-error`} data-error-for={field.name}>{errors[field.name]}</p>
+    </div>
+  ))}
+
+  <div class="field field--full">
+    <label class="field-label" for="contact-message">{contact.message}</label>
+    <textarea
+      id="contact-message"
+      class="field-input field-input--textarea"
+      name="message"
+      rows="6"
+      placeholder={contact.messagePlaceholder}
+      aria-invalid={errors.message ? "true" : undefined}
+      aria-describedby="contact-message-error"
+    >{values.message ?? ""}</textarea>
+    <p class="field-error" id="contact-message-error" data-error-for="message">{errors.message}</p>
+  </div>
+
+  <div class="form-actions field--full">
+    <p class="form-note">
+      {contact.privacyNote}{" "}
+      <a href={`/${lang}/privacy/`}>{messages.footer.privacyLink}</a>
+    </p>
+    <button type="submit" class="button button--large contact-button">
+      <span data-button-label>{contact.send}</span>
+      <Icon name="long-arrow-alt-right" class="contact-button-icon" />
+    </button>
+  </div>
+</form>
+
+<style>
+  /* Card */
+  .contact-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem 1.25rem;
+    padding: clamp(1.5rem, 4vw, 2.75rem);
+    background-color: var(--color-background-card);
+    border: 1px solid var(--color-border);
+    border-radius: 1.25rem;
+    box-shadow:
+      0 1px 2px rgba(52, 65, 40, 0.04),
+      0 18px 40px -24px rgba(52, 65, 40, 0.25);
+    text-align: left;
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .field--full,
+  .notice {
+    grid-column: 1 / -1;
+  }
+
+  .field-label {
+    margin-bottom: 0.45rem;
+    color: var(--color-text-secondary);
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-weight-medium);
+    letter-spacing: 0.01em;
+    line-height: 1.5;
+  }
+
+  /* Native fields with the look of the former Shoelace inputs. */
+  .field-input {
+    display: block;
+    width: 100%;
+    height: 3rem;
+    margin: 0;
+    padding: 0 1rem;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 0.75rem;
+    background-color: var(--color-input-background);
+    color: var(--color-text-main);
+    font-family: var(--font-primary), sans-serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition:
+      border-color 0.2s ease,
+      box-shadow 0.2s ease,
+      background-color 0.2s ease;
+  }
+
+  .field-input--textarea {
+    height: auto;
+    padding: 0.75rem 1rem;
+    line-height: var(--line-height-relaxed);
+    resize: vertical;
+  }
+
+  .field-input::placeholder {
+    color: var(--color-input-placeholder);
+    opacity: 1;
+  }
+
+  .field-input:hover {
+    border-color: rgba(52, 65, 40, 0.4);
+  }
+
+  .field-input:focus {
+    outline: none;
+    border-color: var(--color-brand-text);
+    background-color: var(--color-input-background-focus);
+    box-shadow: 0 0 0 4px rgba(88, 109, 63, 0.18);
+  }
+
+  .field-input[aria-invalid="true"],
+  .field-input[aria-invalid="true"]:hover,
+  .field-input[aria-invalid="true"]:focus {
+    border-color: var(--color-error);
+  }
+
+  .field-input[aria-invalid="true"]:focus {
+    box-shadow: 0 0 0 4px rgba(182, 59, 59, 0.15);
+  }
+
+  .field-error {
+    margin: 0;
+    padding-top: 0.4rem;
+    font-size: var(--text-size-xs);
+    color: var(--color-error);
+    line-height: 1.4;
+  }
+
+  .field-error:empty {
+    display: none;
+  }
+
+  /* Form-level notices */
+  .notice {
+    margin: 0;
+    padding: 0.875rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid;
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  .notice:empty {
+    display: none;
+  }
+
+  .notice--error {
+    color: var(--color-error);
+    background-color: rgba(182, 59, 59, 0.06);
+    border-color: rgba(182, 59, 59, 0.25);
+  }
+
+  .notice--success {
+    color: var(--color-success);
+    background-color: rgba(61, 113, 61, 0.07);
+    border-color: rgba(61, 113, 61, 0.25);
+  }
+
+  /* Footer of the card: privacy note + submit */
+  .form-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .form-note {
+    margin: 0;
+    font-size: var(--text-size-xs);
+    line-height: 1.5;
+    color: var(--color-text-muted);
+  }
+
+  .form-note a {
+    color: var(--color-brand-text);
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .form-note a:hover {
+    color: var(--color-brand-hover);
+  }
+
+  /* Large pill with a trailing arrow (same spacing as the former Shoelace suffix button). */
+  .contact-button {
+    flex-shrink: 0;
+    gap: 0.75rem;
+    padding: 0 0.75rem 0 2rem;
+    background-color: var(--color-brand-dark);
+    color: var(--color-background);
+    letter-spacing: 0.02em;
+  }
+
+  .contact-button:hover {
+    background-color: var(--color-brand-text);
+    color: var(--color-background);
+  }
+
+  .contact-button :global(.contact-button-icon) {
+    transition: transform 0.2s ease;
+  }
+
+  .contact-button:hover :global(.contact-button-icon) {
+    transform: translateX(3px);
+  }
+
+  .contact-form.is-submitting {
+    opacity: 0.88;
+  }
+
+  .hp-field {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  @media (max-width: 640px) {
+    .contact-form {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+
+    .form-actions {
+      flex-direction: column-reverse;
+      align-items: stretch;
+      text-align: center;
+    }
+
+    .contact-button {
+      width: 100%;
+    }
+  }
+</style>
+
+<script>
+  import { actions, isInputError } from "astro:actions";
+
+  type Field = HTMLInputElement | HTMLTextAreaElement;
+
+  function initContactForm() {
+    const form = document.querySelector(".contact-form");
+    if (!(form instanceof HTMLFormElement) || form.dataset.initialized) return;
+    form.dataset.initialized = "true";
+
+    const stampStartedAt = () => {
+      const startedAtInput = form.querySelector("[data-started-at]");
+      if (startedAtInput instanceof HTMLInputElement) {
+        startedAtInput.value = String(Date.now());
+      }
+    };
+    stampStartedAt();
+
+    const submitButton = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    // Only the label text changes while sending; the arrow icon stays.
+    const buttonLabel = submitButton?.querySelector("[data-button-label]");
+    const defaultButtonText = buttonLabel?.textContent || "";
+
+    const genericError = form.dataset.unexpectedError || "Unexpected error";
+    const genericNetworkError = form.dataset.networkError || genericError;
+    const genericTimeoutError = form.dataset.timeoutError || genericError;
+
+    const fieldByName = (name: string) => form.querySelector<Field>(`.field-input[name="${name}"]`);
+    const errorFor = (name: string) => form.querySelector<HTMLElement>(`[data-error-for="${name}"]`);
+
+    const setSubmitting = (submitting: boolean) => {
+      form.classList.toggle("is-submitting", submitting);
+      form.setAttribute("aria-busy", String(submitting));
+      if (submitButton) {
+        submitButton.disabled = submitting;
+        if (buttonLabel) {
+          buttonLabel.textContent = submitting ? form.dataset.sendingLabel || defaultButtonText : defaultButtonText;
+        }
+      }
+    };
+
+    const setNotice = (kind: "error" | "success", message: string) => {
+      const errorEl = form.querySelector<HTMLElement>("[data-form-error]");
+      const successEl = form.querySelector<HTMLElement>("[data-form-success]");
+      if (errorEl) errorEl.textContent = kind === "error" ? message : "";
+      if (successEl) successEl.textContent = kind === "success" ? message : "";
+    };
+
+    const clearFieldError = (name: string) => {
+      const errorEl = errorFor(name);
+      if (errorEl) errorEl.textContent = "";
+      fieldByName(name)?.removeAttribute("aria-invalid");
+    };
+
+    const clearErrors = () => {
+      setNotice("error", "");
+      setNotice("success", "");
+      for (const field of form.querySelectorAll<Field>(".field-input")) clearFieldError(field.name);
+    };
+
+    const setFieldError = (name: string, message: string) => {
+      const errorEl = errorFor(name);
+      if (errorEl) errorEl.textContent = message;
+      fieldByName(name)?.setAttribute("aria-invalid", "true");
+    };
+
+    const focusFirstInvalidField = () => {
+      const firstInvalid = form.querySelector<Field>('.field-input[aria-invalid="true"]');
+      if (!firstInvalid) return;
+      firstInvalid.focus({ preventScroll: true });
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      firstInvalid.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
+    };
+
+    const withTimeout = <T,>(promise: Promise<T>, ms: number) =>
+      Promise.race([
+        promise,
+        new Promise<never>((_, reject) => {
+          window.setTimeout(() => reject(new Error("ACTION_TIMEOUT")), ms);
+        }),
+      ]);
+
+    form.addEventListener("input", (event) => {
+      const target = event.target;
+      if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement) {
+        clearFieldError(target.name);
+      }
+    });
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      clearErrors();
+      setSubmitting(true);
+
+      try {
+        const { data, error } = await withTimeout(actions.contact(new FormData(form)), 12000);
+
+        if (error) {
+          if (isInputError(error)) {
+            let hasFieldErrors = false;
+            for (const issue of error.issues) {
+              const path = issue.path[0];
+              if (typeof path === "string" && issue.message && fieldByName(path)) {
+                // Keep the first message per field.
+                if (!errorFor(path)?.textContent) setFieldError(path, issue.message);
+                hasFieldErrors = true;
+              }
+            }
+            if (hasFieldErrors) focusFirstInvalidField();
+            else setNotice("error", error.message || genericError);
+            return;
+          }
+          setNotice("error", error.message || genericError);
+          return;
+        }
+
+        if (data?.ok) {
+          setNotice("success", `${form.dataset.successTitle || ""} ${data.message || ""}`.trim());
+          form.reset();
+          stampStartedAt();
+          return;
+        }
+        setNotice("error", genericError);
+      } catch (caughtError) {
+        if (caughtError instanceof Error && caughtError.message === "ACTION_TIMEOUT") {
+          setNotice("error", genericTimeoutError);
+        } else if (!navigator.onLine) {
+          setNotice("error", genericNetworkError);
+        } else {
+          setNotice("error", genericError);
+        }
+      } finally {
+        setSubmitting(false);
+      }
+    });
+  }
+
+  document.addEventListener("astro:page-load", initContactForm);
+</script>

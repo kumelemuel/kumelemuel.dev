@@ -31,18 +31,19 @@ npm run dev            # http://localhost:4321
 src/
 ├── actions/            # Astro Action del formulario de contacto (Resend + antispam)
 ├── assets/home/        # Imágenes optimizadas en build (astro:assets)
-├── components/         # Header, Footer, SeoMeta (meta, Open Graph, hreflang)
+├── components/         # Header, Footer, SeoMeta (meta, OG, hreflang, JSON-LD), Icon, ContactForm
 ├── data/
 │   ├── articles/es/    # Artículos en español  (<slug>.md)
 │   ├── articles/en/    # Artículos en inglés   (mismo <slug>.md = traducción)
 │   └── portfolio/      # Proyectos (página desactivada: src/pages/[lang]/_portfolio.astro)
 ├── i18n/               # Idiomas soportados y textos de la interfaz (ui.ts)
+├── icons/              # SVG de Font Awesome Free 5 incrustados por <Icon name="…" />
 ├── layouts/            # Layout base
-├── pages/[lang]/       # Páginas por idioma (/es/..., /en/...)
-├── scripts/            # Shoelace autoalojado + librería de íconos
+├── pages/[lang]/       # Páginas por idioma (/es/..., /en/...) + rss.xml
+├── site.ts             # Identidad del sitio: autor y redes
+├── styles/             # Paleta, tipografía, estilos globales (.button, .icon) y tema Prism
 └── utils/              # Utilidades (artículos por idioma)
 public/
-├── icons/fa/           # SVG de Font Awesome usados (agrega aquí los nuevos)
 ├── favicon.svg|.ico, apple-touch-icon.png
 └── og-image.png        # Imagen para redes sociales (1200×630)
 ```
@@ -83,12 +84,16 @@ usa imágenes locales (la CSP no permite imágenes externas) y agrega el enlace 
 
 ### Íconos
 
-Se usan con `<sl-icon library="fa" name="fas-…">`. Solo se sirven los SVG presentes en `public/icons/fa/{solid,brands}/`; para un ícono nuevo, copia su SVG desde Font Awesome Free 5.
+`<Icon name="github" />` incrusta `src/icons/github.svg` en el HTML (sin JS ni peticiones extra; toma el color del texto y el tamaño de `font-size`). Para un ícono nuevo, copia su SVG desde Font Awesome Free 5 a `src/icons/` conservando el comentario de licencia.
 
 ## Formulario de contacto
 
 `src/actions/index.ts` valida en servidor y envía el mensaje con [Resend](https://resend.com).
-Antispam: campo trampa (honeypot) + tiempo mínimo de llenado; los bots reciben "éxito" sin envío.
+Funciona con y sin JavaScript: con JS envía por `fetch` sin recargar; sin JS hace un POST normal a
+`/<lang>/contact/sent/` (única página renderizada bajo demanda), que muestra el resultado o los errores.
+
+Antispam: campo trampa (honeypot) + tiempo mínimo de llenado (este último solo cuando hay JS, que es quien
+marca la hora de inicio); los bots reciben "éxito" sin envío.
 
 Variables de entorno (ver `.env.example`):
 

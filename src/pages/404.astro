@@ -16,12 +16,12 @@ import Layout from '../layouts/Layout.astro';
 
     <div class="message" lang="es">
       <p>Este sendero no lleva a ninguna parte. Puede que la página se haya movido o que nunca haya existido.</p>
-      <sl-button class="home-button" pill href="/es/">Volver al inicio</sl-button>
+      <a class="button" href="/es/">Volver al inicio</a>
     </div>
 
     <div class="message" lang="en">
       <p>This path leads nowhere. The page may have moved, or it never existed.</p>
-      <sl-button class="home-button" pill href="/en/">Back to home</sl-button>
+      <a class="button" href="/en/">Back to home</a>
     </div>
   </section>
 </Layout>
@@ -63,15 +63,4 @@ import Layout from '../layouts/Layout.astro';
     color: var(--color-text-muted);
   }
 
-  .home-button::part(base) {
-    background-color: var(--color-brand);
-    color: var(--color-brand-darker);
-    border: 0;
-    font-weight: var(--font-weight-medium);
-  }
-
-  .home-button::part(base):hover {
-    background-color: var(--color-brand-hover);
-    color: var(--color-background);
-  }
 </style>
