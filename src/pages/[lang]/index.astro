@@ -2,7 +2,7 @@
 import Layout from '../../layouts/Layout.astro';
 import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
 import { t } from '../../i18n/ui';
-import { Image } from 'astro:assets';
+import { Picture } from 'astro:assets';
 import exploringImage from '../../assets/home/exploring.webp';
 import designingImage from '../../assets/home/designing.webp';
 import craftsmanshipImage from '../../assets/home/craftmanship.webp';
@@ -52,7 +52,9 @@ const messages = t(lang);
   <section class="explore-split">
     <div class="split-left">
       <h2 class="explore-title">{messages.pages.home.exploreSectionTitle}</h2>
-      <Image
+      <Picture
+        formats={["avif", "webp"]}
+        fallbackFormat="webp"
         src={exploringImage}
         alt={messages.pages.home.exploreImageAlt}
         loading="lazy"
@@ -71,7 +73,9 @@ const messages = t(lang);
     </div>
     <div class="split-right">
       <h2 class="craft-title">{messages.pages.home.designSectionTitle}</h2>
-      <Image
+      <Picture
+        formats={["avif", "webp"]}
+        fallbackFormat="webp"
         src={designingImage}
         alt={messages.pages.home.designImageAlt}
         loading="lazy"
@@ -84,7 +88,9 @@ const messages = t(lang);
   <section class="craft-split">
     <div class="split-left">
       <h2 class="craft-title">{messages.pages.home.craftSectionTitle}</h2>
-      <Image
+      <Picture
+        formats={["avif", "webp"]}
+        fallbackFormat="webp"
         src={craftsmanshipImage}
         alt={messages.pages.home.craftImageAlt}
         loading="lazy"
@@ -102,13 +108,16 @@ const messages = t(lang);
       <h2 class="bloom-title">{messages.pages.home.bloomSectionTitle}</h2>
       <p class="bloom-description">{messages.pages.home.bloomSectionText}</p>
     </div>
-    <Image
+    <Picture
+      formats={["avif", "webp"]}
+      fallbackFormat="webp"
       src={bloomImage}
       alt={messages.pages.home.bloomImageAlt}
       loading="lazy"
       decoding="async"
       widths={[640, 1000]}
       sizes="100vw"
+      quality={50}
       class="bloom-image fade-in"
     />
   </section>

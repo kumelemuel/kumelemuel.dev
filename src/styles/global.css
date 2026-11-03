@@ -104,6 +104,12 @@ img, video {
   display: block;
 }
 
+/* <Picture> wraps <img> in <picture>; keep the <img> as the layout box so existing
+   flex/grid rules and img selectors behave as if there were no wrapper. */
+picture {
+  display: contents;
+}
+
 ul, ol {
   margin: 0;
   padding-left: 1.5em;
