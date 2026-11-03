@@ -27,8 +27,8 @@ const messages = t(lang);
       data-success-title={messages.pages.contact.successTitle}
       novalidate
     >
-      <p class="notice notice--error" data-form-error role="alert" aria-live="polite"></p>
-      <p class="notice notice--success" data-form-success role="status" aria-live="polite"></p>
+      <p class="notice notice--error" data-form-error role="alert"></p>
+      <p class="notice notice--success" data-form-success role="status"></p>
 
       <input type="hidden" name="lang" value={lang} />
       <input type="hidden" name="startedAt" value="" data-started-at />
@@ -42,8 +42,9 @@ const messages = t(lang);
           label={messages.pages.contact.name}
           placeholder={messages.pages.contact.namePlaceholder}
           autocomplete="name"
-        ></sl-input>
-        <p class="field-error" data-error-for="name" aria-live="polite"></p>
+        >
+          <p class="field-error" slot="help-text" data-error-for="name"></p>
+        </sl-input>
       </div>
 
       <div class="field">
@@ -54,8 +55,9 @@ const messages = t(lang);
           label={messages.pages.contact.email}
           placeholder={messages.pages.contact.emailPlaceholder}
           autocomplete="email"
-        ></sl-input>
-        <p class="field-error" data-error-for="email" aria-live="polite"></p>
+        >
+          <p class="field-error" slot="help-text" data-error-for="email"></p>
+        </sl-input>
       </div>
 
       <div class="field field--full">
@@ -65,8 +67,9 @@ const messages = t(lang);
           placeholder={messages.pages.contact.messagePlaceholder}
           rows="6"
           resize="vertical"
-        ></sl-textarea>
-        <p class="field-error" data-error-for="message" aria-live="polite"></p>
+        >
+          <p class="field-error" slot="help-text" data-error-for="message"></p>
+        </sl-textarea>
       </div>
 
       <div class="form-actions field--full">
@@ -176,8 +179,11 @@ const messages = t(lang);
     --sl-input-focus-ring-color: rgba(182, 59, 59, 0.15);
   }
 
+  /* Slotted into the component's help-text (Shoelace adds 0.125rem above it);
+     the padding restores the previous 0.4rem gap below the field. */
   .field-error {
     margin: 0;
+    padding-top: 0.275rem;
     font-size: var(--text-size-xs);
     color: var(--color-error);
     line-height: 1.4;

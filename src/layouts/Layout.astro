@@ -47,8 +47,9 @@ const canonicalURL = Astro.url.href;
 		<ClientRouter />
 	</head>
 	<body>
+		<a class="skip-link" href="#main">{t(lang).header.skipToContent}</a>
 		<Header lang={lang} {alternateLangs}></Header>
-		<main>
+		<main id="main" tabindex="-1">
 			{title && <h1 class="page-title">{title}</h1>}
 			<slot />
 		</main>

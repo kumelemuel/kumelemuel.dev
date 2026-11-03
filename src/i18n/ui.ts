@@ -9,6 +9,7 @@ type Messages = {
     openMenu: string;
     closeMenu: string;
     mainNav: string;
+    skipToContent: string;
     switchLanguage: Record<Lang, string>;
   };
   footer: {
@@ -97,6 +98,7 @@ export const ui: Record<Lang, Messages> = {
       openMenu: "Abrir menú",
       closeMenu: "Cerrar menú",
       mainNav: "Navegación principal",
+      skipToContent: "Saltar al contenido",
       switchLanguage: { es: "Ver en español", en: "Ver en inglés" },
     },
     footer: {
@@ -251,6 +253,7 @@ export const ui: Record<Lang, Messages> = {
       openMenu: "Open menu",
       closeMenu: "Close menu",
       mainNav: "Main navigation",
+      skipToContent: "Skip to content",
       switchLanguage: { es: "View in Spanish", en: "View in English" },
     },
     footer: {

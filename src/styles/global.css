@@ -152,6 +152,33 @@ blockquote {
   background: var(--color-text-secondary);
 }
 
+/* Keyboard users can jump past the header; visible only while focused. */
+.skip-link {
+  position: absolute;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 2000;
+  padding: 0.6rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--color-brand-darker);
+  color: var(--color-background);
+  font-weight: var(--font-weight-medium);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.skip-link:hover {
+  color: var(--color-background);
+}
+
+/* main receives focus from the skip link; no outline for a non-interactive target. */
+main:focus {
+  outline: none;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-brand-text);
   outline-offset: 2px;
