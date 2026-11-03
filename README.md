@@ -17,13 +17,35 @@ npm run dev            # http://localhost:4321
 
 ## Scripts
 
-| Comando         | Acción                                              |
-| :-------------- | :-------------------------------------------------- |
-| `npm run dev`   | Servidor de desarrollo                              |
-| `npm run check` | Chequeo de tipos (`astro check`)                    |
-| `npm run build` | Build de producción en `.vercel/output` (y `dist/`) |
+| Comando                 | Acción                                                            |
+| :---------------------- | :---------------------------------------------------------------- |
+| `npm run dev`           | Servidor de desarrollo                                            |
+| `npm run check`         | Chequeo de tipos (`astro check`)                                  |
+| `npm run build`         | Build de producción en `.vercel/output`                           |
+| `npm run lint`          | ESLint                                                            |
+| `npm run format`        | Formatea con Prettier (`format:check` solo verifica)              |
+| `npm test`              | Pruebas unitarias (Vitest)                                        |
+| `npm run test:e2e`      | Pruebas de extremo a extremo (Playwright + axe); requiere `build` |
+| `npx @lhci/cli autorun` | Presupuestos de Lighthouse sobre el build                         |
 
-> El adaptador de Vercel no soporta `astro preview`. Para probar el build, usa `vercel dev` o despliega un preview.
+> El adaptador de Vercel no soporta `astro preview`. Para ver el build con las cabeceras de Vercel (CSP incluida):
+> `node tests/support/serve-static.mjs 4600` (solo páginas estáticas; el formulario necesita `npm run dev`).
+
+## Calidad
+
+- **Unitarias** (`tests/unit/`): reglas del formulario en `src/lib/contact.ts` (validación, mensajes por idioma,
+  antispam, escape de HTML, asunto sin saltos de línea).
+- **Extremo a extremo** (`tests/e2e/`):
+  - `pages.spec.ts` contra el build real con sus cabeceras: cada página en ambos idiomas sin violaciones de CSP ni
+    errores de JS, un solo `<h1>`, metadatos, **axe (WCAG 2.2 AA)**, enlace de salto, menú móvil, redirecciones,
+    RSS y sitemap.
+  - `contact.spec.ts` contra `astro dev`: formulario con y sin JavaScript. El éxito se prueba por la vía del campo
+    trampa, que nunca llama a Resend.
+- **Lighthouse** (`lighthouserc.cjs`): rendimiento ≥ 90, accesibilidad = 100, buenas prácticas ≥ 95, SEO ≥ 90, CLS ≤ 0.1.
+  No es dependencia del proyecto a propósito (arrastra paquetes con avisos de seguridad); se ejecuta con `npx`.
+  Los reportes quedan en `.lighthouseci/` (no se suben a almacenamiento público).
+- **Dependabot** (`.github/dependabot.yml`): actualizaciones semanales agrupadas. Los `overrides` de `package.json`
+  (path-to-regexp, glob, minimatch) parchean dependencias transitivas; quítalos cuando las versiones upstream los incluyan.
 
 ## Estructura
 
@@ -111,4 +133,5 @@ Variables de entorno (ver `.env.example`):
 4. Asigna el dominio `kumelemuel.dev`.
 
 Seguridad: CSP generada por Astro con hashes (solo en build) + cabeceras en `vercel.json` (HSTS, nosniff, frame, referrer, permissions).
-CI: `.github/workflows/ci.yml` corre type check, build y auditoría en cada push/PR.
+CI: `.github/workflows/ci.yml` corre lint, formato, tipos, unitarias, build, auditoría (falla con altas/críticas),
+Playwright + axe y Lighthouse en cada push/PR.
