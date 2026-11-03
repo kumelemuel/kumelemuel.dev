@@ -1,13 +1,13 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
-import { t } from '../../i18n/ui';
-import { Picture } from 'astro:assets';
-import Icon from '../../components/Icon.astro';
-import exploringImage from '../../assets/home/exploring.webp';
-import designingImage from '../../assets/home/designing.webp';
-import craftsmanshipImage from '../../assets/home/craftmanship.webp';
-import bloomImage from '../../assets/home/bloom.webp';
+import Layout from "../../layouts/Layout.astro";
+import { SUPPORTED_LANGS, type Lang } from "../../i18n/config";
+import { t } from "../../i18n/ui";
+import { Picture } from "astro:assets";
+import Icon from "../../components/Icon.astro";
+import exploringImage from "../../assets/home/exploring.webp";
+import designingImage from "../../assets/home/designing.webp";
+import craftsmanshipImage from "../../assets/home/craftmanship.webp";
+import bloomImage from "../../assets/home/bloom.webp";
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
@@ -144,7 +144,7 @@ const messages = t(lang);
 
   .eyebrow {
     margin: 0;
-    font-family: var(--font-primary),serif;
+    font-family: var(--font-primary), serif;
     font-size: var(--text-size-sm);
     font-weight: var(--font-weight-bold);
     letter-spacing: var(--letter-spacing-widest);
@@ -154,7 +154,7 @@ const messages = t(lang);
 
   .hero-title {
     margin: 0;
-    font-family: var(--font-secondary),serif;
+    font-family: var(--font-secondary), serif;
     font-size: var(--text-size-hero);
     font-weight: var(--font-weight-light);
     line-height: var(--line-height-tight);
@@ -187,7 +187,10 @@ const messages = t(lang);
     justify-content: center;
     gap: 1rem;
     text-align: center;
-    transition: border-color 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
+    transition:
+      border-color 0.3s ease,
+      transform 0.3s ease,
+      background-color 0.3s ease;
   }
 
   .focus-card:hover {
@@ -206,7 +209,7 @@ const messages = t(lang);
 
   .focus-card h3 {
     margin: 0;
-    font-family: var(--font-primary),sans-serif;
+    font-family: var(--font-primary), sans-serif;
     font-size: var(--text-size-lg);
     font-weight: var(--font-weight-medium);
     letter-spacing: var(--letter-spacing-normal);
@@ -399,7 +402,9 @@ const messages = t(lang);
     .fade-in {
       opacity: 0;
       transform: translateY(70px);
-      transition: opacity 1.2s ease, transform 1.2s ease;
+      transition:
+        opacity 1.2s ease,
+        transform 1.2s ease;
     }
 
     .fade-in.visible {
@@ -412,20 +417,23 @@ const messages = t(lang);
 <script>
   // Re-run on every navigation: with ClientRouter, page scripts only execute once.
   function setupFadeIn() {
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: "0px 0px -50px 0px",
+      },
+    );
 
-    document.querySelectorAll('.fade-in:not(.visible)').forEach((el) => observer.observe(el));
+    document.querySelectorAll(".fade-in:not(.visible)").forEach((el) => observer.observe(el));
   }
 
-  document.addEventListener('astro:page-load', setupFadeIn);
+  document.addEventListener("astro:page-load", setupFadeIn);
 </script>

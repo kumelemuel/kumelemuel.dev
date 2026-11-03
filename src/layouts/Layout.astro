@@ -9,15 +9,15 @@ import { DEFAULT_LANG, isLang, type Lang } from "../i18n/config";
 import { t } from "../i18n/ui";
 
 interface Props {
-	title?: string;
-	description?: string;
-	lang?: string;
-	noindex?: boolean;
-	/** Languages in which this page exists; drives hreflang and the language switcher. */
-	alternateLangs?: readonly Lang[];
-	type?: "website" | "article";
-	/** Article dates and tags (only with type="article"). */
-	article?: ArticleMeta;
+  title?: string;
+  description?: string;
+  lang?: string;
+  noindex?: boolean;
+  /** Languages in which this page exists; drives hreflang and the language switcher. */
+  alternateLangs?: readonly Lang[];
+  type?: "website" | "article";
+  /** Article dates and tags (only with type="article"). */
+  article?: ArticleMeta;
 }
 
 const { title, description, lang: requestedLang, noindex, alternateLangs, type, article } = Astro.props;
@@ -27,59 +27,70 @@ const canonicalURL = Astro.url.href;
 
 <!doctype html>
 <html lang={lang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" href="/favicon.ico" sizes="48x48" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<meta name="theme-color" content="#f4eddd" />
-		<Font cssVariable="--font-cormorant" preload={[{ weight: "300" }, { weight: "400" }]} />
-		<Font cssVariable="--font-dm-sans" preload={[{ weight: "400" }]} />
-		<meta name="generator" content={Astro.generator} />
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.ico" sizes="48x48" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#f4eddd" />
+    <Font cssVariable="--font-cormorant" preload={[{ weight: "300" }, { weight: "400" }]} />
+    <Font cssVariable="--font-dm-sans" preload={[{ weight: "400" }]} />
+    <meta name="generator" content={Astro.generator} />
 
-		<SeoMeta title={title} description={description} {canonicalURL} {lang} {noindex} {alternateLangs} {type} {article} />
-		<link rel="alternate" type="application/rss+xml" title={t(lang).rss.title} href={`/${lang}/rss.xml`} />
-		<ClientRouter />
-	</head>
-	<body>
-		<a class="skip-link" href="#main">{t(lang).header.skipToContent}</a>
-		<Header lang={lang} {alternateLangs}></Header>
-		<main id="main" tabindex="-1">
-			{title && <h1 class="page-title">{title}</h1>}
-			<slot />
-		</main>
-		<Footer lang={lang} />
-	</body>
+    <SeoMeta
+      title={title}
+      description={description}
+      {canonicalURL}
+      {lang}
+      {noindex}
+      {alternateLangs}
+      {type}
+      {article}
+    />
+    <link rel="alternate" type="application/rss+xml" title={t(lang).rss.title} href={`/${lang}/rss.xml`} />
+    <ClientRouter />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">
+      {t(lang).header.skipToContent}
+    </a>
+    <Header lang={lang} {alternateLangs} />
+    <main id="main" tabindex="-1">
+      {title && <h1 class="page-title">{title}</h1>}
+      <slot />
+    </main>
+    <Footer lang={lang} />
+  </body>
 </html>
 
 <style>
-	:global(html, body) {
-		margin: 0;
-		width: 100%;
-	}
-	body {
-		margin: 0;
-		width: 100%;
-		min-height: 100dvh;
-		display: flex;
-		flex-direction: column;
-	}
-	Header {
-		flex-shrink: 0;
-	}
-	main {
-		flex: 1;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		width: 100%;
-		padding: var(--margin-page);
-		box-sizing: border-box;
-		overflow-y: hidden;
-		overflow-x: hidden;
-	}
-	.page-title {
-		margin: 0 0 var(--margin-element);
-	}
+  :global(html, body) {
+    margin: 0;
+    width: 100%;
+  }
+  body {
+    margin: 0;
+    width: 100%;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+  }
+  Header {
+    flex-shrink: 0;
+  }
+  main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: var(--margin-page);
+    box-sizing: border-box;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  .page-title {
+    margin: 0 0 var(--margin-element);
+  }
 </style>

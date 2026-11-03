@@ -1,9 +1,9 @@
 ---
-import Layout from '../../layouts/Layout.astro';
-import ContactSection from '../../components/ContactSection.astro';
-import ContactForm from '../../components/ContactForm.astro';
-import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
-import { t } from '../../i18n/ui';
+import Layout from "../../layouts/Layout.astro";
+import ContactSection from "../../components/ContactSection.astro";
+import ContactForm from "../../components/ContactForm.astro";
+import { SUPPORTED_LANGS, type Lang } from "../../i18n/config";
+import { t } from "../../i18n/ui";
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
@@ -18,4 +18,3 @@ const messages = t(lang);
     <ContactForm lang={lang} />
   </ContactSection>
 </Layout>
-

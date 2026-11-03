@@ -18,10 +18,14 @@ if (!svg) {
   throw new Error(`Icon "${name}" not found in src/icons/. Available: ${Object.keys(icons).join(", ")}`);
 }
 
-const escapeAttr = (value: string) => value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
+const escapeAttr = (value: string) =>
+  value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;");
 const a11y = label ? `role="img" aria-label="${escapeAttr(label)}"` : `aria-hidden="true" focusable="false"`;
 const classes = ["icon", className].filter(Boolean).join(" ");
-const html = svg.replace(/<svg\b/, `<svg class="${escapeAttr(classes)}" width="1em" height="1em" fill="currentColor" ${a11y}`);
+const html = svg.replace(
+  /<svg\b/,
+  `<svg class="${escapeAttr(classes)}" width="1em" height="1em" fill="currentColor" ${a11y}`,
+);
 ---
 
 <Fragment set:html={html} />

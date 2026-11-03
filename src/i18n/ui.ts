@@ -122,16 +122,20 @@ export const ui: Record<Lang, Messages> = {
         card3Title: "Propósito",
         card3Body: "Tecnología al servicio del bien común y lo colectivo.",
         exploreSectionTitle: "exploración",
-        exploreSectionText: "Todo proyecto comienza con preguntas, no con respuestas. Antes de escribir una línea de código me detengo a entender el problema, a las personas que lo viven y el contexto que lo sostiene. Explorar es investigar, prototipar y equivocarse a tiempo, para que las decisiones importantes se tomen con información y no por inercia.",
+        exploreSectionText:
+          "Todo proyecto comienza con preguntas, no con respuestas. Antes de escribir una línea de código me detengo a entender el problema, a las personas que lo viven y el contexto que lo sostiene. Explorar es investigar, prototipar y equivocarse a tiempo, para que las decisiones importantes se tomen con información y no por inercia.",
         exploreImageAlt: "Ilustración de exploración",
         designSectionTitle: "diseño",
-        designSectionText: "Diseñar es decidir qué forma tendrá un sistema y, con ello, qué permite y qué restringe. Modelo dominios, defino límites y elijo patrones pensando en quienes lo usarán y en quienes lo mantendrán mañana. Un buen diseño no se nota: hace que lo correcto sea lo más fácil de hacer.",
+        designSectionText:
+          "Diseñar es decidir qué forma tendrá un sistema y, con ello, qué permite y qué restringe. Modelo dominios, defino límites y elijo patrones pensando en quienes lo usarán y en quienes lo mantendrán mañana. Un buen diseño no se nota: hace que lo correcto sea lo más fácil de hacer.",
         designImageAlt: "Ilustración de diseño de software",
         craftSectionTitle: "artesanía",
-        craftSectionText: "La artesanía del software va más allá de escribir código que funcione. Implica comprender el contexto, anticipar consecuencias y diseñar soluciones que perduren. Cada decisión arquitectónica, cada nombre de variable, cada patrón elegido refleja una cosmovisión sobre cómo deberían interactuar las personas y los sistemas. El código no es neutral: siempre estructura posibilidades. Mi trabajo busca que esas posibilidades sean las correctas.",
+        craftSectionText:
+          "La artesanía del software va más allá de escribir código que funcione. Implica comprender el contexto, anticipar consecuencias y diseñar soluciones que perduren. Cada decisión arquitectónica, cada nombre de variable, cada patrón elegido refleja una cosmovisión sobre cómo deberían interactuar las personas y los sistemas. El código no es neutral: siempre estructura posibilidades. Mi trabajo busca que esas posibilidades sean las correctas.",
         craftImageAlt: "Ilustración de artesanía del software",
         bloomSectionTitle: "florecer",
-        bloomSectionText: "El software bien cuidado no termina con su lanzamiento: florece. Crece junto a las comunidades que lo habitan, se adapta sin perder su esencia y deja espacio para que otros construyan sobre él. Ese es el horizonte de Kumelemuel: sistemas abiertos, sostenibles y con sentido, que sigan aportando mucho después de haber sido escritos.",
+        bloomSectionText:
+          "El software bien cuidado no termina con su lanzamiento: florece. Crece junto a las comunidades que lo habitan, se adapta sin perder su esencia y deja espacio para que otros construyan sobre él. Ese es el horizonte de Kumelemuel: sistemas abiertos, sostenibles y con sentido, que sigan aportando mucho después de haber sido escritos.",
         bloomImageAlt: "Ilustración de un jardín de flores silvestres",
       },
       who: {
@@ -151,7 +155,8 @@ export const ui: Record<Lang, Messages> = {
       },
       portfolio: {
         title: "Portafolio",
-        description: "Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.",
+        description:
+          "Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.",
         visit: "Visitar",
         imageAlt: "Vista previa del proyecto",
       },
@@ -175,9 +180,9 @@ export const ui: Record<Lang, Messages> = {
       },
       privacy: {
         title: "Política de Privacidad",
-        description: "Cómo se tratan los datos que envías a través del formulario de contacto de este sitio personal.",
-        bodyHtml:
-          `<section>
+        description:
+          "Cómo se tratan los datos que envías a través del formulario de contacto de este sitio personal.",
+        bodyHtml: `<section>
   <p><em>Última actualización: 3 de noviembre de 2026.</em></p>
 
   <h2>1. Un sitio personal</h2>
@@ -273,20 +278,25 @@ export const ui: Record<Lang, Messages> = {
         card1Title: "Craft",
         card1Body: "Software as craftsmanship: discipline, judgment, and continuous improvement.",
         card2Title: "Holistic",
-        card2Body: "I conceive each solution as a whole, integrating technical and human concerns from the design stage.",
+        card2Body:
+          "I conceive each solution as a whole, integrating technical and human concerns from the design stage.",
         card3Title: "Purpose",
         card3Body: "Technology in service of the common good and the collective.",
         exploreSectionTitle: "exploration",
-        exploreSectionText: "Every project begins with questions, not answers. Before writing a single line of code, I take time to understand the problem, the people who live it, and the context that sustains it. Exploring means researching, prototyping, and failing early, so that important decisions are made with information rather than by inertia.",
+        exploreSectionText:
+          "Every project begins with questions, not answers. Before writing a single line of code, I take time to understand the problem, the people who live it, and the context that sustains it. Exploring means researching, prototyping, and failing early, so that important decisions are made with information rather than by inertia.",
         exploreImageAlt: "Exploration illustration",
         designSectionTitle: "design",
-        designSectionText: "Designing is deciding what shape a system will take and, with it, what it enables and what it restricts. I model domains, define boundaries, and choose patterns with both the people who will use it and those who will maintain it tomorrow in mind. Good design goes unnoticed: it makes the right thing the easiest thing to do.",
+        designSectionText:
+          "Designing is deciding what shape a system will take and, with it, what it enables and what it restricts. I model domains, define boundaries, and choose patterns with both the people who will use it and those who will maintain it tomorrow in mind. Good design goes unnoticed: it makes the right thing the easiest thing to do.",
         designImageAlt: "Software design illustration",
         craftSectionTitle: "craftsmanship",
-        craftSectionText: "Software craftsmanship goes beyond writing code that works. It involves understanding context, anticipating consequences, and designing solutions that endure. Every architectural decision, every variable name, every pattern chosen reflects a worldview on how people and systems should interact. Code is not neutral: it always structures possibilities. My work seeks to make those possibilities the right ones.",
+        craftSectionText:
+          "Software craftsmanship goes beyond writing code that works. It involves understanding context, anticipating consequences, and designing solutions that endure. Every architectural decision, every variable name, every pattern chosen reflects a worldview on how people and systems should interact. Code is not neutral: it always structures possibilities. My work seeks to make those possibilities the right ones.",
         craftImageAlt: "Software craftsmanship illustration",
         bloomSectionTitle: "bloom",
-        bloomSectionText: "Well-tended software does not end at launch: it blooms. It grows alongside the communities that inhabit it, adapts without losing its essence, and leaves room for others to build upon it. That is the horizon of Kumelemuel: open, sustainable, and meaningful systems that keep contributing long after they were written.",
+        bloomSectionText:
+          "Well-tended software does not end at launch: it blooms. It grows alongside the communities that inhabit it, adapts without losing its essence, and leaves room for others to build upon it. That is the horizon of Kumelemuel: open, sustainable, and meaningful systems that keep contributing long after they were written.",
         bloomImageAlt: "Illustration of a wildflower garden",
       },
       who: {
@@ -306,7 +316,8 @@ export const ui: Record<Lang, Messages> = {
       },
       portfolio: {
         title: "Portfolio",
-        description: "Projects and applications developed, showcasing work in technology in service of the common good.",
+        description:
+          "Projects and applications developed, showcasing work in technology in service of the common good.",
         visit: "Visit",
         imageAlt: "Project preview image",
       },
@@ -331,8 +342,7 @@ export const ui: Record<Lang, Messages> = {
       privacy: {
         title: "Privacy Policy",
         description: "How the data you send through the contact form of this personal site is handled.",
-        bodyHtml:
-          `<section>
+        bodyHtml: `<section>
   <p><em>Last updated: November 3, 2026.</em></p>
 
   <h2>1. A personal site</h2>

@@ -2,10 +2,10 @@
 // DISABLED: the leading "_" keeps this page out of the build until the portfolio is ready.
 // Before enabling (rename to portfolio.astro): replace the Unsplash placeholder image with local
 // images (the CSP only allows images from this domain) and add the link back to the header menu.
-import Layout from '../../layouts/Layout.astro';
-import { getCollection } from 'astro:content';
-import { SUPPORTED_LANGS, type Lang } from '../../i18n/config';
-import { t } from '../../i18n/ui';
+import Layout from "../../layouts/Layout.astro";
+import { getCollection } from "astro:content";
+import { SUPPORTED_LANGS, type Lang } from "../../i18n/config";
+import { t } from "../../i18n/ui";
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
@@ -13,10 +13,15 @@ export async function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const messages = t(lang);
-const portfolio = await getCollection('portfolio');
+const portfolio = await getCollection("portfolio");
 ---
 
-<Layout title={messages.pages.portfolio.title} lang={lang} noindex description={messages.pages.portfolio.description}>
+<Layout
+  title={messages.pages.portfolio.title}
+  lang={lang}
+  noindex
+  description={messages.pages.portfolio.description}
+>
   <div class="portfolio-grid">
     {portfolio.map((project) => (
       <article class="card-overview">
@@ -71,7 +76,7 @@ const portfolio = await getCollection('portfolio');
 
   .project-title {
     display: block;
-    font-family: var(--font-secondary),serif;
+    font-family: var(--font-secondary), serif;
     font-size: var(--text-size-xl);
     font-weight: var(--font-weight-light);
     color: var(--color-text-main);
@@ -84,7 +89,6 @@ const portfolio = await getCollection('portfolio');
     font-size: var(--text-size-sm);
     line-height: var(--line-height-relaxed);
   }
-
 
   .project-footer {
     padding: 1.25rem;

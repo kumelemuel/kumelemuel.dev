@@ -1,5 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import Layout from "../layouts/Layout.astro";
 
 // Static 404: the requested language is unknown at build time, so the page is bilingual.
 ---
@@ -15,13 +15,19 @@ import Layout from '../layouts/Layout.astro';
     <p class="code">404</p>
 
     <div class="message" lang="es">
-      <p>Este sendero no lleva a ninguna parte. Puede que la página se haya movido o que nunca haya existido.</p>
-      <a class="button" href="/es/">Volver al inicio</a>
+      <p>
+        Este sendero no lleva a ninguna parte. Puede que la página se haya movido o que nunca haya existido.
+      </p>
+      <a class="button" href="/es/">
+        Volver al inicio
+      </a>
     </div>
 
     <div class="message" lang="en">
       <p>This path leads nowhere. The page may have moved, or it never existed.</p>
-      <a class="button" href="/en/">Back to home</a>
+      <a class="button" href="/en/">
+        Back to home
+      </a>
     </div>
   </section>
 </Layout>
@@ -59,8 +65,7 @@ import Layout from '../layouts/Layout.astro';
     font-size: var(--text-size-base);
   }
 
-  .message[lang='en'] p {
+  .message[lang="en"] p {
     color: var(--color-text-muted);
   }
-
 </style>

@@ -1,10 +1,10 @@
 ---
-import Layout from '../../../layouts/Layout.astro';
-import { render } from 'astro:content';
-import { INTL_LOCALES, type Lang } from '../../../i18n/config';
-import { t } from '../../../i18n/ui';
-import '../../../styles/prism.css';
-import { getLocalizedArticles, type Article } from '../../../utils/articles';
+import Layout from "../../../layouts/Layout.astro";
+import { render } from "astro:content";
+import { INTL_LOCALES, type Lang } from "../../../i18n/config";
+import { t } from "../../../i18n/ui";
+import "../../../styles/prism.css";
+import { getLocalizedArticles, type Article } from "../../../utils/articles";
 
 export async function getStaticPaths() {
   const entries = await getLocalizedArticles();
@@ -28,9 +28,9 @@ const { article, lang, alternateLangs } = Astro.props as {
 const { Content } = await render(article);
 const messages = t(lang);
 const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
+  year: "numeric",
+  month: "long",
+  day: "numeric",
 });
 ---
 
@@ -48,8 +48,12 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
 >
   <article class="article">
     <p class="meta-line">
-      <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>
-      <span>{messages.pages.articles.tags}: {article.data.tags.join(' · ')}</span>
+      <span>
+        {messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}
+      </span>
+      <span>
+        {messages.pages.articles.tags}: {article.data.tags.join(" · ")}
+      </span>
     </p>
     <p class="description">{article.data.description}</p>
     <div class="article-body">
@@ -97,7 +101,7 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
 
   .article-body :global(h2),
   .article-body :global(h3) {
-    font-family: var(--font-secondary),sans-serif;
+    font-family: var(--font-secondary), sans-serif;
     font-weight: var(--font-weight-light);
     color: var(--color-text-main);
     margin: var(--margin-block) 0 var(--margin-element);

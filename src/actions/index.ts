@@ -1,17 +1,12 @@
 import { ActionError, defineAction } from "astro:actions";
 import { z } from "astro/zod";
-import {
-  CONTACT_FROM_EMAIL,
-  CONTACT_TO_EMAIL,
-  RESEND_API_KEY,
-} from "astro:env/server";
+import { CONTACT_FROM_EMAIL, CONTACT_TO_EMAIL, RESEND_API_KEY } from "astro:env/server";
 import { Resend } from "resend";
 
 const MIN_FILL_TIME_MS = 3000;
 const MAX_MESSAGE_LENGTH = 5000;
 
-const toTrimmedString = (value: unknown) =>
-  typeof value === "string" ? value.trim() : "";
+const toTrimmedString = (value: unknown) => (typeof value === "string" ? value.trim() : "");
 
 const escapeHtml = (value: string) =>
   value
@@ -23,10 +18,7 @@ const escapeHtml = (value: string) =>
 
 const contactInput = z
   .object({
-    lang: z.preprocess(
-      (value) => (value === "es" || value === "en" ? value : "es"),
-      z.enum(["es", "en"]),
-    ),
+    lang: z.preprocess((value) => (value === "es" || value === "en" ? value : "es"), z.enum(["es", "en"])),
     name: z.preprocess(toTrimmedString, z.string().max(120)),
     email: z.preprocess(toTrimmedString, z.string().max(254)),
     message: z.preprocess(toTrimmedString, z.string()),
@@ -103,13 +95,7 @@ export const server = {
         to: CONTACT_TO_EMAIL,
         replyTo: email,
         subject: `[kumelemuel.dev] Nuevo mensaje de ${name}`,
-        text: [
-          `Nombre: ${name}`,
-          `Email: ${email}`,
-          `Idioma: ${lang}`,
-          "",
-          message,
-        ].join("\n"),
+        text: [`Nombre: ${name}`, `Email: ${email}`, `Idioma: ${lang}`, "", message].join("\n"),
         html: `
           <p><strong>Nombre:</strong> ${escapeHtml(name)}</p>
           <p><strong>Email:</strong> ${escapeHtml(email)}</p>

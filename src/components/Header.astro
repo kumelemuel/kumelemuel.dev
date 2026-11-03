@@ -44,7 +44,7 @@ const localizedPath = (targetLang: Lang) => {
 ---
 
 <header>
-  <a href={basePath + '/'} class="brand">
+  <a href={basePath + "/"} class="brand">
     <span class="brand-text">Kumelemuel.dev</span>
   </a>
   <button
@@ -67,7 +67,9 @@ const localizedPath = (targetLang: Lang) => {
           href={item.path}
           class={isActive(item.path) ? "active" : ""}
           aria-current={isActive(item.path) ? "page" : undefined}
-        >{item.name}</a>
+        >
+          {item.name}
+        </a>
       ))}
       <div class="lang-switcher">
         {SUPPORTED_LANGS.map((currentLang) => (
@@ -97,50 +99,58 @@ const localizedPath = (targetLang: Lang) => {
     controller = new AbortController();
     const { signal } = controller;
 
-    const menuToggle = document.getElementById('menu-toggle');
-    const navMenu = document.getElementById('nav-menu');
-    const menuOverlay = document.getElementById('menu-overlay');
+    const menuToggle = document.getElementById("menu-toggle");
+    const navMenu = document.getElementById("nav-menu");
+    const menuOverlay = document.getElementById("menu-overlay");
     if (!menuToggle || !navMenu) return;
 
-    const mobileQuery = window.matchMedia('(max-width: 900px)');
+    const mobileQuery = window.matchMedia("(max-width: 900px)");
 
     const setOpen = (open: boolean) => {
-      navMenu.classList.toggle('menu-open', open);
-      menuOverlay?.classList.toggle('menu-open', open);
-      document.body.classList.toggle('menu-locked', open);
-      menuToggle.setAttribute('aria-expanded', String(open));
+      navMenu.classList.toggle("menu-open", open);
+      menuOverlay?.classList.toggle("menu-open", open);
+      document.body.classList.toggle("menu-locked", open);
+      menuToggle.setAttribute("aria-expanded", String(open));
       menuToggle.setAttribute(
-        'aria-label',
-        (open ? menuToggle.dataset.labelClose : menuToggle.dataset.labelOpen) ?? 'Menu',
+        "aria-label",
+        (open ? menuToggle.dataset.labelClose : menuToggle.dataset.labelOpen) ?? "Menu",
       );
       // Off-screen menu must not be reachable by keyboard or screen readers.
       navMenu.inert = mobileQuery.matches && !open;
     };
 
-    const isOpen = () => navMenu.classList.contains('menu-open');
+    const isOpen = () => navMenu.classList.contains("menu-open");
 
-    menuToggle.addEventListener('click', () => setOpen(!isOpen()), { signal });
-    menuOverlay?.addEventListener('click', () => setOpen(false), { signal });
-    navMenu.addEventListener('click', (event) => {
-      if ((event.target as HTMLElement).closest('a')) setOpen(false);
-    }, { signal });
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape' && isOpen()) {
-        setOpen(false);
-        menuToggle.focus();
-      }
-    }, { signal });
-    mobileQuery.addEventListener('change', () => setOpen(false), { signal });
+    menuToggle.addEventListener("click", () => setOpen(!isOpen()), { signal });
+    menuOverlay?.addEventListener("click", () => setOpen(false), { signal });
+    navMenu.addEventListener(
+      "click",
+      (event) => {
+        if ((event.target as HTMLElement).closest("a")) setOpen(false);
+      },
+      { signal },
+    );
+    document.addEventListener(
+      "keydown",
+      (event) => {
+        if (event.key === "Escape" && isOpen()) {
+          setOpen(false);
+          menuToggle.focus();
+        }
+      },
+      { signal },
+    );
+    mobileQuery.addEventListener("change", () => setOpen(false), { signal });
 
     setOpen(false);
   }
 
-  document.addEventListener('astro:page-load', setupMenu);
+  document.addEventListener("astro:page-load", setupMenu);
 </script>
 
 <style>
   header {
-    font-family: var(--font-primary),serif;
+    font-family: var(--font-primary), serif;
     font-size: var(--text-size-sm);
     font-weight: var(--font-weight-regular);
     background-color: var(--color-background);
@@ -161,7 +171,7 @@ const localizedPath = (targetLang: Lang) => {
   }
 
   .brand-text {
-    font-family: var(--font-secondary),serif;
+    font-family: var(--font-secondary), serif;
     font-size: var(--text-size-xl);
     font-weight: var(--font-weight-regular);
     letter-spacing: -0.02em;

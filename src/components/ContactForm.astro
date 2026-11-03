@@ -29,7 +29,13 @@ const action = `/${lang}/contact/sent/${actions.contact}`;
 
 const fields = [
   { name: "name", label: contact.name, placeholder: contact.namePlaceholder, autocomplete: "name" },
-  { name: "email", label: contact.email, placeholder: contact.emailPlaceholder, autocomplete: "email", inputmode: "email" },
+  {
+    name: "email",
+    label: contact.email,
+    placeholder: contact.emailPlaceholder,
+    autocomplete: "email",
+    inputmode: "email",
+  },
 ] as const;
 ---
 
@@ -44,18 +50,26 @@ const fields = [
   data-success-title={contact.successTitle}
   novalidate
 >
-  <p class="notice notice--error" data-form-error role="alert">{formError}</p>
-  <p class="notice notice--success" data-form-success role="status">{success}</p>
+  <p class="notice notice--error" data-form-error role="alert">
+    {formError}
+  </p>
+  <p class="notice notice--success" data-form-success role="status">
+    {success}
+  </p>
 
   <input type="hidden" name="lang" value={lang} />
   <input type="hidden" name="startedAt" value={startedAt ? String(startedAt) : ""} data-started-at />
   <div class="hp-field" aria-hidden="true">
-    <label>Website <input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+    <label>
+      Website <input type="text" name="website" tabindex="-1" autocomplete="off" />
+    </label>
   </div>
 
   {fields.map((field) => (
     <div class="field">
-      <label class="field-label" for={`contact-${field.name}`}>{field.label}</label>
+      <label class="field-label" for={`contact-${field.name}`}>
+        {field.label}
+      </label>
       <input
         id={`contact-${field.name}`}
         class="field-input"
@@ -68,12 +82,16 @@ const fields = [
         aria-invalid={errors[field.name] ? "true" : undefined}
         aria-describedby={`contact-${field.name}-error`}
       />
-      <p class="field-error" id={`contact-${field.name}-error`} data-error-for={field.name}>{errors[field.name]}</p>
+      <p class="field-error" id={`contact-${field.name}-error`} data-error-for={field.name}>
+        {errors[field.name]}
+      </p>
     </div>
   ))}
 
   <div class="field field--full">
-    <label class="field-label" for="contact-message">{contact.message}</label>
+    <label class="field-label" for="contact-message">
+      {contact.message}
+    </label>
     <textarea
       id="contact-message"
       class="field-input field-input--textarea"
@@ -83,13 +101,14 @@ const fields = [
       aria-invalid={errors.message ? "true" : undefined}
       aria-describedby="contact-message-error"
     >{values.message ?? ""}</textarea>
-    <p class="field-error" id="contact-message-error" data-error-for="message">{errors.message}</p>
+    <p class="field-error" id="contact-message-error" data-error-for="message">
+      {errors.message}
+    </p>
   </div>
 
   <div class="form-actions field--full">
     <p class="form-note">
-      {contact.privacyNote}{" "}
-      <a href={`/${lang}/privacy/`}>{messages.footer.privacyLink}</a>
+      {contact.privacyNote} <a href={`/${lang}/privacy/`}>{messages.footer.privacyLink}</a>
     </p>
     <button type="submit" class="button button--large contact-button">
       <span data-button-label>{contact.send}</span>
@@ -342,7 +361,9 @@ const fields = [
       if (submitButton) {
         submitButton.disabled = submitting;
         if (buttonLabel) {
-          buttonLabel.textContent = submitting ? form.dataset.sendingLabel || defaultButtonText : defaultButtonText;
+          buttonLabel.textContent = submitting
+            ? form.dataset.sendingLabel || defaultButtonText
+            : defaultButtonText;
         }
       }
     };

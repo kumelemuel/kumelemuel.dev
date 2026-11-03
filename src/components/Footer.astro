@@ -14,7 +14,9 @@ const basePath = `/${lang}`;
   <div class="footer-content">
     <nav>
       <ul>
-        <li><a href={`${basePath}/privacy/`}>{messages.footer.privacyLink}</a></li>
+        <li>
+          <a href={`${basePath}/privacy/`}>{messages.footer.privacyLink}</a>
+        </li>
       </ul>
     </nav>
     <div class="social-links">
@@ -25,7 +27,9 @@ const basePath = `/${lang}`;
         <Icon name="linkedin" class="social-link-icon" />
       </a>
     </div>
-    <div class="copyright">&copy; {new Date().getFullYear()} Kumelemuel.dev. {messages.footer.rights}</div>
+    <div class="copyright">
+      &copy; {new Date().getFullYear()} Kumelemuel.dev. {messages.footer.rights}
+    </div>
   </div>
 </footer>
 
@@ -35,7 +39,7 @@ const basePath = `/${lang}`;
   }
 
   .footer-content {
-    font-family: var(--font-primary),serif;
+    font-family: var(--font-primary), serif;
     font-weight: var(--font-weight-regular);
     display: flex;
     justify-content: space-between;

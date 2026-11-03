@@ -26,7 +26,12 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-family: var(--font-secondary), serif;
   font-weight: var(--font-weight-light);
@@ -90,15 +95,18 @@ a:hover {
   color: var(--color-brand-text);
 }
 
-strong, b {
+strong,
+b {
   font-weight: var(--font-weight-semibold);
 }
 
-em, i {
+em,
+i {
   font-style: italic;
 }
 
-img, video {
+img,
+video {
   max-width: 100%;
   height: auto;
   display: block;
@@ -110,7 +118,8 @@ picture {
   display: contents;
 }
 
-ul, ol {
+ul,
+ol {
   margin: 0;
   padding-left: 1.5em;
 }

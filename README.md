@@ -17,11 +17,11 @@ npm run dev            # http://localhost:4321
 
 ## Scripts
 
-| Comando           | Acción                                                  |
-| :---------------- | :------------------------------------------------------ |
-| `npm run dev`     | Servidor de desarrollo                                  |
-| `npm run check`   | Chequeo de tipos (`astro check`)                        |
-| `npm run build`   | Build de producción en `.vercel/output` (y `dist/`)     |
+| Comando         | Acción                                              |
+| :-------------- | :-------------------------------------------------- |
+| `npm run dev`   | Servidor de desarrollo                              |
+| `npm run check` | Chequeo de tipos (`astro check`)                    |
+| `npm run build` | Build de producción en `.vercel/output` (y `dist/`) |
 
 > El adaptador de Vercel no soporta `astro preview`. Para probar el build, usa `vercel dev` o despliega un preview.
 
@@ -97,10 +97,10 @@ marca la hora de inicio); los bots reciben "éxito" sin envío.
 
 Variables de entorno (ver `.env.example`):
 
-| Variable             | Descripción                                                     |
-| :------------------- | :-------------------------------------------------------------- |
-| `RESEND_API_KEY`     | API key de Resend                                               |
-| `CONTACT_TO_EMAIL`   | Correo que recibe los mensajes                                  |
+| Variable             | Descripción                                                                |
+| :------------------- | :------------------------------------------------------------------------- |
+| `RESEND_API_KEY`     | API key de Resend                                                          |
+| `CONTACT_TO_EMAIL`   | Correo que recibe los mensajes                                             |
 | `CONTACT_FROM_EMAIL` | Remitente (por defecto `onboarding@resend.dev` hasta verificar el dominio) |
 
 ## Despliegue (Vercel)
