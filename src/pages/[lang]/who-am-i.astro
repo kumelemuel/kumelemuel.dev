@@ -43,6 +43,9 @@ const messages = t(lang);
   }
 
   .bio-text :global(a) {
+    /* Underlined so links in running text do not rely on color alone (WCAG 1.4.1). */
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
     color: var(--color-brand-text);
     transition: color 0.2s ease;
   }

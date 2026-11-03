@@ -77,8 +77,7 @@ const localizedPath = (targetLang: Lang) => {
             href={localizedPath(currentLang)}
             class={currentLang === lang ? "active-lang" : ""}
             hreflang={currentLang}
-            lang={currentLang}
-            aria-label={messages.header.switchLanguage[currentLang]}
+            aria-label={`${currentLang.toUpperCase()} — ${messages.header.switchLanguage[currentLang]}`}
             aria-current={currentLang === lang ? "true" : undefined}
           >
             {currentLang.toUpperCase()}
