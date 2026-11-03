@@ -1,0 +1,63 @@
+/* Prism syntax theme for article code blocks, built from the site palette.
+   Every token color is >= 4.5:1 on --color-background-elevated (#f8f5eb). */
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.token.punctuation,
+.token.operator {
+  color: #4a5a3a;
+}
+
+.token.keyword,
+.token.atrule,
+.token.important,
+.token.selector {
+  color: #586d3f;
+  font-weight: var(--font-weight-semibold);
+}
+
+.token.string,
+.token.char,
+.token.attr-value,
+.token.regex,
+.token.url {
+  color: #8a4b2a;
+}
+
+.token.function,
+.token.class-name,
+.token.builtin {
+  color: #2f5d6b;
+}
+
+.token.number,
+.token.boolean,
+.token.constant,
+.token.symbol {
+  color: #9a3d55;
+}
+
+.token.property,
+.token.tag,
+.token.attr-name,
+.token.variable,
+.token.inserted {
+  color: #7a5a12;
+}
+
+.token.deleted {
+  color: var(--color-error);
+}
+
+.token.bold {
+  font-weight: var(--font-weight-bold);
+}
+
+.token.italic {
+  font-style: italic;
+}

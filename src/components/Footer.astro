@@ -1,6 +1,7 @@
 ---
 import { DEFAULT_LANG, type Lang, isLang } from "../i18n/config";
 import { t } from "../i18n/ui";
+import { SITE } from "../site";
 
 const requestedLang = Astro.props.lang as Lang | undefined;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
@@ -16,10 +17,10 @@ const basePath = `/${lang}`;
       </ul>
     </nav>
     <div class="social-links">
-      <a href="https://github.com/kumelemuel" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+      <a href={SITE.social.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
         <sl-icon class="social-link-icon" name="fab-github" library="fa"></sl-icon>
       </a>
-      <a href="https://www.linkedin.com/in/diego-arenas-75043b151/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+      <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
         <sl-icon class="social-link-icon" name="fab-linkedin" library="fa"></sl-icon>
       </a>
     </div>

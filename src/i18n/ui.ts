@@ -15,6 +15,10 @@ type Messages = {
     privacyLink: string;
     rights: string;
   };
+  rss: {
+    title: string;
+    description: string;
+  };
   pages: {
     home: {
       eyebrow: string;
@@ -98,6 +102,10 @@ export const ui: Record<Lang, Messages> = {
     footer: {
       privacyLink: "Política de privacidad",
       rights: "Todos los derechos reservados.",
+    },
+    rss: {
+      title: "Kumelemuel — Artículos",
+      description: "Artículos sobre ingeniería de software, arquitectura, y modelos de gobernanza digital.",
     },
     pages: {
       home: {
@@ -248,6 +256,10 @@ export const ui: Record<Lang, Messages> = {
     footer: {
       privacyLink: "Privacy policy",
       rights: "All rights reserved.",
+    },
+    rss: {
+      title: "Kumelemuel — Articles",
+      description: "Articles on software engineering, architecture, and digital governance models.",
     },
     pages: {
       home: {

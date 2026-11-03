@@ -18,8 +18,8 @@ const articles = defineCollection({
     title: z.string(),
     description: z.string(),
     publishedAt: z.coerce.date(),
+    updatedAt: z.coerce.date().optional(),
     tags: z.array(z.string()).min(1),
-    url: z.string().optional(),
   }),
 });
 

@@ -2,8 +2,13 @@
 import { defineConfig, envField, fontProviders } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
+import { readdirSync } from 'node:fs';
 
 const isBuild = process.argv.includes('build');
+
+// Keep the (empty) article listings out of the sitemap until the first article exists.
+const hasArticles = readdirSync(new URL('./src/data/articles/', import.meta.url), { recursive: true })
+  .some((file) => String(file).endsWith('.md'));
 
 // https://astro.build/config
 export default defineConfig({
@@ -18,6 +23,10 @@ export default defineConfig({
     // Emit the CSP as an HTTP header for static pages (instead of only a <meta> tag).
     staticHeaders: true,
   }),
+  // Prism emits CSS classes; Shiki (the default) uses inline styles that the strict CSP blocks.
+  markdown: {
+    syntaxHighlight: 'prism',
+  },
   // Real HTTP redirect on Vercel (instead of a meta-refresh page).
   redirects: {
     '/': '/es/',
@@ -40,7 +49,7 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes('/privacy/'),
+      filter: (page) => !page.includes('/privacy/') && (hasArticles || !page.includes('/articles/')),
       i18n: {
         defaultLocale: 'es',
         locales: { es: 'es-MX', en: 'en' },

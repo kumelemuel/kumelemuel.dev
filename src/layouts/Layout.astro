@@ -2,10 +2,11 @@
 import "../styles/global.css";
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import SeoMeta from "../components/SeoMeta.astro";
+import SeoMeta, { type ArticleMeta } from "../components/SeoMeta.astro";
 import { ClientRouter } from "astro:transitions";
 import { Font } from "astro:assets";
 import { DEFAULT_LANG, isLang, type Lang } from "../i18n/config";
+import { t } from "../i18n/ui";
 
 interface Props {
 	title?: string;
@@ -15,9 +16,11 @@ interface Props {
 	/** Languages in which this page exists; drives hreflang and the language switcher. */
 	alternateLangs?: readonly Lang[];
 	type?: "website" | "article";
+	/** Article dates and tags (only with type="article"). */
+	article?: ArticleMeta;
 }
 
-const { title, description, lang: requestedLang, noindex, alternateLangs, type } = Astro.props;
+const { title, description, lang: requestedLang, noindex, alternateLangs, type, article } = Astro.props;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 const canonicalURL = Astro.url.href;
 ---
@@ -35,19 +38,8 @@ const canonicalURL = Astro.url.href;
 		<Font cssVariable="--font-dm-sans" preload={[{ weight: "400" }]} />
 		<meta name="generator" content={Astro.generator} />
 
-		<SeoMeta title={title} description={description} {canonicalURL} {lang} {noindex} {alternateLangs} {type} />
-		<script type="application/ld+json" set:html={JSON.stringify({
-			"@context": "https://schema.org",
-			"@type": "Person",
-			"name": "Diego Arenas",
-			"url": Astro.site?.href,
-			"jobTitle": "Software Engineer",
-			"sameAs": [
-				"https://github.com/kumelemuel",
-				"https://www.linkedin.com/in/diego-arenas-75043b151/"
-			]
-		})} />
-
+		<SeoMeta title={title} description={description} {canonicalURL} {lang} {noindex} {alternateLangs} {type} {article} />
+		<link rel="alternate" type="application/rss+xml" title={t(lang).rss.title} href={`/${lang}/rss.xml`} />
 		<script>
 			import "../scripts/shoelace";
 		</script>

@@ -3,6 +3,7 @@ import Layout from '../../../layouts/Layout.astro';
 import { render } from 'astro:content';
 import { INTL_LOCALES, type Lang } from '../../../i18n/config';
 import { t } from '../../../i18n/ui';
+import '../../../styles/prism.css';
 import { getLocalizedArticles, type Article } from '../../../utils/articles';
 
 export async function getStaticPaths() {
@@ -33,7 +34,18 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
 });
 ---
 
-<Layout title={article.data.title} lang={lang} description={article.data.description} type="article" {alternateLangs}>
+<Layout
+  title={article.data.title}
+  lang={lang}
+  description={article.data.description}
+  type="article"
+  article={{
+    publishedAt: article.data.publishedAt,
+    updatedAt: article.data.updatedAt,
+    tags: article.data.tags,
+  }}
+  {alternateLangs}
+>
   <article class="article">
     <p class="meta-line">
       <span>{messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}</span>

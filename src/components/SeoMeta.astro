@@ -1,5 +1,12 @@
 ---
 import { DEFAULT_LANG, SUPPORTED_LANGS, type Lang } from "../i18n/config";
+import { SITE } from "../site";
+
+export interface ArticleMeta {
+  publishedAt: Date;
+  updatedAt?: Date;
+  tags: readonly string[];
+}
 
 interface Props {
   title?: string;
@@ -11,6 +18,8 @@ interface Props {
   /** Languages in which this same page exists (for hreflang). Defaults to all. */
   alternateLangs?: readonly Lang[];
   type?: "website" | "article";
+  /** Only for type="article": dates and tags for Open Graph and BlogPosting. */
+  article?: ArticleMeta;
   noindex?: boolean;
 }
 
@@ -33,10 +42,11 @@ const {
   lang = DEFAULT_LANG,
   alternateLangs = SUPPORTED_LANGS,
   type = "website",
+  article,
   noindex = false,
 } = Astro.props;
 
-const siteTitle = "Kumelemuel";
+const siteTitle = SITE.name;
 const fullTitle = title ? `${title} | ${siteTitle}` : siteTitle;
 const url = canonicalURL || Astro.url.href;
 const absoluteImage = new URL(image, Astro.site).href;
@@ -53,6 +63,49 @@ const alternates = alternateLangs.map((altLang) => ({
   href: localizedURL(altLang),
 }));
 const xDefaultLang = alternateLangs.includes(DEFAULT_LANG) ? DEFAULT_LANG : alternateLangs[0];
+
+// Structured data: one @graph so the article can reference the author and site by @id.
+const siteURL = new URL("/", Astro.site).href;
+const personId = `${siteURL}#person`;
+const websiteId = `${siteURL}#website`;
+const graph: Record<string, unknown>[] = [
+  {
+    "@type": "WebSite",
+    "@id": websiteId,
+    url: siteURL,
+    name: siteTitle,
+    inLanguage: SUPPORTED_LANGS.map((l) => HREFLANGS[l]),
+    publisher: { "@id": personId },
+  },
+  {
+    "@type": "Person",
+    "@id": personId,
+    name: SITE.author.name,
+    url: siteURL,
+    jobTitle: SITE.author.jobTitle,
+    sameAs: Object.values(SITE.social),
+  },
+];
+if (type === "article" && article) {
+  graph.push({
+    "@type": "BlogPosting",
+    "@id": `${url}#article`,
+    mainEntityOfPage: url,
+    url,
+    headline: title,
+    description,
+    image: absoluteImage,
+    inLanguage: HREFLANGS[lang],
+    datePublished: article.publishedAt.toISOString(),
+    dateModified: (article.updatedAt ?? article.publishedAt).toISOString(),
+    keywords: article.tags.join(", "),
+    author: { "@id": personId },
+    publisher: { "@id": personId },
+    isPartOf: { "@id": websiteId },
+  });
+}
+// Escape "<" so a title containing "</script>" cannot close the tag early.
+const jsonLd = JSON.stringify({ "@context": "https://schema.org", "@graph": graph }).replace(/</g, "\\u003c");
 ---
 
 <title>{fullTitle}</title>
@@ -79,6 +132,14 @@ const xDefaultLang = alternateLangs.includes(DEFAULT_LANG) ? DEFAULT_LANG : alte
   .filter((altLang) => altLang !== lang)
   .map((altLang) => <meta property="og:locale:alternate" content={OG_LOCALES[altLang]} />)}
 <meta property="og:type" content={type} />
+{type === "article" && article && (
+  <>
+    <meta property="article:published_time" content={article.publishedAt.toISOString()} />
+    {article.updatedAt && <meta property="article:modified_time" content={article.updatedAt.toISOString()} />}
+    <meta property="article:author" content={SITE.author.name} />
+    {article.tags.map((tag) => <meta property="article:tag" content={tag} />)}
+  </>
+)}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
@@ -87,3 +148,5 @@ const xDefaultLang = alternateLangs.includes(DEFAULT_LANG) ? DEFAULT_LANG : alte
 <meta name="twitter:image:alt" content={imageAlt} />
 
 {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+<script type="application/ld+json" set:html={jsonLd} />
