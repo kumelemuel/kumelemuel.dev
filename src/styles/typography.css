@@ -1,7 +1,7 @@
 :root {
-  /* --font-dm-sans and --font-cormorant are defined by Astro's Fonts API (astro.config.mjs). */
-  --font-primary: var(--font-dm-sans);
-  --font-secondary: var(--font-cormorant);
+  /* --font-scope-one and --font-gruppo are defined by Astro's Fonts API (astro.config.mjs). */
+  --font-primary: var(--font-scope-one);
+  --font-secondary: var(--font-gruppo);
 
   --text-size-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.8125rem);
   --text-size-sm: clamp(0.8125rem, 0.75rem + 0.3vw, 0.938rem);

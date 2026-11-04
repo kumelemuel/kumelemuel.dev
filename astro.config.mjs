@@ -72,21 +72,23 @@ export default defineConfig({
   fonts: [
     {
       provider: fontProviders.google(),
-      name: "Cormorant",
-      cssVariable: "--font-cormorant",
-      weights: [300, 400, 500],
-      styles: ["normal"],
-      subsets: ["latin"],
-      fallbacks: ["Times New Roman", "serif"],
-    },
-    {
-      provider: fontProviders.google(),
-      name: "DM Sans",
-      cssVariable: "--font-dm-sans",
-      weights: [400, 500, 700],
+      name: "Gruppo",
+      cssVariable: "--font-gruppo",
+      // Gruppo is only published in weight 400.
+      weights: [400],
       styles: ["normal"],
       subsets: ["latin"],
       fallbacks: ["system-ui", "sans-serif"],
+    },
+    {
+      provider: fontProviders.google(),
+      name: "Scope One",
+      cssVariable: "--font-scope-one",
+      // Scope One is only published in weight 400.
+      weights: [400],
+      styles: ["normal"],
+      subsets: ["latin"],
+      fallbacks: ["Georgia", "serif"],
     },
   ],
   env: {
