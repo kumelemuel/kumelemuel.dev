@@ -21,6 +21,8 @@ body {
   font-size: var(--text-size-base);
   line-height: var(--line-height-normal);
   font-weight: var(--font-weight-regular);
+  /* Gruppo and Scope One only ship weight 400: don't fake bold, but keep synthesized italics. */
+  font-synthesis: style;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
