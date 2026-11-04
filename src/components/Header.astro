@@ -139,7 +139,7 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
 <style>
   header {
     font-family: var(--font-primary), serif;
-    font-size: var(--text-size-sm);
+    font-size: var(--text-size-xs);
     font-weight: var(--font-weight-regular);
     background-color: var(--color-background);
     color: var(--color-text-secondary);
@@ -162,7 +162,8 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
     font-family: var(--font-secondary), serif;
     font-size: var(--text-size-xl);
     font-weight: var(--font-weight-regular);
-    letter-spacing: -0.02em;
+    letter-spacing: var(--letter-spacing-wider);
+    text-transform: uppercase;
     color: var(--color-text-main);
     transition: all 0.3s ease;
   }
@@ -208,15 +209,15 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
 
   .nav-menu a {
     font-size: 0.95em;
-    color: var(--color-text-main);
+    color: var(--color-text-secondary);
     text-decoration: none;
+    text-transform: uppercase;
     transition: color 0.5s ease;
-    letter-spacing: 0.02em;
+    letter-spacing: var(--letter-spacing-widest);
   }
 
   .nav-menu a.active {
     color: var(--color-brand-text);
-    font-weight: var(--font-weight-bold);
   }
 
   .nav-menu a:hover {
@@ -232,14 +233,19 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
     border-left: 1px solid var(--color-border);
   }
 
+  /* Padded to a 24px touch target (WCAG 2.5.8) despite the small type. */
   .lang-switcher a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
     font-size: 0.85em;
     letter-spacing: 0.05em;
   }
 
   .active-lang {
     color: var(--color-brand-text) !important;
-    font-weight: var(--font-weight-bold);
   }
 
   .menu-overlay {
@@ -252,9 +258,8 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
       color: var(--color-text-main);
     }
 
-    /* The open menu has a dark background: keep the close icon visible. */
     .menu-toggle[aria-expanded="true"] {
-      color: var(--color-background);
+      color: var(--color-brand);
     }
 
     .nav-menu {
@@ -263,7 +268,7 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
       right: -100%;
       width: 100%;
       height: 100dvh;
-      background-color: var(--color-brand-dark);
+      background-color: var(--color-background);
       flex-direction: column;
       justify-content: center;
       gap: 0;
@@ -279,7 +284,7 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
       display: block;
       position: fixed;
       inset: 0;
-      background-color: rgba(0, 0, 0, 0.5);
+      background-color: rgba(0, 0, 0, 0.7);
       opacity: 0;
       pointer-events: none;
       transition: opacity 0.3s ease;
@@ -297,8 +302,8 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
     }
 
     .nav-menu a {
-      font-size: var(--text-size-2xl);
-      color: var(--color-background);
+      font-size: var(--text-size-lg);
+      color: var(--color-text-main);
     }
 
     .nav-menu a.active {
@@ -313,11 +318,11 @@ const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath
       padding-left: 0;
       padding-top: 1.5rem;
       border-left: none;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      border-top: 1px solid var(--color-border);
     }
 
     .lang-switcher a {
-      color: var(--color-background);
+      color: var(--color-text-secondary);
     }
 
     .active-lang {

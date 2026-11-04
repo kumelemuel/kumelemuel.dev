@@ -57,7 +57,8 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
     width: min(800px, 100%);
     background-color: var(--color-background-card);
     border: 1px solid var(--color-border);
-    border-radius: 1rem;
+    border-top: 1px solid var(--color-border-gold);
+    border-radius: 2px;
     padding: var(--margin-block);
     box-sizing: border-box;
   }
@@ -76,7 +77,8 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
     gap: 1.5rem;
     color: var(--color-text-muted);
     font-size: var(--text-size-xs);
-    letter-spacing: 0.02em;
+    letter-spacing: var(--letter-spacing-wider);
+    text-transform: uppercase;
   }
 
   .article-body {
@@ -92,8 +94,9 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
   .article-body :global(h2),
   .article-body :global(h3) {
     font-family: var(--font-secondary), sans-serif;
-    font-weight: var(--font-weight-light);
-    color: var(--color-text-main);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-wide);
+    color: var(--color-brand-display);
     margin: var(--margin-block) 0 var(--margin-element);
   }
 
@@ -120,14 +123,15 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
   .article-body :global(code) {
     background: var(--color-background-elevated);
     padding: 0.2em 0.4em;
-    border-radius: 0.25rem;
+    border-radius: 2px;
     font-size: 0.9em;
   }
 
   .article-body :global(pre) {
     background: var(--color-background-elevated);
     padding: var(--margin-element);
-    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: 2px;
     overflow-x: auto;
   }
 

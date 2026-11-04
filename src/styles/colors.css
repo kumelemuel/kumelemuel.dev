@@ -1,40 +1,50 @@
+/* Dark "archive" palette: near-black surfaces, parchment text, antique gold and crimson accents.
+   Contrast ratios are measured against --color-background (#121212) unless stated. */
 :root {
-  --color-text-main: #344128;
-  --color-text-secondary: #4a5a3a;
-  --color-text-muted: #5e6b4b;
-  --color-text-accent: #8ba868;
-  --color-text-accent-strong: #7a9a58;
+  color-scheme: dark;
 
-  --color-background: #f4eddd;
-  --color-background-secondary: #ebe8db;
-  --color-background-elevated: #f8f5eb;
-  --color-background-card: #f8f5eb;
+  --color-text-main: #d4c5a9; /* 11:1 */
+  --color-text-secondary: #b5a78e; /* 7.9:1 */
+  --color-text-muted: #948873; /* 5.4:1, 4.7:1 on the elevated surface */
+  --color-text-accent: #c9a84c;
+  --color-text-accent-strong: #dcc073;
 
-  --color-brand: #8ba868;
-  --color-brand-hover: #344128;
-  --color-brand-dark: #344128;
-  --color-brand-darker: #27311e;
+  --color-background: #121212;
+  --color-background-secondary: #161616;
+  --color-background-elevated: #211f1c;
+  --color-background-card: #1a1917;
 
-  /* Accessible variants of the brand green (WCAG AA on the cream backgrounds):
-     -text: small text and links (≥ 4.5:1) · -display: large titles and icons (≥ 3:1).
-     Plain --color-brand stays for backgrounds and for text on dark surfaces. */
-  --color-brand-text: #586d3f;
-  --color-brand-display: #708b50;
+  /* Antique gold: titles, icons, links and button backgrounds (8.2:1 as text). */
+  --color-brand: #c9a84c;
+  --color-brand-hover: #dcc073;
+  --color-brand-dark: #8c6239;
 
-  --color-border: rgba(52, 65, 40, 0.12);
-  --color-border-strong: rgba(52, 65, 40, 0.25);
+  /* Kept for compatibility with the old green tokens: both are now gold. */
+  --color-brand-text: #c9a84c;
+  --color-brand-display: #c9a84c;
 
-  /* Form fields. Placeholder 4.7:1 on the field background (was 3.1:1). */
-  --color-input-background: #fffdf8;
-  --color-input-background-focus: #ffffff;
-  --color-input-placeholder: #6b7658;
+  /* Text placed on a gold surface (buttons). 8.2:1 on --color-brand. */
+  --color-on-brand: #121212;
 
-  /* Footer (dark surface). Links 8.4:1, hover 9.5:1 on the background. */
-  --color-footer-background: #2d1b12;
-  --color-footer-text: #e8e0d5;
-  --color-footer-link: #c4b8a8;
-  --color-footer-link-hover: #a8d08d;
+  /* Crimson: small labels (-text, 5.3:1) and decorative marks only (-deco, not for text). */
+  --color-accent-text: #d4675e;
+  --color-accent-deco: #a32a2a;
 
-  --color-error: #b63b3b;
-  --color-success: #3d713d;
+  --color-border: rgba(212, 197, 169, 0.12);
+  --color-border-strong: rgba(212, 197, 169, 0.25);
+  --color-border-gold: rgba(201, 168, 76, 0.45);
+
+  /* Form fields. Placeholder 4.6:1 on the field background. */
+  --color-input-background: #171615;
+  --color-input-background-focus: #1c1b19;
+  --color-input-placeholder: #8a7f6c;
+
+  /* Footer: a step darker than the page. Links 8.3:1, hover 8.6:1. */
+  --color-footer-background: #0c0c0c;
+  --color-footer-text: #b5a78e;
+  --color-footer-link: #b5a78e;
+  --color-footer-link-hover: #c9a84c;
+
+  --color-error: #e07a6f;
+  --color-success: #8fbf7f;
 }

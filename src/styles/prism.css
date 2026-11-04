@@ -1,5 +1,5 @@
 /* Prism syntax theme for article code blocks, built from the site palette.
-   Every token color is >= 4.5:1 on --color-background-elevated (#f8f5eb). */
+   Every token color is >= 4.5:1 on --color-background-elevated (#211f1c). */
 .token.comment,
 .token.prolog,
 .token.doctype,
@@ -10,14 +10,14 @@
 
 .token.punctuation,
 .token.operator {
-  color: #4a5a3a;
+  color: #b5a78e;
 }
 
 .token.keyword,
 .token.atrule,
 .token.important,
 .token.selector {
-  color: #586d3f;
+  color: #c9a84c;
   font-weight: var(--font-weight-semibold);
 }
 
@@ -26,20 +26,20 @@
 .token.attr-value,
 .token.regex,
 .token.url {
-  color: #8a4b2a;
+  color: #b9c98a;
 }
 
 .token.function,
 .token.class-name,
 .token.builtin {
-  color: #2f5d6b;
+  color: #8fb8c9;
 }
 
 .token.number,
 .token.boolean,
 .token.constant,
 .token.symbol {
-  color: #9a3d55;
+  color: #e08a7f;
 }
 
 .token.property,
@@ -47,7 +47,7 @@
 .token.attr-name,
 .token.variable,
 .token.inserted {
-  color: #7a5a12;
+  color: #dcb27a;
 }
 
 .token.deleted {

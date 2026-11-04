@@ -128,10 +128,9 @@ const fields = [
     padding: clamp(1.5rem, 4vw, 2.75rem);
     background-color: var(--color-background-card);
     border: 1px solid var(--color-border);
-    border-radius: 1.25rem;
-    box-shadow:
-      0 1px 2px rgba(52, 65, 40, 0.04),
-      0 18px 40px -24px rgba(52, 65, 40, 0.25);
+    border-top: 1px solid var(--color-border-gold);
+    border-radius: 2px;
+    box-shadow: 0 18px 40px -24px rgba(0, 0, 0, 0.8);
     text-align: left;
   }
 
@@ -149,9 +148,10 @@ const fields = [
   .field-label {
     margin-bottom: 0.45rem;
     color: var(--color-text-secondary);
-    font-size: var(--text-size-sm);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: 0.01em;
+    font-size: var(--text-size-xs);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-wider);
+    text-transform: uppercase;
     line-height: 1.5;
   }
 
@@ -163,7 +163,7 @@ const fields = [
     margin: 0;
     padding: 0 1rem;
     border: 1px solid var(--color-border-strong);
-    border-radius: 0.75rem;
+    border-radius: 2px;
     background-color: var(--color-input-background);
     color: var(--color-text-main);
     font-family: var(--font-primary), sans-serif;
@@ -188,14 +188,14 @@ const fields = [
   }
 
   .field-input:hover {
-    border-color: rgba(52, 65, 40, 0.4);
+    border-color: rgba(212, 197, 169, 0.4);
   }
 
   .field-input:focus {
     outline: none;
     border-color: var(--color-brand-text);
     background-color: var(--color-input-background-focus);
-    box-shadow: 0 0 0 4px rgba(88, 109, 63, 0.18);
+    box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
   }
 
   .field-input[aria-invalid="true"],
@@ -205,7 +205,7 @@ const fields = [
   }
 
   .field-input[aria-invalid="true"]:focus {
-    box-shadow: 0 0 0 4px rgba(182, 59, 59, 0.15);
+    box-shadow: 0 0 0 3px rgba(224, 122, 111, 0.2);
   }
 
   .field-error {
@@ -224,7 +224,7 @@ const fields = [
   .notice {
     margin: 0;
     padding: 0.875rem 1rem;
-    border-radius: 0.75rem;
+    border-radius: 2px;
     border: 1px solid;
     font-size: var(--text-size-sm);
     font-weight: var(--font-weight-medium);
@@ -237,14 +237,14 @@ const fields = [
 
   .notice--error {
     color: var(--color-error);
-    background-color: rgba(182, 59, 59, 0.06);
-    border-color: rgba(182, 59, 59, 0.25);
+    background-color: rgba(224, 122, 111, 0.08);
+    border-color: rgba(224, 122, 111, 0.35);
   }
 
   .notice--success {
     color: var(--color-success);
-    background-color: rgba(61, 113, 61, 0.07);
-    border-color: rgba(61, 113, 61, 0.25);
+    background-color: rgba(143, 191, 127, 0.08);
+    border-color: rgba(143, 191, 127, 0.35);
   }
 
   /* Footer of the card: privacy note + submit */
@@ -274,19 +274,11 @@ const fields = [
     color: var(--color-brand-hover);
   }
 
-  /* Large pill with a trailing arrow (same spacing as the former Shoelace suffix button). */
+  /* Large gold button with a trailing arrow. */
   .contact-button {
     flex-shrink: 0;
     gap: 0.75rem;
-    padding: 0 0.75rem 0 2rem;
-    background-color: var(--color-brand-dark);
-    color: var(--color-background);
-    letter-spacing: 0.02em;
-  }
-
-  .contact-button:hover {
-    background-color: var(--color-brand-text);
-    color: var(--color-background);
+    padding: 0 1.25rem 0 2rem;
   }
 
   .contact-button :global(.contact-button-icon) {

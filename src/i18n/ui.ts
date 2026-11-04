@@ -43,7 +43,7 @@ type Messages = {
       craftImageAlt: string;
       bloomSectionTitle: string;
       bloomSectionText: string;
-      bloomImageAlt: string;
+      bloomClosing: string;
     };
     who: {
       title: string;
@@ -137,7 +137,7 @@ export const ui: Record<Lang, Messages> = {
         bloomSectionTitle: "florecer",
         bloomSectionText:
           "El software bien cuidado no termina con su lanzamiento: florece. Crece junto a las comunidades que lo habitan, se adapta sin perder su esencia y deja espacio para que otros construyan sobre él. Ese es el horizonte de Kumelemuel: sistemas abiertos, sostenibles y con sentido, que sigan aportando mucho después de haber sido escritos.",
-        bloomImageAlt: "Ilustración de un jardín de flores silvestres",
+        bloomClosing: "Sistemas abiertos, sostenibles y con sentido.",
       },
       who: {
         title: "Quién soy",
@@ -298,7 +298,7 @@ export const ui: Record<Lang, Messages> = {
         bloomSectionTitle: "bloom",
         bloomSectionText:
           "Well-tended software does not end at launch: it blooms. It grows alongside the communities that inhabit it, adapts without losing its essence, and leaves room for others to build upon it. That is the horizon of Kumelemuel: open, sustainable, and meaningful systems that keep contributing long after they were written.",
-        bloomImageAlt: "Illustration of a wildflower garden",
+        bloomClosing: "Open, sustainable and meaningful systems.",
       },
       who: {
         title: "Who am I?",

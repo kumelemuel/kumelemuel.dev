@@ -8,7 +8,6 @@ import Icon from "../../components/Icon.astro";
 import exploringImage from "../../assets/home/exploring.webp";
 import designingImage from "../../assets/home/designing.webp";
 import craftsmanshipImage from "../../assets/home/craftmanship.webp";
-import bloomImage from "../../assets/home/bloom.webp";
 
 export async function getStaticPaths() {
   return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
@@ -23,6 +22,9 @@ const messages = t(lang);
     <div class="hero">
       <p class="eyebrow">{messages.pages.home.eyebrow}</p>
       <h1 class="hero-title">{messages.pages.home.title}</h1>
+      <div class="ornament" aria-hidden="true">
+        <span></span>
+      </div>
       <p class="intro">{messages.pages.home.intro}</p>
     </div>
 
@@ -109,19 +111,11 @@ const messages = t(lang);
     <div class="bloom-content">
       <h2 class="bloom-title">{messages.pages.home.bloomSectionTitle}</h2>
       <p class="bloom-description">{messages.pages.home.bloomSectionText}</p>
+      <div class="ornament bloom-ornament" aria-hidden="true">
+        <span></span>
+      </div>
+      <p class="bloom-closing">{messages.pages.home.bloomClosing}</p>
     </div>
-    <Picture
-      formats={["avif", "webp"]}
-      fallbackFormat="webp"
-      src={bloomImage}
-      alt={messages.pages.home.bloomImageAlt}
-      loading="lazy"
-      decoding="async"
-      widths={[640, 1000]}
-      sizes="100vw"
-      quality={50}
-      class="bloom-image fade-in"
-    />
   </section>
 </Layout>
 
@@ -146,20 +140,20 @@ const messages = t(lang);
   .eyebrow {
     margin: 0;
     font-family: var(--font-primary), serif;
-    font-size: var(--text-size-sm);
-    font-weight: var(--font-weight-bold);
-    letter-spacing: var(--letter-spacing-widest);
+    font-size: var(--text-size-xs);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: 0.4em;
     text-transform: uppercase;
-    color: var(--color-brand-text);
+    color: var(--color-accent-text);
   }
 
   .hero-title {
     margin: 0;
     font-family: var(--font-secondary), serif;
     font-size: var(--text-size-hero);
-    font-weight: var(--font-weight-light);
+    font-weight: var(--font-weight-regular);
     line-height: var(--line-height-tight);
-    letter-spacing: var(--letter-spacing-tight);
+    letter-spacing: var(--letter-spacing-wide);
     color: var(--color-text-main);
   }
 
@@ -180,7 +174,8 @@ const messages = t(lang);
   .focus-card {
     background: var(--color-background-card);
     border: 1px solid var(--color-border);
-    border-radius: 0.75rem;
+    border-top: 1px solid var(--color-border-gold);
+    border-radius: 2px;
     padding: var(--margin-block) var(--margin-element);
     display: flex;
     flex-direction: column;
@@ -195,7 +190,7 @@ const messages = t(lang);
   }
 
   .focus-card:hover {
-    border-color: var(--color-border-strong);
+    border-color: var(--color-border-gold);
     transform: translateY(-4px);
     background: var(--color-background-elevated);
   }
@@ -211,9 +206,10 @@ const messages = t(lang);
   .focus-card h2 {
     margin: 0;
     font-family: var(--font-primary), sans-serif;
-    font-size: var(--text-size-lg);
-    font-weight: var(--font-weight-medium);
-    letter-spacing: var(--letter-spacing-normal);
+    font-size: var(--text-size-sm);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-widest);
+    text-transform: uppercase;
     color: var(--color-text-main);
   }
 
@@ -255,12 +251,12 @@ const messages = t(lang);
   .craft-title {
     margin: 0 0 var(--margin-element);
     font-family: var(--font-secondary), serif;
-    font-size: clamp(3rem, 8vw, 8rem);
-    font-weight: var(--font-weight-light);
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    font-weight: var(--font-weight-regular);
     line-height: 1;
-    letter-spacing: var(--letter-spacing-tight);
+    letter-spacing: var(--letter-spacing-wider);
     color: var(--color-brand-display);
-    text-transform: lowercase;
+    text-transform: uppercase;
   }
 
   .split-left img,
@@ -305,12 +301,12 @@ const messages = t(lang);
   .explore-title {
     margin: 0 0 var(--margin-element);
     font-family: var(--font-secondary), serif;
-    font-size: clamp(3rem, 8vw, 8rem);
-    font-weight: var(--font-weight-light);
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    font-weight: var(--font-weight-regular);
     line-height: 1;
-    letter-spacing: var(--letter-spacing-tight);
+    letter-spacing: var(--letter-spacing-wider);
     color: var(--color-brand-display);
-    text-transform: lowercase;
+    text-transform: uppercase;
   }
 
   .explore-split .split-left,
@@ -353,12 +349,12 @@ const messages = t(lang);
   }
 
   .bloom-section {
-    width: 100dvw;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: var(--margin-element);
-    padding: var(--margin-block) 0 0 0;
+    padding: var(--margin-block) 0 var(--margin-section);
     text-align: center;
   }
 
@@ -374,12 +370,12 @@ const messages = t(lang);
   .bloom-title {
     margin: 0;
     font-family: var(--font-secondary), serif;
-    font-size: clamp(3rem, 8vw, 8rem);
-    font-weight: var(--font-weight-light);
+    font-size: clamp(2.5rem, 6vw, 6rem);
+    font-weight: var(--font-weight-regular);
     line-height: 1;
-    letter-spacing: var(--letter-spacing-tight);
+    letter-spacing: var(--letter-spacing-wider);
     color: var(--color-brand-display);
-    text-transform: lowercase;
+    text-transform: uppercase;
   }
 
   .bloom-description {
@@ -390,11 +386,18 @@ const messages = t(lang);
     color: var(--color-text-secondary);
   }
 
-  .bloom-image {
-    width: 100dvw;
-    height: auto;
-    display: block;
-    margin: 0 0 calc(-1 * var(--margin-page)) 0;
+  .bloom-ornament {
+    margin-top: var(--margin-block);
+  }
+
+  .bloom-closing {
+    margin: var(--margin-element) 0 0;
+    font-family: var(--font-secondary), serif;
+    font-size: var(--text-size-2xl);
+    line-height: var(--line-height-snug);
+    letter-spacing: var(--letter-spacing-wider);
+    text-transform: uppercase;
+    color: var(--color-brand-display);
   }
 
   /* Images start hidden only when JS can reveal them and the user accepts motion;
