@@ -1,8 +1,10 @@
 import AxeBuilder from "@axe-core/playwright";
 import { expect, test, type Page } from "@playwright/test";
+import { SUPPORTED_LANGS as LANGS } from "../../src/i18n/config";
+import { legacyRedirects, localePath } from "../../src/i18n/routes";
 
-const PAGES = ["", "who-am-i/", "articles/", "contact/", "privacy/"] as const;
-const LANGS = ["es", "en"] as const;
+// Every static page (contactSent is on-demand and covered by contact.spec.ts).
+const PAGES = ["home", "who", "articles", "contact", "privacy"] as const;
 
 /**
  * Collects CSP violations and JS errors. Vercel Analytics only exists on Vercel,
@@ -37,7 +39,7 @@ async function expectNoA11yViolations(page: Page) {
 
 for (const lang of LANGS) {
   for (const path of PAGES) {
-    const url = `/${lang}/${path}`;
+    const url = localePath(lang, path);
 
     test(`${url} renders cleanly: CSP, JS, structure, axe`, async ({ page }) => {
       const problems = await watchPage(page);
@@ -111,11 +113,35 @@ test("mobile menu opens, closes with Escape and returns focus", async ({ page })
   await expect(page.locator("#menu-toggle")).toBeFocused();
 });
 
-test("language switcher keeps the current page", async ({ page }) => {
-  await page.goto("/es/who-am-i/");
+test("language switcher keeps the current page and translates its slug", async ({ page }) => {
+  await page.goto("/es/quien-soy/");
   await page.getByRole("link", { name: "EN — Ver en inglés" }).click();
   await expect(page).toHaveURL(/\/en\/who-am-i\/$/);
   await expect(page.locator("html")).toHaveAttribute("lang", "en");
+
+  await page.getByRole("link", { name: "ES — View in Spanish" }).click();
+  await expect(page).toHaveURL(/\/es\/quien-soy\/$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+});
+
+test("hreflang links point to the translated slug", async ({ page }) => {
+  await page.goto("/en/contact/");
+  await expect(page.locator('link[rel="alternate"][hreflang="es-MX"]')).toHaveAttribute(
+    "href",
+    "https://kumelemuel.dev/es/contacto/",
+  );
+  await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute(
+    "href",
+    "https://kumelemuel.dev/en/contact/",
+  );
+});
+
+test("old Spanish URLs redirect permanently to the translated slugs", async ({ request }) => {
+  for (const [from, to] of Object.entries(legacyRedirects())) {
+    const response = await request.get(from, { maxRedirects: 0 });
+    expect(response.status(), from).toBe(301);
+    expect(response.headers()["location"], from).toBe(to);
+  }
 });
 
 test("RSS feeds and sitemap are published", async ({ request }) => {
@@ -128,5 +154,8 @@ test("RSS feeds and sitemap are published", async ({ request }) => {
   }
   const sitemap = await (await request.get("/sitemap-0.xml")).text();
   expect(sitemap).toContain("<loc>https://kumelemuel.dev/es/</loc>");
+  expect(sitemap).toContain("<loc>https://kumelemuel.dev/es/quien-soy/</loc>");
   expect(sitemap).not.toContain("/privacy/");
+  expect(sitemap).not.toContain("/privacidad/");
+  expect(sitemap).not.toContain("/contacto/enviado/");
 });

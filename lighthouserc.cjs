@@ -3,7 +3,7 @@
 //   npx @lhci/cli@0.16.0 autorun
 // Reports are written to .lighthouseci/ (never uploaded to public storage).
 const PORT = 4620;
-const pages = ["/es/", "/en/", "/es/who-am-i/", "/es/contact/", "/es/articles/"];
+const pages = ["/es/", "/en/", "/es/quien-soy/", "/es/contacto/", "/es/articulos/"];
 
 module.exports = {
   ci: {

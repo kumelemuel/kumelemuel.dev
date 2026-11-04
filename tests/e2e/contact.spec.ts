@@ -20,7 +20,7 @@ const submit = (page: Page) => page.getByRole("button", { name: "Enviar mensaje"
 
 test.describe("with JavaScript", () => {
   test("shows field errors inline, focuses the first one, and clears on input", async ({ page }) => {
-    await page.goto("/es/contact/", { waitUntil: "networkidle" });
+    await page.goto("/es/contacto/", { waitUntil: "networkidle" });
     await fill(page, { name: "Al", email: "no-es-correo", message: "corto" });
     await submit(page);
 
@@ -31,7 +31,7 @@ test.describe("with JavaScript", () => {
       "Correo electrónico inválido.",
     );
     await expect(name).toBeFocused();
-    await expect(page).toHaveURL(/\/es\/contact\/$/); // no navigation
+    await expect(page).toHaveURL(/\/es\/contacto\/$/); // no navigation
 
     await name.fill("Diego");
     await expect(name).not.toHaveAttribute("aria-invalid", "true");
@@ -39,7 +39,7 @@ test.describe("with JavaScript", () => {
   });
 
   test("a valid submission shows the confirmation and resets the form", async ({ page }) => {
-    await page.goto("/es/contact/", { waitUntil: "networkidle" });
+    await page.goto("/es/contacto/", { waitUntil: "networkidle" });
     await fill(page, VALID);
     await page.locator('input[name="website"]').fill("honeypot", { force: true });
     await page.waitForTimeout(MIN_FILL_TIME_MS);
@@ -47,20 +47,20 @@ test.describe("with JavaScript", () => {
 
     await expect(page.getByRole("status")).toHaveText(/Mensaje enviado correctamente\./);
     await expect(page.getByLabel("Tu nombre")).toHaveValue("");
-    await expect(page).toHaveURL(/\/es\/contact\/$/);
+    await expect(page).toHaveURL(/\/es\/contacto\/$/);
   });
 });
 
 test.describe("without JavaScript", () => {
   test.use({ javaScriptEnabled: false });
 
-  test("posts to /contact/sent/, keeps the typed values and shows the errors", async ({ page }) => {
-    await page.goto("/es/contact/");
+  test("posts to /contacto/enviado/, keeps the typed values and shows the errors", async ({ page }) => {
+    await page.goto("/es/contacto/");
     await fill(page, { name: "Di", email: "diego@", message: "Hola" });
-    const [response] = await Promise.all([page.waitForResponse(/\/contact\/sent\//), submit(page)]);
+    const [response] = await Promise.all([page.waitForResponse(/\/contacto\/enviado\//), submit(page)]);
 
     expect(response.status()).toBe(400);
-    await expect(page).toHaveURL(/\/es\/contact\/sent\/\?_action=contact$/);
+    await expect(page).toHaveURL(/\/es\/contacto\/enviado\/\?_action=contact$/);
     await expect(page.getByLabel("Tu nombre")).toHaveValue("Di");
     await expect(page.getByLabel("Tu mensaje")).toHaveValue("Hola");
     await expect(page.getByLabel("Tu nombre")).toHaveAccessibleDescription(
@@ -83,13 +83,15 @@ test.describe("without JavaScript", () => {
     await expect(page.getByRole("main").getByRole("link", { name: "Home" })).toHaveAttribute("href", "/en/");
   });
 
-  test("visiting /contact/sent/ directly goes back to the form", async ({ page }) => {
-    await page.goto("/es/contact/sent/");
-    await expect(page).toHaveURL(/\/es\/contact\/$/);
+  test("visiting the sent page directly goes back to the form", async ({ page }) => {
+    await page.goto("/es/contacto/enviado/");
+    await expect(page).toHaveURL(/\/es\/contacto\/$/);
+    await page.goto("/en/contact/sent/");
+    await expect(page).toHaveURL(/\/en\/contact\/$/);
   });
 });
 
-test("unknown language on the on-demand page is a 404", async ({ request }) => {
+test("there is no catch-all on-demand route: unknown paths are a 404", async ({ request }) => {
   const response = await request.get("/xx/contact/sent/");
   expect(response.status()).toBe(404);
 });

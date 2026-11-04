@@ -41,7 +41,7 @@ export default defineConfig({
       // Dummy credentials: validation runs before sending, and the tests only reach the
       // handler through the honeypot path, which never calls Resend.
       command: `astro dev --port ${DEV_PORT} --ignore-lock`,
-      url: `http://localhost:${DEV_PORT}/es/contact/`,
+      url: `http://localhost:${DEV_PORT}/es/contacto/`,
       env: { RESEND_API_KEY: "re_test_dummy", CONTACT_TO_EMAIL: "test@example.com" },
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,

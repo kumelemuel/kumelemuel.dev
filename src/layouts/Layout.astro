@@ -5,7 +5,8 @@ import Header from "../components/Header.astro";
 import SeoMeta, { type ArticleMeta } from "../components/SeoMeta.astro";
 import { ClientRouter } from "astro:transitions";
 import { Font } from "astro:assets";
-import { DEFAULT_LANG, isLang, type Lang } from "../i18n/config";
+import { DEFAULT_LANG, isLang } from "../i18n/config";
+import type { Alternates } from "../i18n/routes";
 import { t } from "../i18n/ui";
 
 interface Props {
@@ -13,14 +14,17 @@ interface Props {
   description?: string;
   lang?: string;
   noindex?: boolean;
-  /** Languages in which this page exists; drives hreflang and the language switcher. */
-  alternateLangs?: readonly Lang[];
+  /**
+   * Path of this same page in each language it exists in (see src/i18n/routes.ts);
+   * drives hreflang and the language switcher. Pass {} for pages without translations.
+   */
+  alternates: Alternates;
   type?: "website" | "article";
   /** Article dates and tags (only with type="article"). */
   article?: ArticleMeta;
 }
 
-const { title, description, lang: requestedLang, noindex, alternateLangs, type, article } = Astro.props;
+const { title, description, lang: requestedLang, noindex, alternates, type, article } = Astro.props;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 const canonicalURL = Astro.url.href;
 ---
@@ -44,7 +48,7 @@ const canonicalURL = Astro.url.href;
       {canonicalURL}
       {lang}
       {noindex}
-      {alternateLangs}
+      {alternates}
       {type}
       {article}
     />
@@ -55,7 +59,7 @@ const canonicalURL = Astro.url.href;
     <a class="skip-link" href="#main">
       {t(lang).header.skipToContent}
     </a>
-    <Header lang={lang} {alternateLangs} />
+    <Header lang={lang} {alternates} />
     <main id="main" tabindex="-1">
       {title && <h1 class="page-title">{title}</h1>}
       <slot />

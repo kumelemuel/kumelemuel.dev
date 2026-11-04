@@ -3,6 +3,8 @@ import { defineConfig, envField, fontProviders } from "astro/config";
 import sitemap from "@astrojs/sitemap";
 import vercel from "@astrojs/vercel";
 import { readdirSync } from "node:fs";
+import { SUPPORTED_LANGS } from "./src/i18n/config.ts";
+import { legacyRedirects, localePath } from "./src/i18n/routes.ts";
 
 const isBuild = process.argv.includes("build");
 
@@ -31,6 +33,10 @@ export default defineConfig({
   // Real HTTP redirect on Vercel (instead of a meta-refresh page).
   redirects: {
     "/": "/es/",
+    // Spanish pages used the English slugs before they were translated (/es/who-am-i/ → /es/quien-soy/).
+    ...Object.fromEntries(
+      Object.entries(legacyRedirects()).map(([from, to]) => [from, { status: 301, destination: to }]),
+    ),
   },
   security: {
     // Astro hashes every script/style it emits; everything else must come from our own origin.
@@ -50,11 +56,16 @@ export default defineConfig({
   },
   integrations: [
     sitemap({
-      filter: (page) => !page.includes("/privacy/") && (hasArticles || !page.includes("/articles/")),
-      i18n: {
-        defaultLocale: "es",
-        locales: { es: "es-MX", en: "en" },
+      filter: (page) => {
+        const path = new URL(page).pathname;
+        const isUnder = (/** @type {"privacy" | "contactSent" | "articles"} */ key) =>
+          SUPPORTED_LANGS.some((lang) => path.startsWith(localePath(lang, key)));
+        // Privacy and the no-JS "message sent" page are noindex; articles only once there is one.
+        return !isUnder("privacy") && !isUnder("contactSent") && (hasArticles || !isUnder("articles"));
       },
+      // No `i18n` option: it pairs translations by identical paths after the language prefix,
+      // which no longer holds with translated slugs. Every page declares its translations
+      // with <link rel="alternate" hreflang> instead (src/components/SeoMeta.astro).
     }),
   ],
   // Fonts are downloaded at build time and self-hosted (no requests to Google from the browser).

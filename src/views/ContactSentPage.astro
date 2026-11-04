@@ -1,27 +1,22 @@
 ---
-// On-demand page: receives the contact form when it is submitted without JavaScript
-// (with JS the form talks to the action directly and never navigates here).
-export const prerender = false;
-
+// Result of the contact form submitted without JavaScript (with JS the form talks to the
+// action directly and never navigates here). Rendered by the on-demand pages
+// src/pages/es/contacto/enviado.astro and src/pages/en/contact/sent.astro, which redirect
+// direct visits (nothing submitted) back to the form.
 import { actions, isInputError } from "astro:actions";
-import Layout from "../../../layouts/Layout.astro";
-import ContactSection from "../../../components/ContactSection.astro";
-import ContactForm, { type ContactField } from "../../../components/ContactForm.astro";
-import { isLang } from "../../../i18n/config";
-import { t } from "../../../i18n/ui";
+import Layout from "../layouts/Layout.astro";
+import ContactSection from "../components/ContactSection.astro";
+import ContactForm, { type ContactField } from "../components/ContactForm.astro";
+import type { Lang } from "../i18n/config";
+import { localePath, routeAlternates } from "../i18n/routes";
+import { t } from "../i18n/ui";
 
-const { lang } = Astro.params;
-if (!isLang(lang)) {
-  // Can't rewrite to the prerendered 404 from an on-demand page; nobody links here anyway.
-  return new Response("Not found", { status: 404 });
+interface Props {
+  lang: Lang;
 }
 
+const { lang } = Astro.props;
 const result = Astro.getActionResult(actions.contact);
-// Direct visits (GET, nothing submitted) go back to the form.
-if (!result) {
-  return Astro.redirect(`/${lang}/contact/`, 303);
-}
-
 const messages = t(lang);
 const contact = messages.pages.contact;
 
@@ -30,7 +25,7 @@ let formError = "";
 const errors: Partial<Record<ContactField, string>> = {};
 const values: Partial<Record<ContactField, string>> = {};
 
-if (result.error) {
+if (result?.error) {
   if (isInputError(result.error)) {
     for (const issue of result.error.issues) {
       const field = issue.path[0];
@@ -52,19 +47,25 @@ if (result.error) {
   } catch {
     // Body unavailable: the form is rendered empty, errors are still shown.
   }
-} else {
+} else if (result) {
   success = `${contact.successTitle} ${result.data.message}`.trim();
 }
 ---
 
-<Layout title={contact.title} lang={lang} description={contact.intro} noindex>
+<Layout
+  title={contact.title}
+  lang={lang}
+  description={contact.intro}
+  alternates={routeAlternates("contact")}
+  noindex
+>
   <ContactSection intro={contact.intro}>
     {success ? (
       <div class="sent">
         <p class="sent-message" role="status">
           {success}
         </p>
-        <a class="button" href={`/${lang}/`}>
+        <a class="button" href={localePath(lang, "home")}>
           {messages.header.home}
         </a>
       </div>

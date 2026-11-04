@@ -1,6 +1,6 @@
 // Serves the prerendered pages from .vercel/output the way Vercel does, including the
 // per-route headers from config.json (CSP, security headers, redirects). On-demand
-// routes (actions, /contact/sent/) are not available here; e2e tests use `astro dev` for those.
+// routes (actions, the contact "sent" pages) are not available here; e2e tests use `astro dev` for those.
 // Usage: node tests/support/serve-static.mjs [port]
 import fs from "node:fs";
 import http from "node:http";

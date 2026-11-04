@@ -55,16 +55,21 @@ src/
 ├── assets/home/        # Imágenes optimizadas en build (astro:assets)
 ├── components/         # Header, Footer, SeoMeta (meta, OG, hreflang, JSON-LD), Icon, ContactForm
 ├── data/
-│   ├── articles/es/    # Artículos en español  (<slug>.md)
-│   ├── articles/en/    # Artículos en inglés   (mismo <slug>.md = traducción)
+│   ├── articles/es/    # Artículos en español  (<slug>.md; el nombre es el slug de la URL)
+│   ├── articles/en/    # Artículos en inglés   (traducciones enlazadas por `translationKey`)
 │   └── portfolio/      # Proyectos (página desactivada: src/pages/[lang]/_portfolio.astro)
-├── i18n/               # Idiomas soportados y textos de la interfaz (ui.ts)
+├── i18n/               # Idiomas, slugs traducidos de cada página (routes.ts) y textos (ui.ts)
 ├── icons/              # SVG de Font Awesome Free 5 incrustados por <Icon name="…" />
 ├── layouts/            # Layout base
-├── pages/[lang]/       # Páginas por idioma (/es/..., /en/...) + rss.xml
+├── lib/                # Lógica pura con pruebas unitarias (formulario, índice de artículos)
+├── pages/
+│   ├── [lang]/         # Páginas con la misma ruta en ambos idiomas: home y rss.xml
+│   ├── es/             # Páginas con slug en español (/es/quien-soy/, /es/articulos/…)
+│   └── en/             # Páginas con slug en inglés  (/en/who-am-i/, /en/articles/…)
 ├── site.ts             # Identidad del sitio: autor y redes
 ├── styles/             # Paleta, tipografía, estilos globales (.button, .icon) y tema Prism
-└── utils/              # Utilidades (artículos por idioma)
+├── utils/              # Utilidades (artículos por idioma desde astro:content)
+└── views/              # Contenido de cada página, compartido por sus versiones es/ y en/
 public/
 ├── favicon.svg|.ico, apple-touch-icon.png
 └── og-image.png        # Imagen para redes sociales (1200×630)
@@ -74,11 +79,13 @@ public/
 
 ### Artículos
 
-Crea `src/data/articles/<lang>/<slug>.md`:
+Crea `src/data/articles/<lang>/<slug>.md`. El nombre del archivo es el slug de la URL, así que cada idioma
+puede tener el suyo (`/es/articulos/gobernanza-digital/`, `/en/articles/digital-governance/`):
 
 ```md
 ---
 title: "Título"
+translationKey: digital-governance # mismo valor en todas las traducciones del artículo
 description: "Resumen para la tarjeta y SEO."
 publishedAt: "2026-11-02"
 tags: [arquitectura, gobernanza]
@@ -87,7 +94,21 @@ tags: [arquitectura, gobernanza]
 Contenido en Markdown…
 ```
 
-Si existe el mismo `<slug>.md` en `es/` y `en/`, las páginas se enlazan como traducciones (hreflang y selector de idioma).
+Los artículos con el mismo `translationKey` se enlazan como traducciones (hreflang y selector de idioma). Si se
+omite, se usa el nombre del archivo como clave. Un artículo sin traducción funciona igual: el selector de idioma
+lleva a la portada del otro idioma.
+
+### Rutas y slugs traducidos
+
+`src/i18n/routes.ts` define el slug de cada página por idioma y es la única fuente de URLs (menú, selector de
+idioma, hreflang, sitemap, RSS y pruebas); usa `localePath(lang, "contact")` en vez de escribir rutas a mano.
+Para agregar una página traducida:
+
+1. Agrega la clave en `ROUTES` (`{ es: "…", en: "…" }`).
+2. Crea su vista en `src/views/` y un archivo por idioma en `src/pages/es/` y `src/pages/en/` que la renderice.
+3. `tests/unit/routes.test.ts` falla si alguna ruta de `ROUTES` no tiene su archivo de página.
+
+Las URLs antiguas en español (que usaban los slugs en inglés, p. ej. `/es/who-am-i/`) redirigen con 301 a las nuevas.
 
 ### Textos de la interfaz
 
@@ -112,7 +133,8 @@ usa imágenes locales (la CSP no permite imágenes externas) y agrega el enlace 
 
 `src/actions/index.ts` valida en servidor y envía el mensaje con [Resend](https://resend.com).
 Funciona con y sin JavaScript: con JS envía por `fetch` sin recargar; sin JS hace un POST normal a
-`/<lang>/contact/sent/` (única página renderizada bajo demanda), que muestra el resultado o los errores.
+`/es/contacto/enviado/` o `/en/contact/sent/` (únicas páginas renderizadas bajo demanda), que muestran el
+resultado o los errores.
 
 Antispam: campo trampa (honeypot) + tiempo mínimo de llenado (este último solo cuando hay JS, que es quien
 marca la hora de inicio); los bots reciben "éxito" sin envío.

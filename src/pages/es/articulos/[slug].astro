@@ -1,0 +1,13 @@
+---
+import type { InferGetStaticPropsType } from "astro";
+import ArticlePage from "../../../views/ArticlePage.astro";
+import { getArticleStaticPaths } from "../../../utils/articles";
+
+export const getStaticPaths = () => getArticleStaticPaths("es");
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { article, alternates } = Astro.props;
+---
+
+<ArticlePage lang="es" {article} {alternates} />

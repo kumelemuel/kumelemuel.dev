@@ -1,5 +1,6 @@
 ---
 import { DEFAULT_LANG, type Lang, isLang } from "../i18n/config";
+import { localePath } from "../i18n/routes";
 import { t } from "../i18n/ui";
 import { SITE } from "../site";
 import Icon from "./Icon.astro";
@@ -7,7 +8,6 @@ import Icon from "./Icon.astro";
 const requestedLang = Astro.props.lang as Lang | undefined;
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 const messages = t(lang);
-const basePath = `/${lang}`;
 ---
 
 <footer>
@@ -15,7 +15,7 @@ const basePath = `/${lang}`;
     <nav>
       <ul>
         <li>
-          <a href={`${basePath}/privacy/`}>{messages.footer.privacyLink}</a>
+          <a href={localePath(lang, "privacy")}>{messages.footer.privacyLink}</a>
         </li>
       </ul>
     </nav>

@@ -1,0 +1,15 @@
+---
+// On-demand: receives the contact form when it is submitted without JavaScript.
+export const prerender = false;
+
+import { actions } from "astro:actions";
+import ContactSentPage from "../../../views/ContactSentPage.astro";
+import { localePath } from "../../../i18n/routes";
+
+// Direct visits (GET, nothing submitted) go back to the form.
+if (!Astro.getActionResult(actions.contact)) {
+  return Astro.redirect(localePath("es", "contact"), 303);
+}
+---
+
+<ContactSentPage lang="es" />

@@ -1,6 +1,7 @@
 ---
 import Layout from "../../layouts/Layout.astro";
 import { SUPPORTED_LANGS, type Lang } from "../../i18n/config";
+import { routeAlternates } from "../../i18n/routes";
 import { t } from "../../i18n/ui";
 import { Picture } from "astro:assets";
 import Icon from "../../components/Icon.astro";
@@ -17,7 +18,7 @@ const lang = Astro.params.lang as Lang;
 const messages = t(lang);
 ---
 
-<Layout lang={lang} description={messages.pages.home.intro}>
+<Layout lang={lang} description={messages.pages.home.intro} alternates={routeAlternates("home")}>
   <section class="home">
     <div class="hero">
       <p class="eyebrow">{messages.pages.home.eyebrow}</p>

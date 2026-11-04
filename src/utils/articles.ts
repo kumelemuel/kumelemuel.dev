@@ -1,35 +1,24 @@
 import { getCollection, type CollectionEntry } from "astro:content";
-import { isLang, type Lang } from "../i18n/config";
+import type { Lang } from "../i18n/config";
+import { indexArticles } from "../lib/articles";
 
-/**
- * Articles live in `src/data/articles/<lang>/<slug>.md`.
- * The same file name in both language folders marks them as translations.
- */
+/** See src/lib/articles.ts for the folder layout and how translations are paired. */
 export type Article = CollectionEntry<"articles">;
 
-const parseId = (id: string): { lang: Lang; slug: string } | null => {
-  const [maybeLang, ...rest] = id.replace(/\.md$/, "").split("/");
-  if (!isLang(maybeLang) || rest.length === 0) return null;
-  return { lang: maybeLang, slug: rest.join("/") };
-};
-
-export const getArticleSlug = (article: Article) => parseId(article.id)?.slug ?? article.id;
-
 export async function getLocalizedArticles() {
-  const articles = await getCollection("articles");
-  return articles.flatMap((article) => {
-    const parsed = parseId(article.id);
-    if (!parsed) {
-      console.warn(`[articles] "${article.id}" is not inside a language folder (es/ or en/); skipping.`);
-      return [];
-    }
-    return [{ article, ...parsed }];
-  });
+  return indexArticles(await getCollection("articles"));
 }
 
+/** Articles of one language, newest first, with their slug. */
 export async function getArticlesByLang(lang: Lang) {
   return (await getLocalizedArticles())
     .filter((entry) => entry.lang === lang)
-    .map((entry) => entry.article)
-    .sort((a, b) => b.data.publishedAt.getTime() - a.data.publishedAt.getTime());
+    .sort((a, b) => b.article.data.publishedAt.getTime() - a.article.data.publishedAt.getTime());
+}
+
+/** getStaticPaths of the article page of one language (/es/articulos/<slug>/, /en/articles/<slug>/). */
+export async function getArticleStaticPaths(lang: Lang) {
+  return (await getLocalizedArticles())
+    .filter((entry) => entry.lang === lang)
+    .map(({ article, slug, alternates }) => ({ params: { slug }, props: { article, alternates } }));
 }

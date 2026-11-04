@@ -1,50 +1,39 @@
 ---
 import { DEFAULT_LANG, SUPPORTED_LANGS, type Lang, isLang } from "../i18n/config";
+import { localePath, type Alternates } from "../i18n/routes";
 import { t } from "../i18n/ui";
 import Icon from "./Icon.astro";
 
 interface Props {
   lang?: string;
-  /** Languages in which the current page exists; others link to that language's home. */
-  alternateLangs?: readonly Lang[];
+  /** Path of the current page in each language; languages without it link to their home. */
+  alternates?: Alternates;
 }
 
 const requestedLang = Astro.props.lang;
-const alternateLangs = Astro.props.alternateLangs ?? SUPPORTED_LANGS;
+const alternates = Astro.props.alternates ?? {};
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 const messages = t(lang);
 
-const basePath = `/${lang}`;
+const homePath = localePath(lang, "home");
 const menu = [
-  { name: messages.header.home, path: `${basePath}/` },
-  { name: messages.header.who, path: `${basePath}/who-am-i/` },
-  { name: messages.header.articles, path: `${basePath}/articles/` },
-  { name: messages.header.contact, path: `${basePath}/contact/` },
+  { name: messages.header.home, path: homePath },
+  { name: messages.header.who, path: localePath(lang, "who") },
+  { name: messages.header.articles, path: localePath(lang, "articles") },
+  { name: messages.header.contact, path: localePath(lang, "contact") },
 ];
 
 const pathname = new URL(Astro.request.url).pathname;
-const cleanPathname = pathname.endsWith("/") && pathname !== "/" ? pathname.slice(0, -1) : pathname;
+const currentPath = pathname.endsWith("/") ? pathname : `${pathname}/`;
 
-const isActive = (path: string) => {
-  const cleanPath = path.endsWith("/") && path !== "/" ? path.slice(0, -1) : path;
-  if (cleanPath === `/${lang}`) {
-    return cleanPathname === cleanPath;
-  }
-  return cleanPathname === cleanPath || cleanPathname.startsWith(`${cleanPath}/`);
-};
+// Home is only active on itself; sections also on their subpages (e.g. an article).
+const isActive = (path: string) => (path === homePath ? currentPath === path : currentPath.startsWith(path));
 
-const localizedPath = (targetLang: Lang) => {
-  if (!alternateLangs.includes(targetLang)) {
-    return `/${targetLang}/`;
-  }
-  const segments = pathname.split("/").filter(Boolean);
-  const remainingSegments = isLang(segments[0]) ? segments.slice(1) : segments;
-  return `/${targetLang}/${remainingSegments.join("/")}`.replace(/\/$/, "") + "/";
-};
+const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath(targetLang, "home");
 ---
 
 <header>
-  <a href={basePath + "/"} class="brand">
+  <a href={homePath} class="brand">
     <span class="brand-text">Kumelemuel.dev</span>
   </a>
   <button

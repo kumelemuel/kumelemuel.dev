@@ -1,14 +1,15 @@
 ---
-import Layout from "../../layouts/Layout.astro";
-import { INTL_LOCALES, SUPPORTED_LANGS, type Lang } from "../../i18n/config";
-import { t } from "../../i18n/ui";
-import { getArticleSlug, getArticlesByLang } from "../../utils/articles";
+import Layout from "../layouts/Layout.astro";
+import { INTL_LOCALES, type Lang } from "../i18n/config";
+import { articlePath, routeAlternates } from "../i18n/routes";
+import { t } from "../i18n/ui";
+import { getArticlesByLang } from "../utils/articles";
 
-export async function getStaticPaths() {
-  return SUPPORTED_LANGS.map((lang) => ({ params: { lang } }));
+interface Props {
+  lang: Lang;
 }
 
-const lang = Astro.params.lang as Lang;
+const { lang } = Astro.props;
 const messages = t(lang);
 const articles = await getArticlesByLang(lang);
 const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
@@ -18,10 +19,15 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
 });
 ---
 
-<Layout title={messages.pages.articles.title} lang={lang} description={messages.pages.articles.description}>
+<Layout
+  title={messages.pages.articles.title}
+  lang={lang}
+  description={messages.pages.articles.description}
+  alternates={routeAlternates("articles")}
+>
   {articles.length > 0 ? (
     <div class="articles-grid">
-      {articles.map((article) => (
+      {articles.map(({ article, slug }) => (
         <article class="card-overview">
           <p class="meta-line">
             <span>
@@ -34,7 +40,7 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
           <strong class="article-title">{article.data.title}</strong>
           <div class="article-row">
             <p class="article-description">{article.data.description}</p>
-            <a class="button article-button" href={`/${lang}/articles/${getArticleSlug(article)}/`}>
+            <a class="button article-button" href={articlePath(lang, slug)}>
               {messages.pages.articles.read}
             </a>
           </div>

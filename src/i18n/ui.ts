@@ -1,4 +1,5 @@
 import type { Lang } from "./config";
+import { localePath } from "./routes";
 
 type Messages = {
   header: {
@@ -192,7 +193,7 @@ export const ui: Record<Lang, Messages> = {
   </p>
   <p>
     Si tienes cualquier duda sobre tu información, puedes escribir a través del
-    <a href="/es/contact/">formulario de contacto</a>.
+    <a href="${localePath("es", "contact")}">formulario de contacto</a>.
   </p>
 
   <h2>2. Qué datos recibo</h2>
@@ -232,7 +233,7 @@ export const ui: Record<Lang, Messages> = {
   <h2>6. Tus datos, tu decisión</h2>
   <p>
     Puedes pedirme en cualquier momento que te diga qué datos tuyos tengo, que los corrija o que borre
-    tus mensajes. Escríbeme por el <a href="/es/contact/">formulario de contacto</a> indicando el correo
+    tus mensajes. Escríbeme por el <a href="${localePath("es", "contact")}">formulario de contacto</a> indicando el correo
     con el que me escribiste; te responderé en un plazo máximo de 20 días hábiles.
   </p>
 
@@ -352,7 +353,7 @@ export const ui: Record<Lang, Messages> = {
   </p>
   <p>
     If you have any question about your information, you can write through the
-    <a href="/en/contact/">contact form</a>.
+    <a href="${localePath("en", "contact")}">contact form</a>.
   </p>
 
   <h2>2. What data I receive</h2>
@@ -392,7 +393,7 @@ export const ui: Record<Lang, Messages> = {
   <h2>6. Your data, your choice</h2>
   <p>
     You can ask me at any time to tell you what data of yours I have, to correct it, or to delete
-    your messages. Write through the <a href="/en/contact/">contact form</a> including the email address
+    your messages. Write through the <a href="${localePath("en", "contact")}">contact form</a> including the email address
     you wrote from; I will reply within a maximum of 20 business days.
   </p>
 

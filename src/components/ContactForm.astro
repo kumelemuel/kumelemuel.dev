@@ -2,11 +2,13 @@
 /**
  * Contact form with progressive enhancement:
  * - With JS: the submit is intercepted and sent to the action via fetch (no page reload).
- * - Without JS: a normal POST to /<lang>/contact/sent/ (on-demand page), which runs the
+ * - Without JS: a normal POST to the on-demand "contactSent" page (/es/contacto/enviado/,
+ *   /en/contact/sent/), which runs the
  *   action and renders this same component again with the errors or the success message.
  */
 import { actions } from "astro:actions";
 import type { Lang } from "../i18n/config";
+import { localePath } from "../i18n/routes";
 import { t } from "../i18n/ui";
 import Icon from "./Icon.astro";
 
@@ -25,7 +27,7 @@ interface Props {
 const { lang, values = {}, errors = {}, formError = "", success = "", startedAt } = Astro.props;
 const messages = t(lang);
 const contact = messages.pages.contact;
-const action = `/${lang}/contact/sent/${actions.contact}`;
+const action = `${localePath(lang, "contactSent")}${actions.contact}`;
 
 const fields = [
   { name: "name", label: contact.name, placeholder: contact.namePlaceholder, autocomplete: "name" },
@@ -108,7 +110,7 @@ const fields = [
 
   <div class="form-actions field--full">
     <p class="form-note">
-      {contact.privacyNote} <a href={`/${lang}/privacy/`}>{messages.footer.privacyLink}</a>
+      {contact.privacyNote} <a href={localePath(lang, "privacy")}>{messages.footer.privacyLink}</a>
     </p>
     <button type="submit" class="button button--large contact-button">
       <span data-button-label>{contact.send}</span>

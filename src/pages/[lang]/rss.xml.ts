@@ -1,8 +1,9 @@
 import type { APIRoute, GetStaticPaths } from "astro";
 import { SUPPORTED_LANGS, type Lang } from "../../i18n/config";
+import { articlePath, localePath } from "../../i18n/routes";
 import { t } from "../../i18n/ui";
 import { SITE } from "../../site";
-import { getArticleSlug, getArticlesByLang } from "../../utils/articles";
+import { getArticlesByLang } from "../../utils/articles";
 
 // RSS 2.0 feed per language: /es/rss.xml and /en/rss.xml.
 export const getStaticPaths = (() =>
@@ -25,8 +26,8 @@ export const GET: APIRoute = async ({ params, site }) => {
   const abs = (path: string) => new URL(path, site).href;
 
   const items = articles
-    .map((article) => {
-      const link = abs(`/${lang}/articles/${getArticleSlug(article)}/`);
+    .map(({ article, slug }) => {
+      const link = abs(articlePath(lang, slug));
       const categories = article.data.tags
         .map((tag) => `      <category>${escapeXml(tag)}</category>`)
         .join("\n");
@@ -46,13 +47,13 @@ export const GET: APIRoute = async ({ params, site }) => {
     })
     .join("\n");
 
-  const lastBuildDate = (articles[0]?.data.publishedAt ?? new Date()).toUTCString();
+  const lastBuildDate = (articles[0]?.article.data.publishedAt ?? new Date()).toUTCString();
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>${escapeXml(messages.rss.title)}</title>
-    <link>${abs(`/${lang}/articles/`)}</link>
+    <link>${abs(localePath(lang, "articles"))}</link>
     <description>${escapeXml(messages.rss.description)}</description>
     <language>${RSS_LANGUAGE[lang]}</language>
     <lastBuildDate>${lastBuildDate}</lastBuildDate>
