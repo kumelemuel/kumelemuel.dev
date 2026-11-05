@@ -6,6 +6,7 @@ import type { Alternates } from "../i18n/routes";
 import { t } from "../i18n/ui";
 import "../styles/prism.css";
 import type { Article } from "../utils/articles";
+import Icon from "../components/Icon.astro";
 
 interface Props {
   lang: Lang;
@@ -38,10 +39,12 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
 >
   <article class="article">
     <p class="meta-line">
-      <span>
+      <span class="meta-item">
+        <Icon name="calendar-blank" class="meta-icon" />
         {messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}
       </span>
-      <span>
+      <span class="meta-item">
+        <Icon name="tag" class="meta-icon" />
         {messages.pages.articles.tags}: {article.data.tags.join(" · ")}
       </span>
     </p>
@@ -79,6 +82,18 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
     font-size: var(--text-size-xs);
     letter-spacing: var(--letter-spacing-wider);
     text-transform: uppercase;
+  }
+
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .meta-item :global(.meta-icon) {
+    flex-shrink: 0;
+    font-size: 1.15em;
+    color: var(--color-brand-display);
   }
 
   .article-body {

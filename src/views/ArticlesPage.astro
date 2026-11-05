@@ -4,6 +4,7 @@ import { INTL_LOCALES, type Lang } from "../i18n/config";
 import { articlePath, routeAlternates } from "../i18n/routes";
 import { t } from "../i18n/ui";
 import { getArticlesByLang } from "../utils/articles";
+import Icon from "../components/Icon.astro";
 
 interface Props {
   lang: Lang;
@@ -30,10 +31,12 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
       {articles.map(({ article, slug }) => (
         <article class="card-overview">
           <p class="meta-line">
-            <span>
+            <span class="meta-item">
+              <Icon name="calendar-blank" class="meta-icon" />
               {messages.pages.articles.published}: {dateFormatter.format(article.data.publishedAt)}
             </span>
-            <span>
+            <span class="meta-item">
+              <Icon name="tag" class="meta-icon" />
               {messages.pages.articles.tags}: {article.data.tags.join(" · ")}
             </span>
           </p>
@@ -42,6 +45,7 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
             <p class="article-description">{article.data.description}</p>
             <a class="button article-button" href={articlePath(lang, slug)}>
               {messages.pages.articles.read}
+              <Icon name="arrow-right" class="article-button-icon" />
             </a>
           </div>
         </article>
@@ -81,6 +85,18 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
     text-transform: uppercase;
   }
 
+  .meta-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .meta-item :global(.meta-icon) {
+    flex-shrink: 0;
+    font-size: 1.15em;
+    color: var(--color-brand-display);
+  }
+
   .article-title {
     display: block;
     margin: 0 0 0.5rem;
@@ -109,6 +125,14 @@ const dateFormatter = new Intl.DateTimeFormat(INTL_LOCALES[lang], {
 
   .article-button {
     flex-shrink: 0;
+  }
+
+  .article-button :global(.article-button-icon) {
+    transition: transform 0.2s ease;
+  }
+
+  .article-button:hover :global(.article-button-icon) {
+    transform: translateX(3px);
   }
 
   .empty-state {

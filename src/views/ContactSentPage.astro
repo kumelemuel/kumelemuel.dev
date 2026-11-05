@@ -6,6 +6,7 @@
 import { actions, isInputError } from "astro:actions";
 import Layout from "../layouts/Layout.astro";
 import ContactSection from "../components/ContactSection.astro";
+import Icon from "../components/Icon.astro";
 import ContactForm, { type ContactField } from "../components/ContactForm.astro";
 import type { Lang } from "../i18n/config";
 import { localePath, routeAlternates } from "../i18n/routes";
@@ -63,6 +64,7 @@ if (result?.error) {
     {success ? (
       <div class="sent">
         <p class="sent-message" role="status">
+          <Icon name="check-circle" class="sent-icon" />
           {success}
         </p>
         <a class="button" href={localePath(lang, "home")}>
@@ -85,6 +87,9 @@ if (result?.error) {
   }
 
   .sent-message {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     margin: 0;
     padding: 0.875rem 1rem;
     border: 1px solid rgba(143, 191, 127, 0.35);
@@ -93,5 +98,10 @@ if (result?.error) {
     color: var(--color-success);
     font-size: var(--text-size-sm);
     font-weight: var(--font-weight-medium);
+  }
+
+  .sent-message :global(.sent-icon) {
+    flex-shrink: 0;
+    font-size: 1.25em;
   }
 </style>

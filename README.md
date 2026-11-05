@@ -59,7 +59,7 @@ src/
 │   ├── articles/en/    # Artículos en inglés   (traducciones enlazadas por `translationKey`)
 │   └── portfolio/      # Proyectos (página desactivada: src/pages/[lang]/_portfolio.astro)
 ├── i18n/               # Idiomas, slugs traducidos de cada página (routes.ts) y textos (ui.ts)
-├── icons/              # SVG de Font Awesome Free 5 incrustados por <Icon name="…" />
+├── icons/              # SVG de Phosphor Icons (peso light, MIT) incrustados por <Icon name="…" />
 ├── layouts/            # Layout base
 ├── lib/                # Lógica pura con pruebas unitarias (formulario, índice de artículos)
 ├── pages/
@@ -127,7 +127,7 @@ usa imágenes locales (la CSP no permite imágenes externas) y agrega el enlace 
 
 ### Íconos
 
-`<Icon name="github" />` incrusta `src/icons/github.svg` en el HTML (sin JS ni peticiones extra; toma el color del texto y el tamaño de `font-size`). Para un ícono nuevo, copia su SVG desde Font Awesome Free 5 a `src/icons/` conservando el comentario de licencia.
+`<Icon name="github-logo" />` incrusta `src/icons/github-logo.svg` en el HTML (sin JS ni peticiones extra; toma el color del texto y el tamaño de `font-size`). Para un ícono nuevo, copia el SVG del peso _light_ desde [Phosphor Icons](https://phosphoricons.com) (o `@phosphor-icons/core`, `assets/light/`) a `src/icons/<nombre>.svg`, sin el sufijo `-light` y quitando `fill="currentColor"` del `<svg>` (lo añade el componente).
 
 ## Formulario de contacto
 
