@@ -225,6 +225,7 @@ const messages = t(lang);
      reading order on phones. On wide screens the text sits beside the title and image;
      --reverse only swaps the sides visually. */
   .feature {
+    container-type: inline-size;
     width: min(1200px, 100%);
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -238,18 +239,35 @@ const messages = t(lang);
     text-align: center;
   }
 
+  /* Section titles share one size. They are single words; the longest ("craftsmanship")
+     is ~9.6em wide in Gruppo uppercase, so the size is capped at 1/10 of the available
+     width to keep it on one line. .feature and .bloom-section are size containers;
+     min(100cqi, 1200px) is the width of a .feature in both, since .bloom-section is not
+     capped at 1200px. */
+  .feature-title,
+  .bloom-title {
+    font-size: min(clamp(1.75rem, 1rem + 4vw, 5rem), min(100cqi, 1200px) / 10);
+  }
+
+  @media (min-width: 769px) {
+    /* Feature titles only get half the width (minus half the column gap); bloom matches them. */
+    .feature-title,
+    .bloom-title {
+      font-size: min(5rem, (min(50cqi, 600px) - var(--margin-block) / 2) / 10);
+    }
+  }
+
   .feature-title {
     grid-area: title;
     margin: 0;
     max-width: 100%;
     font-family: var(--font-secondary), serif;
-    font-size: clamp(1.75rem, 1rem + 4vw, 5rem);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     letter-spacing: var(--letter-spacing-wide);
     color: var(--color-brand-display);
     text-transform: uppercase;
-    overflow-wrap: anywhere;
+    white-space: nowrap;
   }
 
   .feature-image {
@@ -293,6 +311,7 @@ const messages = t(lang);
   }
 
   .bloom-section {
+    container-type: inline-size;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -314,7 +333,6 @@ const messages = t(lang);
   .bloom-title {
     margin: 0 0 var(--margin-element);
     font-family: var(--font-secondary), serif;
-    font-size: clamp(1.75rem, 1rem + 4vw, 5rem);
     font-weight: var(--font-weight-regular);
     line-height: 1;
     letter-spacing: var(--letter-spacing-wide);
