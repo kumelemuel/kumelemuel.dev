@@ -113,16 +113,19 @@ test("mobile menu opens, closes with Escape and returns focus", async ({ page })
   await expect(page.locator("#menu-toggle")).toBeFocused();
 });
 
-test("language switcher keeps the current page and translates its slug", async ({ page }) => {
-  await page.goto("/es/quien-soy/");
-  await page.getByRole("link", { name: "EN — Ver en inglés" }).click();
-  await expect(page).toHaveURL(/\/en\/who-am-i\/$/);
-  await expect(page.locator("html")).toHaveAttribute("lang", "en");
+// The switcher is in the header and repeated in the footer; both must behave the same.
+for (const region of ["header", "footer"] as const) {
+  test(`${region} language switcher keeps the current page and translates its slug`, async ({ page }) => {
+    await page.goto("/es/quien-soy/");
+    await page.locator(region).getByRole("link", { name: "EN — Ver en inglés" }).click();
+    await expect(page).toHaveURL(/\/en\/who-am-i\/$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "en");
 
-  await page.getByRole("link", { name: "ES — View in Spanish" }).click();
-  await expect(page).toHaveURL(/\/es\/quien-soy\/$/);
-  await expect(page.locator("html")).toHaveAttribute("lang", "es");
-});
+    await page.locator(region).getByRole("link", { name: "ES — View in Spanish" }).click();
+    await expect(page).toHaveURL(/\/es\/quien-soy\/$/);
+    await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  });
+}
 
 test("hreflang links point to the translated slug", async ({ page }) => {
   await page.goto("/en/contact/");

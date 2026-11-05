@@ -64,7 +64,7 @@ const canonicalURL = Astro.url.href;
       {title && <h1 class="page-title">{title}</h1>}
       <slot />
     </main>
-    <Footer lang={lang} />
+    <Footer lang={lang} {alternates} />
   </body>
 </html>
 

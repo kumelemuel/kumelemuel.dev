@@ -1,34 +1,113 @@
 ---
-import { DEFAULT_LANG, type Lang, isLang } from "../i18n/config";
-import { localePath } from "../i18n/routes";
+import { DEFAULT_LANG, SUPPORTED_LANGS, type Lang, isLang } from "../i18n/config";
+import { localePath, type Alternates } from "../i18n/routes";
 import { t } from "../i18n/ui";
 import { SITE } from "../site";
 import Icon from "./Icon.astro";
 
-const requestedLang = Astro.props.lang as Lang | undefined;
+interface Props {
+  lang?: string;
+  /** Path of the current page in each language; languages without it link to their home. */
+  alternates?: Alternates;
+}
+
+const requestedLang = Astro.props.lang;
+const alternates = Astro.props.alternates ?? {};
 const lang = isLang(requestedLang) ? requestedLang : DEFAULT_LANG;
 const messages = t(lang);
+const footer = messages.footer;
+
+const homePath = localePath(lang, "home");
+const explore = [
+  { name: messages.header.home, path: homePath },
+  { name: messages.header.who, path: localePath(lang, "who") },
+  { name: messages.header.articles, path: localePath(lang, "articles") },
+  { name: messages.header.contact, path: localePath(lang, "contact") },
+];
+
+const localizedPath = (targetLang: Lang) => alternates[targetLang] ?? localePath(targetLang, "home");
 ---
 
 <footer>
-  <div class="footer-content">
-    <nav>
-      <ul>
-        <li>
-          <a href={localePath(lang, "privacy")}>{messages.footer.privacyLink}</a>
-        </li>
-      </ul>
-    </nav>
-    <div class="social-links">
-      <a href={SITE.social.github} target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-        <Icon name="github-logo" class="social-link-icon" />
-      </a>
-      <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-        <Icon name="linkedin-logo" class="social-link-icon" />
-      </a>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href={homePath} class="footer-logo">
+          Kumelemuel.dev
+        </a>
+        <p class="footer-author">
+          {SITE.author.name} · {SITE.author.jobTitle}
+        </p>
+        <p class="footer-tagline">{footer.tagline}</p>
+      </div>
+
+      <nav class="footer-col" aria-label={footer.footerNav}>
+        <h2 class="footer-heading">{footer.exploreHeading}</h2>
+        <ul class="footer-list">
+          {explore.map((item) => (
+            <li>
+              <a href={item.path}>{item.name}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+
+      <div class="footer-col">
+        <h2 class="footer-heading">{footer.connectHeading}</h2>
+        <ul class="footer-list">
+          <li>
+            <a href={SITE.social.github} target="_blank" rel="noopener noreferrer">
+              <Icon name="github-logo" class="footer-icon" />
+              GitHub
+            </a>
+          </li>
+          <li>
+            <a href={SITE.social.linkedin} target="_blank" rel="noopener noreferrer">
+              <Icon name="linkedin-logo" class="footer-icon" />
+              LinkedIn
+            </a>
+          </li>
+          <li>
+            <a href={`/${lang}/rss.xml`} type="application/rss+xml">
+              <Icon name="rss-simple" class="footer-icon" />
+              {footer.rss}
+            </a>
+          </li>
+          <li>
+            <a href={localePath(lang, "contact")} class="footer-cta">
+              <Icon name="arrow-right" class="footer-icon footer-cta-icon" />
+              {footer.writeMe}
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="copyright">
-      &copy; {new Date().getFullYear()} Kumelemuel.dev. {messages.footer.rights}
+
+    <div class="ornament" aria-hidden="true">
+      <span></span>
+    </div>
+
+    <div class="footer-bottom">
+      <p class="footer-legal">
+        {`© ${new Date().getFullYear()} ${SITE.author.name}. ${footer.rights}`}
+        <span class="footer-separator" aria-hidden="true">
+          ·
+        </span>
+        <a href={localePath(lang, "privacy")}>{footer.privacyLink}</a>
+      </p>
+      <div class="footer-lang">
+        {SUPPORTED_LANGS.map((currentLang) => (
+          <a
+            href={localizedPath(currentLang)}
+            class={currentLang === lang ? "active-lang" : ""}
+            hreflang={currentLang}
+            aria-label={`${currentLang.toUpperCase()} — ${messages.header.switchLanguage[currentLang]}`}
+            aria-current={currentLang === lang ? "true" : undefined}
+          >
+            {currentLang.toUpperCase()}
+          </a>
+        ))}
+      </div>
     </div>
   </div>
 </footer>
@@ -37,73 +116,183 @@ const messages = t(lang);
   footer {
     background-color: var(--color-footer-background);
     border-top: 1px solid var(--color-border);
-  }
-
-  .footer-content {
+    color: var(--color-footer-text);
     font-family: var(--font-primary), serif;
     font-weight: var(--font-weight-regular);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  }
+
+  .footer-inner {
+    width: min(1200px, 100%);
+    margin: 0 auto;
+    padding: var(--margin-block) var(--margin-page);
     box-sizing: border-box;
-    font-size: var(--text-size-xs);
-    letter-spacing: var(--letter-spacing-wide);
-    background-color: var(--color-footer-background);
-    color: var(--color-footer-text);
-    padding: 1rem var(--margin-page);
-    text-align: center;
-  }
-
-  .social-links {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+    flex-direction: column;
+    gap: var(--margin-block);
   }
 
-  .social-links :global(.social-link-icon) {
-    font-size: 1.3rem;
-    color: var(--color-footer-link);
-    transition: color 0.2s ease;
+  .footer-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--margin-block);
   }
 
-  .social-links a:hover :global(.social-link-icon) {
-    color: var(--color-footer-link-hover);
-  }
-
-  .footer-content nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .footer-content nav ul li {
-    display: inline;
-    margin: 0 1.5rem 0 0;
-  }
-
-  .footer-content nav ul li a {
+  a {
     color: var(--color-footer-link);
     text-decoration: none;
     transition: color 0.2s ease;
   }
 
-  .footer-content nav ul li a:hover {
+  a:hover {
     color: var(--color-footer-link-hover);
   }
 
-  @media (max-width: 700px) {
-    .footer-content {
-      font-size: var(--text-size-xs);
-      padding: 0.75rem 1.25rem;
-      gap: 1rem;
-      flex-wrap: wrap;
-      justify-content: center;
+  /* Brand */
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-logo {
+    font-family: var(--font-secondary), serif;
+    font-size: var(--text-size-xl);
+    letter-spacing: var(--letter-spacing-wider);
+    text-transform: uppercase;
+    color: var(--color-text-main);
+  }
+
+  .footer-author {
+    margin: 0;
+    font-size: var(--text-size-xs);
+    letter-spacing: var(--letter-spacing-wider);
+    text-transform: uppercase;
+    color: var(--color-brand-display);
+  }
+
+  .footer-tagline {
+    margin: 0.25rem 0 0;
+    max-width: 32ch;
+    font-size: var(--text-size-sm);
+    line-height: var(--line-height-relaxed);
+    color: var(--color-text-muted);
+  }
+
+  /* Columns */
+  .footer-heading {
+    margin: 0 0 0.75rem;
+    font-family: var(--font-primary), serif;
+    font-size: var(--text-size-xs);
+    font-weight: var(--font-weight-regular);
+    letter-spacing: var(--letter-spacing-widest);
+    text-transform: uppercase;
+    color: var(--color-text-main);
+  }
+
+  .footer-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    font-size: var(--text-size-sm);
+  }
+
+  /* Flex items, so rows with and without an icon get the same height. */
+  .footer-list li {
+    display: flex;
+    margin: 0;
+  }
+
+  /* 28px keeps a comfortable touch target. */
+  .footer-list a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 28px;
+    line-height: 1.2;
+  }
+
+  .footer-list :global(.footer-icon) {
+    flex-shrink: 0;
+    font-size: 1.15em;
+  }
+
+  .footer-cta {
+    color: var(--color-brand-text);
+  }
+
+  .footer-cta :global(.footer-cta-icon) {
+    transition: transform 0.2s ease;
+  }
+
+  .footer-cta:hover :global(.footer-cta-icon) {
+    transform: translateX(3px);
+  }
+
+  /* Bottom line */
+  .footer-bottom {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
+    font-size: var(--text-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+  }
+
+  .footer-legal {
+    margin: 0;
+  }
+
+  .footer-separator {
+    margin: 0 0.5rem;
+  }
+
+  .footer-lang {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  /* Padded to a 24px touch target (WCAG 2.5.8) despite the small type. */
+  .footer-lang a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+  }
+
+  .footer-lang .active-lang {
+    color: var(--color-brand-text);
+  }
+
+  /* Tablet: brand on its own row, the two link columns below. */
+  @media (max-width: 900px) {
+    .footer-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
-    .footer-content nav ul li {
-      margin: 0 0.75rem 0 0;
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Phone: centered, the two link columns stay side by side to keep the footer short. */
+  @media (max-width: 560px) {
+    .footer-grid {
+      text-align: center;
+    }
+
+    .footer-brand,
+    .footer-list {
+      align-items: center;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
     }
   }
 </style>

@@ -14,6 +14,12 @@ type Messages = {
     switchLanguage: Record<Lang, string>;
   };
   footer: {
+    tagline: string;
+    exploreHeading: string;
+    connectHeading: string;
+    footerNav: string;
+    rss: string;
+    writeMe: string;
     privacyLink: string;
     rights: string;
   };
@@ -103,6 +109,12 @@ export const ui: Record<Lang, Messages> = {
       switchLanguage: { es: "Ver en español", en: "Ver en inglés" },
     },
     footer: {
+      tagline: "Ingeniería de software con oficio, visión holística y propósito.",
+      exploreHeading: "Explorar",
+      connectHeading: "Conectar",
+      footerNav: "Navegación del pie de página",
+      rss: "RSS",
+      writeMe: "Escríbeme",
       privacyLink: "Política de privacidad",
       rights: "Todos los derechos reservados.",
     },
@@ -263,6 +275,12 @@ export const ui: Record<Lang, Messages> = {
       switchLanguage: { es: "View in Spanish", en: "View in English" },
     },
     footer: {
+      tagline: "Software engineering with craft, a holistic view and purpose.",
+      exploreHeading: "Explore",
+      connectHeading: "Connect",
+      footerNav: "Footer navigation",
+      rss: "RSS",
+      writeMe: "Write to me",
       privacyLink: "Privacy policy",
       rights: "All rights reserved.",
     },
