@@ -202,15 +202,12 @@ main:focus {
   outline-offset: 2px;
 }
 
-/* Page transitions (ClientRouter). Defined here instead of transition:animate so the CSP
-   doesn't need to allow Astro's inline <style>. The header keeps its own group so it stays still. */
-header {
-  view-transition-name: site-header;
-}
-
+/* Page transitions (ClientRouter): the curtain in src/components/PageTransition.astro hides
+   the swap, so the browser's default view-transition crossfade is turned off. Defined here
+   instead of transition:animate so the CSP doesn't need to allow Astro's inline <style>. */
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  animation-duration: 0.7s;
+  animation: none;
 }
 
 /* Respect the OS "reduce motion" setting: no page-transition animation, no hover lifts,

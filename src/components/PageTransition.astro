@@ -1,0 +1,173 @@
+---
+/**
+ * Page-transition curtain for ClientRouter navigations: it rises from the bottom while the site
+ * ornament draws itself (gold lines, crimson diamond), the new page is swapped in underneath,
+ * and the curtain then lifts upwards to reveal it.
+ *
+ * Driven by the Web Animations API from a bundled script (no inline styles, so the CSP holds).
+ * Persisted across swaps so its state survives the DOM replacement. With "reduce motion"
+ * enabled, navigations are instant and the curtain never shows.
+ */
+---
+
+<div class="page-curtain" id="page-curtain" aria-hidden="true" transition:persist>
+  <div class="curtain-ornament">
+    <span class="curtain-line curtain-line--left"></span>
+    <span class="curtain-diamond"></span>
+    <span class="curtain-line curtain-line--right"></span>
+  </div>
+</div>
+
+<style>
+  .page-curtain {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-background-elevated);
+    /* Hidden below the bottom edge until a navigation starts. */
+    clip-path: inset(100% 0 0 0);
+    pointer-events: none;
+  }
+
+  .page-curtain.is-covered {
+    clip-path: inset(0);
+    /* Swallow clicks on the page underneath while it is being replaced. */
+    pointer-events: auto;
+  }
+
+  .curtain-ornament {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .curtain-line {
+    width: min(9rem, 28vw);
+    height: 1px;
+    transform: scaleX(0);
+  }
+
+  /* Both lines grow outwards from the diamond. */
+  .curtain-line--left {
+    background: linear-gradient(to right, transparent, var(--color-brand));
+    transform-origin: right center;
+  }
+
+  .curtain-line--right {
+    background: linear-gradient(to left, transparent, var(--color-brand));
+    transform-origin: left center;
+  }
+
+  .curtain-diamond {
+    width: 0.6rem;
+    height: 0.6rem;
+    border: 1px solid var(--color-accent-text);
+    background-color: var(--color-accent-deco);
+    transform: rotate(45deg) scale(0);
+  }
+
+  .is-covered .curtain-line {
+    transform: scaleX(1);
+  }
+
+  .is-covered .curtain-diamond {
+    transform: rotate(45deg) scale(1);
+  }
+</style>
+
+<script>
+  // Timings modeled on the reference: cover ~0.75s, ornament drawn by ~1.35s, short hold,
+  // then reveal ~0.6s (~1.9s per navigation in total).
+  const EASE = "cubic-bezier(0.65, 0, 0.35, 1)";
+  const COVER = 750;
+  const LINES = { delay: 250, duration: 1100 };
+  const DIAMOND = { delay: 900, duration: 400 };
+  const HOLD = 100;
+  const REVEAL = 600;
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const curtain = () => document.getElementById("page-curtain");
+
+  let covering: Promise<void> | null = null;
+  let running: Animation[] = [];
+
+  const stopAll = () => {
+    running.forEach((animation) => animation.cancel());
+    running = [];
+  };
+
+  const play = (element: Element | null, keyframes: Keyframe[], options: KeyframeAnimationOptions) => {
+    if (!element) return Promise.resolve();
+    const animation = element.animate(keyframes, { fill: "forwards", ...options });
+    running.push(animation);
+    return animation.finished.then(() => undefined);
+  };
+
+  const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  async function cover(element: HTMLElement) {
+    stopAll();
+    element.classList.remove("is-covered");
+    const lines = element.querySelectorAll(".curtain-line");
+    await Promise.all([
+      play(element, [{ clipPath: "inset(100% 0 0 0)" }, { clipPath: "inset(0 0 0 0)" }], {
+        duration: COVER,
+        easing: EASE,
+      }),
+      ...[...lines].map((line) =>
+        play(line, [{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], {
+          ...LINES,
+          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+        }),
+      ),
+      play(
+        element.querySelector(".curtain-diamond"),
+        [{ transform: "rotate(45deg) scale(0)" }, { transform: "rotate(45deg) scale(1)" }],
+        { ...DIAMOND, easing: "cubic-bezier(0.34, 1.56, 0.64, 1)" },
+      ),
+    ]);
+    // Hand the final state over to a class (it survives the swap), then drop the animations.
+    element.classList.add("is-covered");
+    stopAll();
+    await wait(HOLD);
+  }
+
+  async function reveal(element: HTMLElement) {
+    await play(element, [{ clipPath: "inset(0 0 0 0)" }, { clipPath: "inset(0 0 100% 0)" }], {
+      duration: REVEAL,
+      easing: EASE,
+    });
+    // Back to the resting state (hidden below the bottom edge); invisible either way.
+    element.classList.remove("is-covered");
+    stopAll();
+  }
+
+  // Delay loading the new page until the curtain fully covers the current one.
+  document.addEventListener("astro:before-preparation", (event) => {
+    const element = curtain();
+    if (!element || reducedMotion.matches) return;
+    covering ??= cover(element);
+    const coverDone = covering;
+    const loadPage = event.loader;
+    event.loader = async () => {
+      try {
+        await Promise.all([coverDone, loadPage()]);
+      } catch (error) {
+        // A newer navigation superseded this one; the router drops aborted navigations itself.
+        if (event.signal.aborted) return;
+        throw error;
+      }
+    };
+  });
+
+  // The new page is in place underneath: lift the curtain.
+  document.addEventListener("astro:after-swap", () => {
+    const element = curtain();
+    if (!element || !covering) return;
+    covering = null;
+    void reveal(element);
+  });
+</script>
