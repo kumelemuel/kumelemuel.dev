@@ -147,9 +147,21 @@ Variables de entorno (ver `.env.example`):
 | `CONTACT_TO_EMAIL`   | Correo que recibe los mensajes                                             |
 | `CONTACT_FROM_EMAIL` | Remitente (por defecto `onboarding@resend.dev` hasta verificar el dominio) |
 
+## Ramas
+
+| Rama   | Uso                                                           | Protección (`.github/rulesets/`)                                                                 |
+| :----- | :------------------------------------------------------------ | :----------------------------------------------------------------------------------------------- |
+| `main` | Producción: cada push despliega `kumelemuel.dev`              | Solo por PR desde `dev` (merge commit), CI `check-and-build` en verde, sin force push ni borrado |
+| `dev`  | Integración: trabajo diario y destino de Dependabot (preview) | Sin force push ni borrado                                                                        |
+
+Publicar: abre un PR `dev` → `main` y, con CI en verde, fusiónalo con **Create a merge commit**
+(no squash ni rebase, para que `main` siga siendo ancestro de `dev`).
+
+Las reglas se importan en GitHub → Settings → Rules → Rulesets → New ruleset → **Import a ruleset**.
+
 ## Despliegue (Vercel)
 
-1. Importa el repositorio en Vercel (framework: Astro, se detecta solo).
+1. Importa el repositorio en Vercel (framework: Astro, se detecta solo). Production Branch: `main`.
 2. Configura las variables de entorno anteriores.
 3. Activa **Analytics** en el panel del proyecto (Web Analytics, sin cookies).
 4. Asigna el dominio `kumelemuel.dev`.
