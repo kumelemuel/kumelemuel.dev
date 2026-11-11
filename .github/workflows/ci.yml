@@ -56,19 +56,12 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ runner.os }}-${{ steps.playwright.outputs.version }}
 
+      # Browser only, without `--with-deps`: the runner image already ships every library
+      # Chromium needs; `--with-deps` would only add CJK/Thai/Cyrillic fonts (useless for an
+      # es/en site with its own fonts) through apt, whose mirrors sometimes hang on DNS.
       - name: Install Playwright browser
         timeout-minutes: 5
         run: npx playwright install chromium
-
-      # System packages come from the runner's apt mirrors, which sometimes fail or hang (DNS).
-      # The runner image already ships Chrome and its libraries, so this is best effort and
-      # time-boxed: if it fails, the e2e tests still run (they will fail if a library is missing).
-      - name: Install Playwright system dependencies (best effort)
-        timeout-minutes: 6
-        run: |
-          if ! timeout 300 npx playwright install-deps chromium; then
-            echo "::warning::Playwright system dependencies could not be installed (apt mirrors unreachable); continuing with the runner's preinstalled libraries"
-          fi
 
       - name: End-to-end tests (pages, CSP, axe, contact form)
         run: npm run test:e2e
