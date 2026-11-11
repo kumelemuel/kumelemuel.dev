@@ -12,6 +12,7 @@ import { SUPPORTED_LANGS, type Lang } from "./config";
 export const ROUTES = {
   home: { es: "", en: "" },
   who: { es: "quien-soy", en: "who-am-i" },
+  portfolio: { es: "portafolio", en: "portfolio" },
   articles: { es: "articulos", en: "articles" },
   contact: { es: "contacto", en: "contact" },
   contactSent: { es: "contacto/enviado", en: "contact/sent" },
@@ -29,6 +30,8 @@ const toPath = (...segments: string[]) => `/${segments.filter(Boolean).join("/")
 export const localePath = (lang: Lang, key: RouteKey) => toPath(lang, ROUTES[key][lang]);
 
 export const articlePath = (lang: Lang, slug: string) => toPath(lang, ROUTES.articles[lang], slug);
+
+export const projectPath = (lang: Lang, slug: string) => toPath(lang, ROUTES.portfolio[lang], slug);
 
 export const routeAlternates = (key: RouteKey): Alternates =>
   Object.fromEntries(SUPPORTED_LANGS.map((lang) => [lang, localePath(lang, key)]));

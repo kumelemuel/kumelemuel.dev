@@ -120,6 +120,12 @@ picture {
   display: contents;
 }
 
+/* With the wrapper gone its <source>s would become empty flex/grid items (extra gaps and
+   implicit rows); they are never painted, so taking them out of layout is safe. */
+picture > source {
+  display: none;
+}
+
 ul,
 ol {
   margin: 0;
@@ -313,4 +319,69 @@ header {
   border: 1px solid var(--color-accent-text);
   background-color: var(--color-accent-deco);
   transform: rotate(45deg);
+}
+
+/* Long-form Markdown body (articles, project case studies). Usage: <div class="prose"><Content /></div> */
+.prose {
+  color: var(--color-text-secondary);
+  line-height: var(--line-height-relaxed);
+  font-size: var(--text-size-base);
+}
+
+.prose p {
+  margin: 0 0 var(--margin-element);
+}
+
+.prose h2,
+.prose h3 {
+  font-family: var(--font-secondary), sans-serif;
+  font-weight: var(--font-weight-regular);
+  letter-spacing: var(--letter-spacing-wide);
+  color: var(--color-brand-display);
+  margin: var(--margin-block) 0 var(--margin-element);
+}
+
+.prose h2 {
+  font-size: var(--text-size-2xl);
+}
+
+.prose h3 {
+  font-size: var(--text-size-xl);
+}
+
+/* The fonts have a single weight (no synthesized bold), so emphasis comes from color. */
+.prose strong {
+  color: var(--color-text-main);
+}
+
+.prose a {
+  /* Underlined so links in running text do not rely on color alone (WCAG 1.4.1). */
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+  color: var(--color-brand-text);
+  transition: color 0.2s ease;
+}
+
+.prose a:hover {
+  color: var(--color-brand-hover);
+}
+
+.prose code {
+  background: var(--color-background-elevated);
+  padding: 0.2em 0.4em;
+  border-radius: 2px;
+  font-size: 0.9em;
+}
+
+.prose pre {
+  background: var(--color-background-elevated);
+  padding: var(--margin-element);
+  border: 1px solid var(--color-border);
+  border-radius: 2px;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
 }

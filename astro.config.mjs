@@ -8,10 +8,13 @@ import { legacyRedirects, localePath } from "./src/i18n/routes.ts";
 
 const isBuild = process.argv.includes("build");
 
-// Keep the (empty) article listings out of the sitemap until the first article exists.
-const hasArticles = readdirSync(new URL("./src/data/articles/", import.meta.url), { recursive: true }).some(
-  (file) => String(file).endsWith(".md"),
-);
+// Keep the (empty) article and portfolio listings out of the sitemap until they have content.
+const hasEntries = (/** @type {string} */ folder) =>
+  readdirSync(new URL(`./src/data/${folder}/`, import.meta.url), { recursive: true }).some((file) =>
+    String(file).endsWith(".md"),
+  );
+const hasArticles = hasEntries("articles");
+const hasProjects = hasEntries("portfolio");
 
 // https://astro.build/config
 export default defineConfig({
@@ -58,10 +61,16 @@ export default defineConfig({
     sitemap({
       filter: (page) => {
         const path = new URL(page).pathname;
-        const isUnder = (/** @type {"privacy" | "contactSent" | "articles"} */ key) =>
+        const isUnder = (/** @type {"privacy" | "contactSent" | "articles" | "portfolio"} */ key) =>
           SUPPORTED_LANGS.some((lang) => path.startsWith(localePath(lang, key)));
-        // Privacy and the no-JS "message sent" page are noindex; articles only once there is one.
-        return !isUnder("privacy") && !isUnder("contactSent") && (hasArticles || !isUnder("articles"));
+        // Privacy and the no-JS "message sent" page are noindex; articles and portfolio only
+        // once they have an entry.
+        return (
+          !isUnder("privacy") &&
+          !isUnder("contactSent") &&
+          (hasArticles || !isUnder("articles")) &&
+          (hasProjects || !isUnder("portfolio"))
+        );
       },
       // No `i18n` option: it pairs translations by identical paths after the language prefix,
       // which no longer holds with translated slugs. Every page declares its translations

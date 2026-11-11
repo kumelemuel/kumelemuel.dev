@@ -4,7 +4,7 @@ import { SUPPORTED_LANGS as LANGS } from "../../src/i18n/config";
 import { legacyRedirects, localePath } from "../../src/i18n/routes";
 
 // Every static page (contactSent is on-demand and covered by contact.spec.ts).
-const PAGES = ["home", "who", "articles", "contact", "privacy"] as const;
+const PAGES = ["home", "who", "portfolio", "articles", "contact", "privacy"] as const;
 
 /**
  * Collects CSP violations and JS errors. Vercel Analytics only exists on Vercel,
@@ -161,4 +161,28 @@ test("RSS feeds and sitemap are published", async ({ request }) => {
   expect(sitemap).not.toContain("/privacy/");
   expect(sitemap).not.toContain("/privacidad/");
   expect(sitemap).not.toContain("/contacto/enviado/");
+});
+
+test("a portfolio case study renders cleanly and keeps the project when switching language", async ({
+  page,
+}) => {
+  const problems = await watchPage(page);
+  await page.goto(localePath("es", "portfolio"), { waitUntil: "networkidle" });
+  const cards = page.locator(".project-title a");
+  test.skip((await cards.count()) === 0, "no portfolio projects yet");
+
+  await cards.first().click();
+  await expect(page).toHaveURL(/\/es\/portafolio\/[^/]+\/$/);
+  await expect(page.locator("h1")).toHaveCount(1);
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await page.waitForTimeout(300);
+  await expectNoA11yViolations(page);
+
+  // Only translated projects have an English version to switch to.
+  const toEnglish = page.locator("header").getByRole("link", { name: "EN — Ver en inglés" });
+  if ((await page.locator('link[rel="alternate"][hreflang="en"]').count()) > 0) {
+    await toEnglish.click();
+    await expect(page).toHaveURL(/\/en\/portfolio\/[^/]+\/$/);
+  }
+  expect(problems).toEqual([]);
 });

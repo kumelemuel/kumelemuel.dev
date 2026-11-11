@@ -3,12 +3,41 @@ import { z } from "astro/zod";
 import { glob } from "astro/loaders";
 
 const portfolio = defineCollection({
+  // Projects go in ./src/data/portfolio/<lang>/<slug>.md, paired like articles (src/lib/localized.ts).
+  // The Markdown body is the case study; screenshots live in src/assets/portfolio/.
   loader: glob({ pattern: "**/*.md", base: "./src/data/portfolio" }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    url: z.string(),
-  }),
+  schema: ({ image }) =>
+    z
+      .object({
+        title: z.string(),
+        translationKey: z.string().optional(),
+        /** One or two sentences: card text and meta description. */
+        summary: z.string(),
+        /** featured = live projects (top block); lab = personal / GitHub projects. */
+        kind: z.enum(["featured", "lab"]),
+        status: z.enum(["live", "pwa", "open-source", "archived"]),
+        role: z.string().optional(),
+        year: z.number().int(),
+        stack: z.array(z.string()).min(1),
+        links: z
+          .object({
+            site: z.url().optional(),
+            repo: z.url().optional(),
+          })
+          .default({}),
+        cover: image().optional(),
+        coverAlt: z.string().optional(),
+        /** Manual order inside each block (lower first). */
+        order: z.number().default(0),
+      })
+      .refine((project) => project.kind !== "featured" || project.cover, {
+        message: "featured projects need a cover image",
+        path: ["cover"],
+      })
+      .refine((project) => !project.cover || project.coverAlt, {
+        message: "coverAlt is required when there is a cover image",
+        path: ["coverAlt"],
+      }),
 });
 
 const articles = defineCollection({

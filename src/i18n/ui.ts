@@ -5,6 +5,7 @@ type Messages = {
   header: {
     home: string;
     who: string;
+    portfolio: string;
     articles: string;
     contact: string;
     openMenu: string;
@@ -67,8 +68,20 @@ type Messages = {
     portfolio: {
       title: string;
       description: string;
-      visit: string;
-      imageAlt: string;
+      intro: string;
+      empty: string;
+      featuredHeading: string;
+      labHeading: string;
+      labIntro: string;
+      caseStudy: string;
+      visitSite: string;
+      viewCode: string;
+      role: string;
+      year: string;
+      status: string;
+      stack: string;
+      back: string;
+      statuses: Record<"live" | "pwa" | "open-source" | "archived", string>;
     };
     contact: {
       title: string;
@@ -100,6 +113,7 @@ export const ui: Record<Lang, Messages> = {
     header: {
       home: "Inicio",
       who: "Quién soy",
+      portfolio: "Portafolio",
       articles: "Artículos",
       contact: "Contacto",
       openMenu: "Abrir menú",
@@ -169,9 +183,28 @@ export const ui: Record<Lang, Messages> = {
       portfolio: {
         title: "Portafolio",
         description:
-          "Proyectos y aplicaciones desarrolladas, mostrando el trabajo en tecnología al servicio del bien común.",
-        visit: "Visitar",
-        imageAlt: "Vista previa del proyecto",
+          "Proyectos en producción y experimentos personales: qué problema resuelven, cómo los construí y qué aprendí.",
+        intro:
+          "Proyectos en producción y experimentos personales. Cada uno cuenta qué problema resuelve, cómo lo construí y qué aprendí en el camino.",
+        empty: "Pronto publicaré los primeros proyectos. Vuelve en unos días.",
+        featuredHeading: "Destacados",
+        labHeading: "Laboratorio",
+        labIntro:
+          "Proyectos personales y de código abierto donde exploro ideas, herramientas y arquitecturas.",
+        caseStudy: "Caso de estudio",
+        visitSite: "Ver sitio",
+        viewCode: "Ver código",
+        role: "Rol",
+        year: "Año",
+        status: "Estado",
+        stack: "Stack",
+        back: "Volver al portafolio",
+        statuses: {
+          live: "En producción",
+          pwa: "PWA",
+          "open-source": "Código abierto",
+          archived: "Archivado",
+        },
       },
       contact: {
         title: "Contacto",
@@ -266,6 +299,7 @@ export const ui: Record<Lang, Messages> = {
     header: {
       home: "Home",
       who: "Who am I?",
+      portfolio: "Portfolio",
       articles: "Articles",
       contact: "Contact",
       openMenu: "Open menu",
@@ -336,9 +370,27 @@ export const ui: Record<Lang, Messages> = {
       portfolio: {
         title: "Portfolio",
         description:
-          "Projects and applications developed, showcasing work in technology in service of the common good.",
-        visit: "Visit",
-        imageAlt: "Project preview image",
+          "Live projects and personal experiments: the problem each one solves, how I built it and what I learned.",
+        intro:
+          "Live projects and personal experiments. Each one tells the problem it solves, how I built it and what I learned along the way.",
+        empty: "The first projects are coming soon. Check back in a few days.",
+        featuredHeading: "Featured",
+        labHeading: "Lab",
+        labIntro: "Personal and open-source projects where I explore ideas, tools and architectures.",
+        caseStudy: "Case study",
+        visitSite: "Visit site",
+        viewCode: "View code",
+        role: "Role",
+        year: "Year",
+        status: "Status",
+        stack: "Stack",
+        back: "Back to portfolio",
+        statuses: {
+          live: "Live",
+          pwa: "PWA",
+          "open-source": "Open source",
+          archived: "Archived",
+        },
       },
       contact: {
         title: "Contact",
