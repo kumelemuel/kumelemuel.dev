@@ -16,8 +16,8 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "@astrojs/vercel": "^11.0.20",
-    "astro": "^7.4.7",
+    "@astrojs/vercel": "^11.0.18",
+    "astro": "^7.4.12",
     "resend": "^6.37.0"
   },
   "devDependencies": {
