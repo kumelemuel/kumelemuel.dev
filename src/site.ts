@@ -7,6 +7,6 @@ export const SITE = {
   },
   social: {
     github: "https://github.com/kumelemuel",
-    linkedin: "https://www.linkedin.com/in/diego-arenas-75043b151/",
+    linkedin: "https://www.linkedin.com/in/kumelemuel/",
   },
 } as const;
