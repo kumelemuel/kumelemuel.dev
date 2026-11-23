@@ -39,10 +39,15 @@ export default defineConfig({
     },
     {
       // Dummy credentials: validation runs before sending, and the tests only reach the
-      // handler through the honeypot path, which never calls Resend.
+      // handler through the honeypot path, which never calls Resend nor Upstash.
       command: `astro dev --port ${DEV_PORT} --ignore-lock`,
       url: `http://localhost:${DEV_PORT}/es/contacto/`,
-      env: { RESEND_API_KEY: "re_test_dummy", CONTACT_TO_EMAIL: "test@example.com" },
+      env: {
+        RESEND_API_KEY: "re_test_dummy",
+        CONTACT_TO_EMAIL: "test@example.com",
+        KL_KV_REST_API_URL: "https://dummy.upstash.io",
+        KL_KV_REST_API_TOKEN: "dummy",
+      },
       reuseExistingServer: !process.env.CI,
       timeout: 120_000,
     },

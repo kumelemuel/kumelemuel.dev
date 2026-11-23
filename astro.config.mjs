@@ -109,6 +109,9 @@ export default defineConfig({
         access: "secret",
         default: "Kumelemuel.dev <onboarding@resend.dev>",
       }),
+      // Contact rate limit (src/actions/rate-limit.ts).
+      KL_KV_REST_API_URL: envField.string({ context: "server", access: "secret" }),
+      KL_KV_REST_API_TOKEN: envField.string({ context: "server", access: "secret" }),
     },
   },
 });
