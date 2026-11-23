@@ -1,0 +1,45 @@
+name: Sync main into dev
+
+# After every change on main (PR merge commits, hotfixes, dependabot PRs aimed at main),
+# bring dev up to date so the next dev → main PR has no drift.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: sync-dev
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: dev
+          fetch-depth: 0
+
+      - name: Merge main into dev
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin main
+
+          if git merge-base --is-ancestor origin/main HEAD; then
+            echo "dev already contains main; nothing to do."
+            exit 0
+          fi
+
+          # Fast-forward when dev has nothing of its own; a merge commit otherwise.
+          if ! git merge --no-edit origin/main -m "Merge branch 'main' into dev"; then
+            git merge --abort
+            echo "::error::main and dev conflict. Merge by hand: git checkout dev && git merge origin/main"
+            exit 1
+          fi
+
+          git push origin HEAD:dev
