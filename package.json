@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
     "@astrojs/vercel": "^11.0.18",
+    "@upstash/redis": "^1.41.0",
     "astro": "^7.4.12",
     "resend": "^6.37.0"
   },

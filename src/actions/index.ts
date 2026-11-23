@@ -1,7 +1,16 @@
 import { ActionError, defineAction } from "astro:actions";
 import { CONTACT_FROM_EMAIL, CONTACT_TO_EMAIL, RESEND_API_KEY } from "astro:env/server";
 import { Resend } from "resend";
-import { contactInput, contactMessages, contactSubject, escapeHtml, isLikelyBot } from "../lib/contact";
+import {
+  contactInput,
+  contactMessages,
+  contactRateLimitKey,
+  contactSubject,
+  escapeHtml,
+  isLikelyBot,
+  rateLimitDecision,
+} from "../lib/contact";
+import { hitRateLimit } from "./rate-limit";
 
 export const server = {
   contact: defineAction({
@@ -14,6 +23,22 @@ export const server = {
       // Bots: pretend success so they don't retry, but send nothing.
       if (isLikelyBot(input, { isRpcCall: context.url.pathname.startsWith("/_actions/") })) {
         return { ok: true, message: t.success };
+      }
+
+      // Per-IP limit. If Redis is unreachable the message still goes out (fail open):
+      // losing a real message is worse than letting a few extra through.
+      try {
+        const usage = await hitRateLimit(await contactRateLimitKey(context.clientAddress));
+        const decision = rateLimitDecision(usage);
+        if (!decision.allowed) {
+          throw new ActionError({
+            code: "TOO_MANY_REQUESTS",
+            message: t.rateLimited(decision.retryAfterMinutes),
+          });
+        }
+      } catch (caught) {
+        if (caught instanceof ActionError) throw caught;
+        console.error("[contact] Rate limit unavailable:", caught);
       }
 
       const resend = new Resend(RESEND_API_KEY);

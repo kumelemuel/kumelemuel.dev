@@ -9,6 +9,9 @@ export const MAX_NAME_LENGTH = 120;
 export const MAX_EMAIL_LENGTH = 254;
 export const MIN_MESSAGE_LENGTH = 25;
 export const MAX_MESSAGE_LENGTH = 5000;
+/** Per-IP limit: at most this many sends, then wait until the window (from the first send) ends. */
+export const RATE_LIMIT_MAX_SENDS = 3;
+export const RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
 
 type ContactLang = "es" | "en";
 
@@ -23,6 +26,8 @@ const MESSAGES = {
     messageLong: `El mensaje no puede superar los ${MAX_MESSAGE_LENGTH} caracteres.`,
     success: "Gracias por escribir. Te responderé a la brevedad.",
     sendFailed: "No pudimos enviar tu mensaje. Inténtalo de nuevo en unos minutos.",
+    rateLimited: (minutes: number) =>
+      `Has enviado varios mensajes seguidos. Podrás volver a escribir en ${minutes} ${minutes === 1 ? "minuto" : "minutos"}.`,
   },
   en: {
     nameShort: "Name must be at least 3 characters long.",
@@ -32,8 +37,10 @@ const MESSAGES = {
     messageLong: `Message cannot exceed ${MAX_MESSAGE_LENGTH} characters.`,
     success: "Thanks for reaching out. I'll get back to you soon.",
     sendFailed: "We couldn't send your message. Please try again in a few minutes.",
+    rateLimited: (minutes: number) =>
+      `You've sent several messages in a row. You can write again in ${minutes} ${minutes === 1 ? "minute" : "minutes"}.`,
   },
-} as const satisfies Record<ContactLang, Record<string, string>>;
+} as const satisfies Record<ContactLang, Record<string, string | ((minutes: number) => string)>>;
 
 export const contactMessages = (lang: ContactLang) => MESSAGES[lang];
 
@@ -78,6 +85,31 @@ export function isLikelyBot(
   if (input.website.length > 0) return true;
   if (!input.startedAt) return isRpcCall;
   return now - input.startedAt < MIN_FILL_TIME_MS;
+}
+
+export type RateLimitDecision = { allowed: true } | { allowed: false; retryAfterMinutes: number };
+
+/**
+ * Fixed window per IP: `count` is the number of sends in the current window (this one
+ * included) and `ttlSeconds` what is left of it (negative if unknown).
+ */
+export function rateLimitDecision({
+  count,
+  ttlSeconds,
+}: {
+  count: number;
+  ttlSeconds: number;
+}): RateLimitDecision {
+  if (count <= RATE_LIMIT_MAX_SENDS) return { allowed: true };
+  const seconds = ttlSeconds > 0 ? ttlSeconds : RATE_LIMIT_WINDOW_SECONDS;
+  return { allowed: false, retryAfterMinutes: Math.max(1, Math.ceil(seconds / 60)) };
+}
+
+/** Storage key for an IP. Only a SHA-256 hash is stored, never the address itself. */
+export async function contactRateLimitKey(ip: string): Promise<string> {
+  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
+  const hex = Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+  return `contact:rl:${hex}`;
 }
 
 export const escapeHtml = (value: string) =>

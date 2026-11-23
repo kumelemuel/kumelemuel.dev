@@ -3,7 +3,12 @@ import {
   MAX_MESSAGE_LENGTH,
   MAX_NAME_LENGTH,
   MIN_FILL_TIME_MS,
+  RATE_LIMIT_MAX_SENDS,
+  RATE_LIMIT_WINDOW_SECONDS,
   contactInput,
+  contactMessages,
+  contactRateLimitKey,
+  rateLimitDecision,
   contactSubject,
   escapeHtml,
   isLikelyBot,
@@ -107,5 +112,55 @@ describe("email helpers", () => {
     const subject = contactSubject("Diego\r\nBcc: victim@example.com");
     expect(subject).not.toMatch(/[\r\n]/);
     expect(subject).toBe("[kumelemuel.dev] Nuevo mensaje de Diego Bcc: victim@example.com");
+  });
+});
+
+describe("rateLimitDecision", () => {
+  it("allows up to the maximum number of sends in the window", () => {
+    for (let count = 1; count <= RATE_LIMIT_MAX_SENDS; count++) {
+      expect(rateLimitDecision({ count, ttlSeconds: RATE_LIMIT_WINDOW_SECONDS }).allowed).toBe(true);
+    }
+  });
+
+  it("blocks the next send and says how many minutes are left, rounded up", () => {
+    expect(rateLimitDecision({ count: RATE_LIMIT_MAX_SENDS + 1, ttlSeconds: 61 })).toEqual({
+      allowed: false,
+      retryAfterMinutes: 2,
+    });
+  });
+
+  it("falls back to the whole window when the TTL is unknown", () => {
+    expect(rateLimitDecision({ count: RATE_LIMIT_MAX_SENDS + 1, ttlSeconds: -1 })).toEqual({
+      allowed: false,
+      retryAfterMinutes: RATE_LIMIT_WINDOW_SECONDS / 60,
+    });
+  });
+
+  it("allows a sub-minute wait to read as 1 minute", () => {
+    expect(rateLimitDecision({ count: 10, ttlSeconds: 5 })).toEqual({ allowed: false, retryAfterMinutes: 1 });
+  });
+});
+
+describe("contactRateLimitKey", () => {
+  it("is stable per IP and never contains the raw address", async () => {
+    const key = await contactRateLimitKey("203.0.113.7");
+    expect(key).toBe(await contactRateLimitKey("203.0.113.7"));
+    expect(key).not.toContain("203.0.113.7");
+    expect(key).toMatch(/^contact:rl:[0-9a-f]{64}$/);
+  });
+
+  it("differs between IPs", async () => {
+    expect(await contactRateLimitKey("203.0.113.7")).not.toBe(await contactRateLimitKey("203.0.113.8"));
+  });
+});
+
+describe("contactMessages.rateLimited", () => {
+  it("is localized and includes the wait", () => {
+    expect(contactMessages("es").rateLimited(1)).toBe(
+      "Has enviado varios mensajes seguidos. Podrás volver a escribir en 1 minuto.",
+    );
+    expect(contactMessages("en").rateLimited(42)).toBe(
+      "You've sent several messages in a row. You can write again in 42 minutes.",
+    );
   });
 });

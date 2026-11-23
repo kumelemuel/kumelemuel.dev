@@ -229,7 +229,7 @@ export const ui: Record<Lang, Messages> = {
         description:
           "Cómo se tratan los datos que envías a través del formulario de contacto de este sitio personal.",
         bodyHtml: `<section>
-  <p><em>Última actualización: 3 de noviembre de 2026.</em></p>
+  <p><em>Última actualización: 22 de noviembre de 2026.</em></p>
 
   <h2>1. Un sitio personal</h2>
   <p>
@@ -249,6 +249,11 @@ export const ui: Record<Lang, Messages> = {
     <li>El contenido de tu mensaje</li>
   </ul>
   <p>Te pido no incluir datos sensibles en tu mensaje.</p>
+  <p>
+    Para evitar abusos, al enviar el formulario se guarda una huella irreversible (hash) de tu
+    dirección IP junto con el número de envíos, para limitar a 3 los mensajes por hora. No se guarda
+    la IP en sí y el registro se borra solo al cabo de una hora.
+  </p>
 
   <h2>3. Para qué los uso</h2>
   <p>
@@ -258,7 +263,7 @@ export const ui: Record<Lang, Messages> = {
 
   <h2>4. Cuánto tiempo se conservan</h2>
   <p>
-    El sitio no tiene una base de datos. Tu mensaje llega a mi correo personal y se conserva ahí
+    El sitio no guarda tus mensajes en una base de datos. Tu mensaje llega a mi correo personal y se conserva ahí
     mientras dure la conversación. El servicio de envío de correo puede guardar temporalmente
     un registro técnico del envío, conforme a sus propias políticas.
   </p>
@@ -271,6 +276,7 @@ export const ui: Record<Lang, Messages> = {
   <ul>
     <li><strong>Vercel</strong>: alojamiento del sitio y ejecución del formulario de contacto.</li>
     <li><strong>Resend</strong>: envío del correo con tu mensaje.</li>
+    <li><strong>Upstash</strong>: almacenamiento temporal (una hora) del contador de envíos por hash de IP.</li>
     <li><strong>Google (Gmail)</strong>: recepción del correo.</li>
     <li><strong>Vercel Web Analytics</strong>: estadísticas agregadas y anónimas de visitas (páginas vistas, país, tipo de dispositivo), sin cookies ni identificadores persistentes.</li>
   </ul>
@@ -414,7 +420,7 @@ export const ui: Record<Lang, Messages> = {
         title: "Privacy Policy",
         description: "How the data you send through the contact form of this personal site is handled.",
         bodyHtml: `<section>
-  <p><em>Last updated: November 3, 2026.</em></p>
+  <p><em>Last updated: November 22, 2026.</em></p>
 
   <h2>1. A personal site</h2>
   <p>
@@ -434,6 +440,11 @@ export const ui: Record<Lang, Messages> = {
     <li>The content of your message</li>
   </ul>
   <p>Please do not include sensitive data in your message.</p>
+  <p>
+    To prevent abuse, sending the form stores an irreversible fingerprint (hash) of your IP
+    address together with the number of sends, to limit messages to 3 per hour. The IP itself
+    is not stored, and the record deletes itself after one hour.
+  </p>
 
   <h2>3. What I use it for</h2>
   <p>
@@ -443,7 +454,7 @@ export const ui: Record<Lang, Messages> = {
 
   <h2>4. How long it is kept</h2>
   <p>
-    The site has no database. Your message arrives in my personal inbox and is kept there
+    The site does not store your messages in a database. Your message arrives in my personal inbox and is kept there
     for as long as the conversation lasts. The email delivery service may temporarily keep
     a technical log of the delivery, according to its own policies.
   </p>
@@ -456,6 +467,7 @@ export const ui: Record<Lang, Messages> = {
   <ul>
     <li><strong>Vercel</strong>: website hosting and execution of the contact form.</li>
     <li><strong>Resend</strong>: delivery of the email containing your message.</li>
+    <li><strong>Upstash</strong>: temporary storage (one hour) of the send counter, keyed by IP hash.</li>
     <li><strong>Google (Gmail)</strong>: receipt of the email.</li>
     <li><strong>Vercel Web Analytics</strong>: aggregated, anonymous visit statistics (page views, country, device type), without cookies or persistent identifiers.</li>
   </ul>
